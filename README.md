@@ -13,7 +13,7 @@ Please refer to manufacturer [reference design](https://infocenter.nordicsemi.co
 
 ### Setup tools under ArchLinux.
 Tools listed above could be found at AUR. To get them make the following.\
-I use git repo to build package.
+Here git repo is used to build package.\
 0. Before start make sure that all tools to build packages are installed.\
 For this run:
 ```bash
