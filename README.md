@@ -19,8 +19,7 @@ For this run:
 ```bash
 $ pacman -S --needed base-devel
 ```
-2. Choose an appropriate build directory. Here `~/builds` are used.
-3. For `jlink-software-and-documentation`:\
+2. For `jlink-software-and-documentation`:\
 Clone the git repository:
 ```bash
 $ git clone https://aur.archlinux.org/jlink-software-and-documentation.git
@@ -29,7 +28,7 @@ Make and install the package:
 ```bash
 $ makepkg -sri
 ```
-4. For `nrf5x-command-line-tools`:\
+3. For `nrf5x-command-line-tools`:\
 Clone the git repository:
 ```bash
 $ git clone https://aur.archlinux.org/nrf5x-command-line-tools.git
