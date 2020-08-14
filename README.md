@@ -1,5 +1,5 @@
 ### Description.
-Simple barebone LED blink on nRF52840-DK.
+Simple baremetal LED blink on nRF52840-DK.
 Below are steps how to get tools and setup DK.
 All work was done in ArchLinux. Please refer to manufacturer reference designs
 how to setup tools and how to use them.
