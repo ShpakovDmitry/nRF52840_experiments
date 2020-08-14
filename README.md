@@ -12,12 +12,12 @@ Please refer to manufacturer [reference design](https://infocenter.nordicsemi.co
 * `nrf5x-command-line-tools`, [downdload](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) from manufacturer.
 
 ### Setup tools under ArchLinux.
-Get compiler and binutils:\
+Get compiler and binutils:
 ```
 $ sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils
 ```
 Tools listed above could be found at AUR. To get them make the following.\
-Here git repo is used to build package.\
+Here git repo is used to build package.
 1. Before start make sure that all tools to build packages are installed.\
 For this run:
 ```bash
