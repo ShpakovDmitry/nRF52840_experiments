@@ -13,3 +13,13 @@ for full information about development kit.
 * Flash memory
 * Drag-and-drop Mass Storage Device (MSD) programming
 * Supporting NFC-A Listen Mode
+
+![DK image](images/pca10056_v1_0_0_top_nfc.png)
+
+
+
+
+
+
+> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> Any copyright belongs to NordicSemiconductors©
