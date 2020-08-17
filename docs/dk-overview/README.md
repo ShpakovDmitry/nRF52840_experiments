@@ -16,10 +16,9 @@ for full information about development kit.
 
 ![DK image](images/pca10056_v1_0_0_top_nfc.png)
 
+![DK block diagram](images/pca10056_block_diagram.svg)
 
-
-
-
+---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
 > Any copyright belongs to NordicSemiconductors©
