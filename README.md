@@ -8,6 +8,12 @@ To clone the project run:
 $ git clone https://github.com/ShpakovDmitry/nRF52840DK_BareMetal_Blink.git
 ```
 
+### Table of contents
+
+1. [Development kit overview](#dk-overview)
+1. [Tools required](#tools-required)
+1. [Setup tools under ArchLinux](#setup-tools-under-archlinux)
+
 ### DK Overview.
 Please refer to manufacturer [reference design](https://infocenter.nordicsemi.com/topic/ug_nrf52840_dk/UG/nrf52840_DK/intro.html).
 
