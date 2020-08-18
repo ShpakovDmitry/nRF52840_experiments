@@ -1,3 +1,7 @@
+### NOTE
+All work was done in ArchLinux. Please refer to manufacturer reference designs
+how to setup tools and how to use them in different OS.
+
 ### Tools required.
 * `jlink-software-and-documentation`, [download](https://www.segger.com/downloads/jlink/) from manufacturer.
 * `nrf5x-command-line-tools`, [download](https://www.nordicsemi.com/Software-and-tools/Development-Tools/nRF-Command-Line-Tools/Download) from manufacturer.
