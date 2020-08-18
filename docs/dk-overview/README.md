@@ -14,11 +14,16 @@ for full information about development kit.
 * Drag-and-drop Mass Storage Device (MSD) programming
 * Supporting NFC-A Listen Mode
 
-nRF52840 is an ultra-low power 2.4 GHz wireless system on chip (SoC) integrating a multiprotocol 2.4 GHz transceiver, an Arm® Cortex®-M4F CPU and flash program memory. It is the ultimate SoC for any short range wireless personal area network or IPv6-enabled automation application.
-
-nRF52840 supports Bluetooth® Low Energy, the ANT™, 802.15.4, and user-proprietary 2.4 GHz protocols. Fully qualified Bluetooth Low Energy and ANT stacks are available for the SoC. An 802.15.4 protocol library and a certified USB stack are also available.
-
-The nRF52840 SoC is part of the nRF52 Series that offers code-compatible devices across the series and simple software migration from the nRF51 Series.
+nRF52840 is an ultra-low power 2.4 GHz wireless system on chip (SoC)
+integrating a multiprotocol 2.4 GHz transceiver, an Arm® Cortex®-M4F CPU and
+flash program memory. It is the ultimate SoC for any short range wireless
+personal area network or IPv6-enabled automation application.
+nRF52840 supports Bluetooth® Low Energy, the ANT™, 802.15.4, and
+user-proprietary 2.4 GHz protocols. Fully qualified Bluetooth Low Energy and
+ANT stacks are available for the SoC. An 802.15.4 protocol library and a
+certified USB stack are also available.
+The nRF52840 SoC is part of the nRF52 Series that offers code-compatible devices
+across the series and simple software migration from the nRF51 Series.
 
 ![DK image](images/pca10056_v1_0_0_top_nfc.png)
 
