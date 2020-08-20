@@ -24,7 +24,7 @@ routine is needed. For simplicity `for` loop is used.
 ```c
 #include <stdint.h>
 
-#define BASE 0x5000000
+#define BASE 0x50000000
 #define OUTSET (*((uint32_t *) (BASE + 0x508)))
 #define OUTCLR (*((uint32_t *) (BASE + 0x50C)))
 #define PIN_CNF(pin) (*((uint32_t *) (BASE + 0x700 + pin * 0x4)))
