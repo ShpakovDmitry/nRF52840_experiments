@@ -14,3 +14,4 @@ $ git clone https://github.com/ShpakovDmitry/nRF52840DK_BareMetal_Blink.git
 1. [Tools setup](/docs/tools-setup/README.md)
 1. [Linker script](/docs/linker-script/README.md)
 1. [Runtime](/docs/runtime/README.md)
+1. [Blink](/docs/blink/README.md)
