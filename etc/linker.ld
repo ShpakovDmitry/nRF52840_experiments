@@ -3,6 +3,8 @@ MEMORY {
 	RAM	(rwx)	: ORIGIN = 0x20000000, 	LENGTH = 256K
 }
 
+stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8)
+
 SECTIONS {
 	.vectors : AT (0x00000000) {
 		. = ALIGN(4);		/* should be 4 byte alligned because of 32-bit memory organization */
