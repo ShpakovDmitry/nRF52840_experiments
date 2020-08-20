@@ -17,3 +17,4 @@ Searching in DK hardware schematics file we can see that leds are connected to
 Also it could be seen that leds are active low, meaning that when GPIO output
 is low then led is turned ON. This is so called sink mode. In source mode action
 is opposite.
+![leds](images/leds.png)
