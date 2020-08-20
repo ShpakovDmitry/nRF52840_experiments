@@ -9,7 +9,7 @@ how to setup tools and how to use them in different OS.
 ### Setup tools under ArchLinux.
 Get compiler and binutils:
 ```bash
-$ sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils
+$ sudo pacman -S arm-none-eabi-gcc arm-none-eabi-binutils arm-none-eabi-newlib
 ```
 Tools listed in `Tools required` section could be found at AUR. To get them make the following.\
 Here git repo is used to build package.
