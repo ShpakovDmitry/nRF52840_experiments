@@ -3,7 +3,7 @@ MEMORY {
 	RAM	(rwx)	: ORIGIN = 0x20000000, 	LENGTH = 256K
 }
 
-stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8)
+stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
 
 SECTIONS {
 	.vectors : AT (0x00000000) {
@@ -34,6 +34,6 @@ SECTIONS {
 		*(.bss*)
 		. = ALIGN(4);
 		_ebss = .;
-	} > SRAM
+	} > RAM
 }
 
