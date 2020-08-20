@@ -13,9 +13,6 @@ with up to 256 interrupt priority levels.
 ### Core registers
 ![core registers](images/cortexM4_core_registers.png)
 
-### Memory model
-![memory model](images/cortexM4_memory_model.png)
-
 ---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.

@@ -8,3 +8,7 @@ So here, call to runtime routine should be called. At runtime setup we need at l
 ### Vector table
 ![vector table](images/cortexM4_vector_table.png)
 
+---
+
+> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> Any copyright belongs to NordicSemiconductors©
