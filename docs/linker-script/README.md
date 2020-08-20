@@ -27,7 +27,7 @@ We end up with:
 ```
 SECTIONS {
 	.vectors : AT (0x00000000) {
-		. = ALIGN(4);
+		. = ALIGN(4);		/* should be 4 byte alligned because of 32-bit memory organization */
 		*(.vectors)
 		. = ALIGN(4);
 	} > FLASH
