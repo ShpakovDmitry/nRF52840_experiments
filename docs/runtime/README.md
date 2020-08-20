@@ -13,23 +13,23 @@ Firstly we need to define vector table. This is done by placing function address
 section.
 ```c
 __attribute__((section(".vectors")))
-void (*vectors[])(void) = {
-	stackTop,
-	cStartup,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn
+void *vectors[] = {
+	&stackTop,
+	&cStartup,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn
 };
 ```
 At this moment we do not implement exception handling and ISRs. For this `dummyFn` is used. It will
