@@ -16,9 +16,6 @@ with up to 256 interrupt priority levels.
 ### Memory model
 ![memory model](images/cortexM4_memory_model.png)
 
-### Vector table
-![vector table](images/cortexM4_vector_table.png)
-
 ---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
