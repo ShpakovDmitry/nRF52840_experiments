@@ -11,23 +11,23 @@ void cStartup(void);
 void dummyFn(void);
 
 __attribute__((section(".vectors")))
-void (*vectors[])(void) = {
-	stackTop,
-	cStartup,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn,
-	dummyFn
+const void *vectors[] = {
+	&stackTop,
+	&cStartup,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn,
+	&dummyFn
 };
 
 extern int main();
