@@ -10,3 +10,10 @@ offsets are `0x508` and `0x50C` respectively.
 ![registers\_1](images/registers_1.png)
 ![registers\_2](images/registers_2.png)
 
+Searching in DK hardware schematics file we can see that leds are connected to
+`P0.[13-16]` pins.
+![gpio mapping](images/gpio_mapping.png)
+
+Also it could be seen that leds are active low, meaning that when GPIO output
+is low then led is turned ON. This is so called sink mode. In source mode action
+is opposite.
