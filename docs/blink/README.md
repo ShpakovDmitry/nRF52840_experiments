@@ -48,3 +48,8 @@ int main(void) {
 	}
 }
 ```
+
+---
+
+> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> Any copyright belongs to NordicSemiconductors©

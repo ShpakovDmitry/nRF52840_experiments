@@ -25,3 +25,8 @@
 ### nRF52840 block diagram
 
 ![block diagram](images/nRF52840_block_diagram.png)
+
+---
+
+> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> Any copyright belongs to NordicSemiconductors©
