@@ -22,7 +22,7 @@ LINKER_SCRIPT_FILE := $(LINKER_SCRIPT_DIR)/linkerScript.ld
 CC_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.c)
 CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/%.o)
 
-CC_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -nostartfiles -nodefaultlibs -nostdlib -O0 -std=c99
+CC_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -nostartfiles -nodefaultlibs -nostdlib -O0 -std=c99 -idirafter ./include 
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map
 OBJDUMP_FLAGS := --disassemble-all $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
 OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
