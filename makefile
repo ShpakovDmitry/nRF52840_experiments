@@ -31,10 +31,11 @@ OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CC_FLAGS) $^ -o $@
 
-$(BUILD_DIR)/firmware.elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
+$(BUILD_DIR)/$(TARGET).elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
 	$(LD) $(LD_FLAGS) $^ -o $@
 	$(OBJDUMP) $(OBJDUMP_FLAGS)
 	$(OBJCOPY) $(OBJCOPY_FLAGS)
+
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
 
@@ -43,5 +44,5 @@ clean:
 
 all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET).elf
 
-flash:
+flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
