@@ -22,4 +22,12 @@ typedef volatile struct __attribute__((packed)) {
 GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
 GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 
+#define GPIO_SET_DIR_OUT(dir, bit) ( (dir->DIRSET) |= (1 << (bit)) )
+#define GPIO_SET_DIR_IN(dir, bit)  ( (dir->DIRCLR) |= (1 << (bit)) )
+
+#define GPIO_SET_HI(port, bit) ( (port->OUTSET) |= (1 << (bit)) )
+#define GPIO_SET_LO(port, bit) ( (port->OUTCLR) |= (1 << (bit)) )
+
+#define GET_GPIO_INPUT(port, bit)  ( (port->IN) &  (1 << (bit)) )
+
 #endif	// GPIO_H
