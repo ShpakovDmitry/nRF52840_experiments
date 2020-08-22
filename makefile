@@ -42,3 +42,6 @@ clean:
 	rm -rf $(DIRS)
 
 all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET).elf
+
+flash:
+	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
