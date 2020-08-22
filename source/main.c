@@ -6,14 +6,14 @@
 int main(void) {
 	unsigned int LED1 = 13;
 
-	gpio1->PIN_CNF[LED1] = 1;
+	gpio0->PIN_CNF[LED1] = 1;
 	
 	while (1) {
-		gpio1->OUTSET = 1 << LED1;
+		gpio0->OUTSET = 1 << LED1;
 		for (int i = 0; i < LOOP_COUNT; i++) {
 			;
 		}
-		gpio1->OUTCLR = 1 << LED1;
+		gpio0->OUTCLR = 1 << LED1;
 		for (int i = 0; i < LOOP_COUNT; i++) {
 			;
 		}
