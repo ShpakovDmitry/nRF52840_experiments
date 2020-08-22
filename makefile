@@ -46,3 +46,4 @@ all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET).elf
 
 flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
+	nrfjprog -f nrf52 --pinreset
