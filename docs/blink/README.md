@@ -29,22 +29,24 @@ routine is needed. For simplicity `for` loop is used.
 
 int main(void) {
 	unsigned int LED1 = 13;
-
-	gpio0->PIN_CNF[LED1] = 1;
+	
+	GPIO_SET_DIR_OUT(gpio0, LED1);
 	
 	while (1) {
-		gpio0->OUTSET = 1 << LED1;
+		GPIO_SET_HI(gpio0, LED1);
 		for (int i = 0; i < LOOP_COUNT; i++) {
 			;
 		}
-		gpio0->OUTCLR = 1 << LED1;
+		GPIO_SET_LO(gpio0, LED1);
 		for (int i = 0; i < LOOP_COUNT; i++) {
 			;
 		}
 	}
 }
 ```
+
 GPIO is defined as memory mapped IO structure:
+
 ```c
 typedef volatile struct __attribute__((packed)) {
 	uint32_t reserved0[321];/* 0x000 - 0x500 reserved */
