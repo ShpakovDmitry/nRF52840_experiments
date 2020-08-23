@@ -116,7 +116,7 @@ register.
 | Bits    | Name      | Function                                        |
 |:-------:|:---------:| ----------------------------------------------- |
 | [31:24] | -         | Reserved                                        |
-| [23:0]  | -         | Value to load into the `SYST_CVR` register      |
+| [23:0]  | RELOAD    | Value to load into the `SYST_CVR` register      |
 
 The `RELOAD` value can be any in the range `0x00000001 - 0x00FFFFFF`. A start
 value of 0 is possible, but has no effect because the SysTick exception request
@@ -126,6 +126,40 @@ The `RELOAD` value is calculated according to its use. For example, to generate
 a multi-shot timer with a period of N processor clock cycles, use `RELOAD` value
 of N-1. If the SysTick interrupt is required every 100 clock pulses, set
 `RELOAD` to 99.
+
+The `SYST_CVR` register contains the current value of the SysTick counter.
+| Bits    | Name      | Function                                        |
+|:-------:|:---------:| ----------------------------------------------- |
+| [31:24] | -         | Reserved                                        |
+| [23:0]  | CURRENT   | Reads return the current value of the SysTick   |
+|         |           | A write clears the field to 0, COUNTFLAG -> 0   |
+
+The `SYST_CALIB` register indicates the SysTick calibration properties. The
+reset value of this register is implemntation defined.
+| Bits    | Name      | Function                                         |
+|:-------:|:---------:| ------------------------------------------------ |
+| [31]    | NOREF     | Indicates whether the device provides ref. clock |
+|         |           | 0 = reference clock privided                     |
+|         |           | 1 = no reference clock privided                  |
+| [30]    | SKEW      | Indicates whether the TENMS value is exact       |
+|         |           | 0 = TENMS value is exact                         |
+|         |           | 1 = TENMS value is inexact, or not given         |
+| [29:24] | -         | Reserved                                         |
+| [23:0]  | TENMS     | Reload value for 10ms timing                     |
+
+If calibration information is not known, calculate the calibration value
+required from the frequency of the processor clock or external clock.
+
+Some implementations stop all the processor clock signals during deep sleep
+mode. If this happens, the SysTick counter stops.
+
+Ensure software uses aligned word accesses to access the SysTick registers.
+
+The SysTick counter reload and current value are not initialized by hardware.
+This means the correct initialization sequence for the SysTick counter is:
+1. Program reload value.
+1. Clear current value.
+1. Program control and status register.
 
 ---
 
