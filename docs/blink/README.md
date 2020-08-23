@@ -90,7 +90,7 @@ The system timer registers are:
 | `0xE000E018` | SYST\_CVR   |  RW  | SysTick current value register      |
 | `0xE000E01C` | SYST\_CALIB |  RO  | SysTick calibration value register  |
 
-The SysTick `SYST\_CSR` register enables the SysTick features:
+The SysTick `SYST_CSR` register enables the SysTick features:
 | Bits    | Name      | Function                                        |
 |:-------:|:---------:| ----------------------------------------------- |
 | [31:17] | -         | Reserved                                        |
@@ -105,6 +105,27 @@ The SysTick `SYST\_CSR` register enables the SysTick features:
 | [0]     | ENABLE    | Enables the counter                             |
 |         |           | 0 = counter disabled                            |
 |         |           | 1 = counter enabled                             |
+
+When `ENABLE` is set to 1, the counter loads the `RELOAD` value from the
+`SYST_RVR` register and then counts down. On reaching 0, it sets the `COUNTFLAG`
+to 1 and optionally asserts the SysTick depending on the value of `TICKINT`.
+It then loads the `RELOAD` value again, and begins counting.
+
+The `SYST_RVR` register specifies the start value to load into the `SYST_CVR`
+register.
+| Bits    | Name      | Function                                        |
+|:-------:|:---------:| ----------------------------------------------- |
+| [31:24] | -         | Reserved                                        |
+| [23:0]  | -         | Value to load into the `SYST_CVR` register      |
+
+The `RELOAD` value can be any in the range `0x00000001 - 0x00FFFFFF`. A start
+value of 0 is possible, but has no effect because the SysTick exception request
+and `COUNTFLAG` are activated when counting from 1 to 0.
+
+The `RELOAD` value is calculated according to its use. For example, to generate
+a multi-shot timer with a period of N processor clock cycles, use `RELOAD` value
+of N-1. If the SysTick interrupt is required every 100 clock pulses, set
+`RELOAD` to 99.
 
 ---
 
