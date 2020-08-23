@@ -79,12 +79,16 @@ the value in the `SYST_RVR` register on the next clock edge, then counts down
 on subsequent clock register on the next clock edge, then counts down
 on subsequent clocks.
 
-!!! notice "Note"
-When the processor is halted for debugging the counter does not
+> **NOTE**: When the processor is halted for debugging the counter does not
 decrement
 
 The system timer registers are:
-
+| Address      | Name        | Type | Description                         |
+|:-------------|:-----------:|:----:| ----------------------------------- |
+| `0xE000E010` | SYST\_CSR   |  RW  | SysTick control and status register |
+| `0xE000E014` | SYST\_RVR   |  RW  | SysTick reload value register       |
+| `0xE000E018` | SYST\_CVR   |  RW  | SysTick current value register      |
+| `0xE000E01C` | SYST\_CALIB |  RO  | SysTick calibration value register  |
 
 ---
 
