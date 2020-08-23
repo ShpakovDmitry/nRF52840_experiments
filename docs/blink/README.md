@@ -90,6 +90,22 @@ The system timer registers are:
 | `0xE000E018` | SYST\_CVR   |  RW  | SysTick current value register      |
 | `0xE000E01C` | SYST\_CALIB |  RO  | SysTick calibration value register  |
 
+The SysTick `SYST\_CSR` register enables the SysTick features:
+| Bits    | Name      | Function                                        |
+|:-------:|:---------:| ----------------------------------------------- |
+| [31:17] | -         | Reserved                                        |
+| [16]    | COUNTFLAG | Returns 1 if timer counted to 0 since last read |
+| [15:3]  | -         | Reserved                                        |
+| [2]     | CLKSOURCE | Indicates the clock source                      |
+|         |           | 0 = external clock                              |
+|         |           | 1 = processor clock                             |
+| [1]     | TICKINT   | Enables SysTick exception request               |
+|         |           | 0 = does not assert the SysTick exception       |
+|         |           | 1 = assert the SysTick exception                |
+| [0]     | ENABLE    | Enables the counter                             |
+|         |           | 0 = counter disabled                            |
+|         |           | 1 = counter enabled                             |
+
 ---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
