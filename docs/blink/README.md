@@ -78,9 +78,12 @@ timer thar counts down from the reload value to zero, reloads, that is wraps to,
 the value in the `SYST_RVR` register on the next clock edge, then counts down
 on subsequent clock register on the next clock edge, then counts down
 on subsequent clocks.
-> **NOTE**: When the processor is halted for debugging the counter does not
+
+!!! notice "Note"
+When the processor is halted for debugging the counter does not
 decrement
 
+The system timer registers are:
 
 
 ---
