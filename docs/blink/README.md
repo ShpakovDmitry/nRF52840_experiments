@@ -70,6 +70,19 @@ GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
 GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 ```
 
+To get out of `for` delay loop which is blocking, timer should be used. Timer
+will lead to measurement of time intervals, so do tasks at desired time. nRF52840
+gives 5x 32-bit Timers with counter mode and also system tick counter `SysTick`.
+We could choose any of them. Here `SysTick` will be used. `SysTick` is 24-bit
+timer thar counts down from the reload value to zero, reloads, that is wraps to,
+the value in the `SYST_RVR` register on the next clock edge, then counts down
+on subsequent clock register on the next clock edge, then counts down
+on subsequent clocks.
+> **NOTE**: When the processor is halted for debugging the counter does not
+decrement
+
+
+
 ---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
