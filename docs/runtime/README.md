@@ -9,28 +9,29 @@ So here, call to runtime routine should be called. At runtime setup we need at l
 ![vector table](images/cortexM4_vector_table.png)
 
 ### C runtime
-Firstly we need to define vector table. This is done by placing function address table at **.vectors**
-section.
+Firstly we need to define vector table. This is done by placing function
+address table at **.vectors** section. 
 ```c
 __attribute__((section(".vectors")))
-void *vectors[] = {
-	&stackTop,
-	&cStartup,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn
+const void *vectors[] = {
+	&stackTop,	/* Initial stack pointer value */
+	&cStartup,	/* Reset vector */
+	&dummyFn,	/* NMI */
+	&dummyFn,	/* Hard fault*/
+	&dummyFn,	/* Memory management fault */
+	&dummyFn,	/* Bus fault */
+	&dummyFn,	/* Usage fault*/
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* SVCall */
+	&dummyFn,	/* Reserved for debug */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* PendSV */
+	&SysTimeHandler	/* SysTick */
 };
+
 ```
 At this moment we do not implement exception handling and ISRs. For this `dummyFn` is used. It will
 hang the CPU in infinite loop:
@@ -63,6 +64,19 @@ void cStartup(void) {
 	while (1) {
 		;
 	}
+}
+```
+
+`SysTimeHandler` is address routine where SysTime is updated.
+```c
+// In systime.c file
+
+static volatile systime_t systime;
+
+void SysTimeHandler(void) {
+	disableSysTickInt();
+	systime++;
+	enableSysTickInt();
 }
 ```
 
