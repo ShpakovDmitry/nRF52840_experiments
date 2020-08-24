@@ -9,7 +9,7 @@ extern uint32_t _ebss;
 
 void cStartup(void);
 void dummyFn(void);
-extern void SysTickHandler(void);
+extern void SysTimeHandler(void);
 
 __attribute__((section(".vectors")))
 const void *vectors[] = {
@@ -28,7 +28,7 @@ const void *vectors[] = {
 	&dummyFn,	/* Reserved for debug */
 	&dummyFn,	/* Reserved */
 	&dummyFn,	/* PendSV */
-	&SysTickHandler	/* SysTick */
+	&SysTimeHandler	/* SysTick */
 };
 
 extern int main();

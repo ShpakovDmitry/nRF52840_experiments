@@ -1,5 +1,5 @@
-#ifndef SYS_TICK_H
-#define SYS_TICK_H
+#ifndef SYS_TIME_H
+#define SYS_TIME_H
 
 #include <stdint.h>
 
@@ -11,7 +11,7 @@ typedef volatile struct __attribute__((packed)) {
 	uint32_t SYST_CALIB;	/* 0x01C - SysTick calibration value register */
 } SysTickRegister;
 
-SysTickRegister* sysTick = (SysTickRegister *)0xE000E000u;
+SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 // SYST_CSR fields
 #define SYST_COUNTFLAG	16
@@ -23,4 +23,4 @@ typedef uint32_t systime_t;
 systime_t getSysTime(void);
 void initSysTime(uint32_t reloadVal);
 
-#endif	// SYS_TICK_H
+#endif	// SYS_TIME_H
