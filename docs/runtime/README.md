@@ -67,7 +67,7 @@ void cStartup(void) {
 }
 ```
 
-`SysTimeHandler` is address routine where SysTime is updated.
+`SysTimeHandler` is routine address where SysTime is updated.
 ```c
 // In systime.c file
 
