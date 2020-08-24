@@ -40,8 +40,8 @@ typedef volatile struct __attribute__((packed)) {
 	uint32_t PIN_CNF[32];	/* 0x700 - 0x77C Configuration of GPIO pins*/
 } GpioRegisters;
 
-GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
-GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
+static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
+static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 ```
 
 
