@@ -1,6 +1,8 @@
 #ifndef GPIO_H
 #define GPIO_H
 
+#include <stdint.h>
+
 typedef volatile struct __attribute__((packed)) {
 	uint32_t reserved0[321];/* 0x000 - 0x500 reserved */
 	uint32_t OUT;		/* 0x504 Write GPIO port */
