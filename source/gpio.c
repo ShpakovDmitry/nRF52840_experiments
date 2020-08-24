@@ -29,7 +29,6 @@ typedef volatile struct __attribute__((packed)) {
 static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
 static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 
-
 void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
 	GpioRegisters* gpio;
 
@@ -82,7 +81,6 @@ void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
 	}
 }
 
-#define GET_GPIO_INPUT(port, bit)  ( (port->IN) &  (1 << (bit)) )
 GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
 	GpioRegisters* gpio;
 
