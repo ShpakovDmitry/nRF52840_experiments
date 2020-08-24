@@ -1,25 +1,23 @@
 ### Blink
-To blink led1 `P0.13` should be used. Also for blink there is some sort of delay
-routine is needed. For simplicity `for` loop is used.
+Led blink is done using SysTime and GPIO.
 ```c
 #include <stdint.h>
 #include <gpio.h>
+#include <systime.h>
+#include <led.h>
 
-#define LOOP_COUNT 1000000
+#define BLINK_DELAY 1000
 
 int main(void) {
-	unsigned int LED1 = 13;
-	
-	GPIO_SET_DIR_OUT(gpio0, LED1);
+	initSysTime(RELOAD_1MS_64MHZ);
+	systime_t lastSysTime = getSysTime();
+
+	initLed(LED_1);
 	
 	while (1) {
-		GPIO_SET_HI(gpio0, LED1);
-		for (int i = 0; i < LOOP_COUNT; i++) {
-			;
-		}
-		GPIO_SET_LO(gpio0, LED1);
-		for (int i = 0; i < LOOP_COUNT; i++) {
-			;
+		if (getSysTime() - lastSysTime >= BLINK_DELAY ) {
+			lastSysTime = getSysTime();
+			invertLed(LED_1);
 		}
 	}
 }
