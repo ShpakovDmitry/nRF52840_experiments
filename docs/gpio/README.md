@@ -44,4 +44,11 @@ static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
 static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 ```
 
-
+GPIO is encapsulated and interaction is done only throught routines given in
+`gpio.h` header file:
+```c
+void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir);
+void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut);
+GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin);
+GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin);
+```
