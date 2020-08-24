@@ -8,7 +8,7 @@ typedef volatile struct __attribute__((packed)) {
 	uint32_t SYST_CALIB;	/* 0x01C - SysTick calibration value register */
 } SysTickRegister;
 
-SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
+static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 // SYST_CSR fields
 #define SYST_COUNTFLAG	16
