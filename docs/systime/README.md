@@ -116,3 +116,11 @@ The SysTick interrupt priority could be set in `NMIC`, but by default it is `0`
 as others exceptions and interrupts excluding `RESET = -3`, `NMI = -2`,
 `HARD_FAULT = -1`. Low priority value means higher interrupt priority.
 Interrupt with higher priority will preempt the interrupt with lower priority.
+While handling the SysTick exception, its INT should be disabled.
+```c
+void SysTimeHandler(void) {
+	disableSysTickInt();
+	systime++;
+	enableSysTickInt();
+}
+```
