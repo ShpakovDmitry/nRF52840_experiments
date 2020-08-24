@@ -19,8 +19,18 @@ static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 static volatile systime_t systime;
 
+static void disableSysTickInt(void) {
+	sysTickRegister->SYST_CSR &= ~(1 << SYST_TICKINT);
+}
+
+static void enableSysTickInt(void) {
+	sysTickRegister->SYST_CSR |=  (1 << SYST_TICKINT);
+}
+
 void SysTimeHandler(void) {
+	disableSysTickInt();
 	systime++;
+	enableSysTickInt();
 }
 
 systime_t getSysTime(void) {
