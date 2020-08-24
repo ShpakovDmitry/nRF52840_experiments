@@ -16,6 +16,7 @@ $ git clone https://github.com/ShpakovDmitry/nRF52840DK_BareMetal_Blink.git
 1. [Runtime](/docs/runtime/README.md)
 1. [GPIO](/docs/gpio/README.md)
 1. [SysTime](/docs/systime/README.md)
+1. [Cooperative sheduler](/docs/cooperative-sheduler/README.md)
 1. [Blink](/docs/blink/README.md)
 1. [Building firmware](/docs/building_firmware/README.md)
 1. [Flashing the SoC](/docs/flashing_the_soc/README.md)
