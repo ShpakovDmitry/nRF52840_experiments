@@ -12,22 +12,22 @@ void dummyFn(void);
 
 __attribute__((section(".vectors")))
 const void *vectors[] = {
-	&stackTop,
-	&cStartup,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn,
-	&dummyFn
+	&stackTop,	/* Initial stack pointer value */
+	&cStartup,	/* Reset vector */
+	&dummyFn,	/* NMI */
+	&dummyFn,	/* Hard fault*/
+	&dummyFn,	/* Memory management fault */
+	&dummyFn,	/* Bus fault */
+	&dummyFn,	/* Usage fault*/
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* SVCall */
+	&dummyFn,	/* Reserved for debug */
+	&dummyFn,	/* Reserved */
+	&dummyFn,	/* PendSV */
+	&dummyFn	/* SysTick */
 };
 
 extern int main();
