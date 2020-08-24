@@ -20,5 +20,6 @@ typedef enum {
 void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir);
 void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut);
 GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin);
+GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin);
 
 #endif	// GPIO_H

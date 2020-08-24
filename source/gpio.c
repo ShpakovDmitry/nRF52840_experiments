@@ -7,6 +7,7 @@
 #define GPIO_SET_LO(port, bit) ( (port->OUTCLR) = (1 << (bit)) )
 
 #define GET_GPIO_INPUT(port, bit)  ( (port->IN) &  (1 << (bit)) )
+#define GET_GPIO_DRIVER(port, bit)  ( (port->OUT) &  (1 << (bit)) )
 
 typedef volatile struct __attribute__((packed)) {
 	uint32_t reserved0[321];/* 0x000 - 0x500 reserved */
@@ -80,6 +81,19 @@ GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
 	GpioOut gpioOut;
 
 	if ( GET_GPIO_INPUT(gpio, gpioPin) ) {
+		gpioOut = GPIO_HIGH;
+	} else {
+		gpioOut = GPIO_LOW;
+	}
+
+	return gpioOut;
+}
+
+GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin) {
+	GpioRegisters* gpio = chooseGpioRegister(gpioPort);
+	GpioOut gpioOut;
+
+	if ( GET_GPIO_DRIVER(gpio, gpioPin) ) {
 		gpioOut = GPIO_HIGH;
 	} else {
 		gpioOut = GPIO_LOW;
