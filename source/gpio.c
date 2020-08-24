@@ -29,9 +29,8 @@ typedef volatile struct __attribute__((packed)) {
 static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
 static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
 
-void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
+static GpioRegisters* chooseGpioRegister(GpioPort gpioPort) {
 	GpioRegisters* gpio;
-
 	switch (gpioPort) {
 		case GPIO_0:
 			gpio = gpio0;
@@ -42,6 +41,12 @@ void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
 		default:
 			break;
 	}
+	
+	return gpio;
+}
+
+void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
+	GpioRegisters* gpio = chooseGpioRegister(gpioPort);
 
 	switch (gpioDir) {
 		case GPIO_INPUT:
@@ -56,18 +61,7 @@ void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
 }
 
 void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
-	GpioRegisters* gpio;
-
-	switch (gpioPort) {
-		case GPIO_0:
-			gpio = gpio0;
-			break;
-		case GPIO_1:
-			gpio = gpio1;
-			break;
-		default:
-			break;
-	}
+	GpioRegisters* gpio = chooseGpioRegister(gpioPort);
 	
 	switch (gpioOut) {
 	case GPIO_LOW:
@@ -82,19 +76,7 @@ void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
 }
 
 GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
-	GpioRegisters* gpio;
-
-	switch (gpioPort) {
-		case GPIO_0:
-			gpio = gpio0;
-			break;
-		case GPIO_1:
-			gpio = gpio1;
-			break;
-		default:
-			break;
-	}
-
+	GpioRegisters* gpio = chooseGpioRegister(gpioPort);
 	GpioOut gpioOut;
 
 	if ( GET_GPIO_INPUT(gpio, gpioPin) ) {
