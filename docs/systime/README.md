@@ -91,4 +91,28 @@ This means the correct initialization sequence for the SysTick counter is:
 1. Clear current value.
 1. Program control and status register.
 
+After the SysTick is correctly initialized, it will handle exception `SysTick`
+which is loaded from address `0x0000003C` to PC. So, correct handle routine
+address should be placed there.
 
+SysTime is encapsulated, so only throught defined routines access is gained to
+it. They are:
+```c
+typedef uint32_t systime_t;
+
+systime_t getSysTime(void);
+void initSysTime(uint32_t reloadVal);
+```
+There is some predefined `RELOAD` values listed with self-described name:
+```c
+#define RELOAD_10MS_64MHZ 	0x09C3FF	//  10 ms @ 64 MHZ CPU clock
+#define RELOAD_1MS_64MHZ 	0x00F9FF	//   1 ms @ 64 MHZ CPU clock
+#define RELOAD_100US_64MHZ	0x0018FF	// 100 us @ 64 MHZ CPU clock
+#define RELOAD_10US_64MHZ	0x00027F	//  10 us @ 64 MHZ CPU clock
+#define RELOAD_1US_64MHZ	0x00003F	//   1 us @ 64 MHZ CPU clock
+```
+
+The SysTick interrupt priority could be set in `NMIC`, but by default it is `0`
+as others exceptions and interrupts excluding `RESET = -3`, `NMI = -2`,
+`HARD_FAULT = -1`. Low priority value means higher interrupt priority.
+Interrupt with higher priority will preempt the interrupt with lower priority.
