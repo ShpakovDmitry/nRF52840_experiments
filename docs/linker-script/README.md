@@ -68,6 +68,11 @@ SECTIONS {
 }
 ```
 
+Stack top is defined as follows:
+```
+stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
+```
+
 ---
 
 > All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
