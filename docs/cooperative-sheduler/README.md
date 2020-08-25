@@ -19,4 +19,24 @@ So:
 ```c
 typedef void (*TaskEntry)(void);
 ```
-
+Also we need method to add tasks to sheduller:
+```c
+ShedulerError addTaskSheduler(TaskEntry taskEntry, systime_t period);
+```
+Here `ShedulerError` returns code if taks added successfully of failed:
+```c
+typedef enum {
+	SHEDULER_OK = 0,
+	SHEDULER_TOO_MANY_TASKS
+} ShedulerError;
+```
+As we do not have dynamic memory allocation at the moment, we will use
+static memory alocation for sheduler tasks. So we will specify how many
+tasks sheduller will handle:
+```c
+#define MAX_NUM_TASKS 10
+```
+After tasks are set in sheduler, sheduler should be executed.
+```c
+void runSheduler(void);
+```
