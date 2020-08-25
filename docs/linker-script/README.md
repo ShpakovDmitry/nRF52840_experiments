@@ -24,6 +24,8 @@ by using SECTIONS directive. Most common section names are the following:
 * **.bss** - uninitialized global/static variables, which are zero
 Also we need section to hold ISR vector table. Let it be:
 * **.vectors** - interrupt service routine vector table
+For **.vectors** `KEEP` kyeword is used to indicate the linker that this section
+should not be throwed away in link process.
 Section **.text**, **.rodata**, **.vectors** goes to FLASH memory and according to
 ARMv7-M architecture, vector table is palced at the very beggining of FLASH memory
 at address 0x00000000. And so sections **.data** and **.bss** goes to RAM memory.
