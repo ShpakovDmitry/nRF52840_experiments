@@ -2,19 +2,41 @@
 #include <gpio.h>
 #include <systime.h>
 #include <led.h>
+#include <sheduler.h>
 
-#define BLINK_DELAY 1000
+#define LED_1_BLINK_PERIOD  500
+#define LED_2_BLINK_PERIOD  700
+#define LED_3_BLINK_PERIOD 1000
+#define LED_4_BLINK_PERIOD 1200
+void task1(void);
+void task2(void);
+void task3(void);
+void task4(void);
 
 int main(void) {
 	initSysTime(RELOAD_1MS_64MHZ);
-	systime_t lastSysTime = getSysTime();
-
 	initLed(LED_1);
-	
-	while (1) {
-		if (getSysTime() - lastSysTime >= BLINK_DELAY ) {
-			lastSysTime = getSysTime();
-			invertLed(LED_1);
-		}
-	}
+	initLed(LED_2);
+	initLed(LED_3);
+	initLed(LED_4);
+
+	addTaskSheduler(&task1, LED_1_BLINK_PERIOD);
+	addTaskSheduler(&task2, LED_2_BLINK_PERIOD);
+	addTaskSheduler(&task3, LED_3_BLINK_PERIOD);
+	addTaskSheduler(&task4, LED_4_BLINK_PERIOD);
+
+	runSheduler();
+}
+
+void task1(void) {
+	invertLed(LED_1);
+}
+void task2(void) {
+	invertLed(LED_2);
+}
+void task3(void) {
+	invertLed(LED_3);
+}
+void task4(void) {
+	invertLed(LED_4);
 }
