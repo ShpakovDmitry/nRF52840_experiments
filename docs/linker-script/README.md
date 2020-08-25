@@ -31,10 +31,12 @@ But important note, due to harvard architecture and that RAM is volatile memory,
 firstly we put these sections at FLASH and then copy to RAM at startup.\
 We end up with:
 ```
+ENTRY(main)
+
 SECTIONS {
 	.vectors : AT (0x00000000) {
-		. = ALIGN(4);		/* should be 4 byte alligned because of 32-bit memory organization */
-		*(.vectors)
+		. = ALIGN(4);		/* align on 32-bit border */
+		KEEP(*(.vectors))
 		. = ALIGN(4);
 	} > FLASH
 
@@ -46,9 +48,9 @@ SECTIONS {
 		_etext = .;
 	} > FLASH
 	
-	.data : AT (_etext) {		/* AT specifies LMA, simply, at which address it is stored at FLASH*/
+	.data : AT (_etext) {		/* AT specifies LMA */
 		. = ALIGN(4);
-		_sdata = .;		/* Here we get VMA, simply, at which address is should be stored in RAM */
+		_sdata = .;		/* Here we get VMA */
 		*(.data*)
 		. = ALIGN(4);
 		_edata = .;
@@ -60,7 +62,7 @@ SECTIONS {
 		*(.bss*)
 		. = ALIGN(4);
 		_ebss = .;
-	} > SRAM
+	} > RAM
 }
 ```
 
