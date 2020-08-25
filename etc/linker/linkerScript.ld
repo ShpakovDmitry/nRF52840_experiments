@@ -4,11 +4,12 @@ MEMORY {
 }
 
 stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
+ENTRY(main)
 
 SECTIONS {
 	.vectors : AT (0x00000000) {
 		. = ALIGN(4);		/* should be 4 byte alligned because of 32-bit memory organization */
-		*(.vectors)
+		KEEP(*(.vectors))
 		. = ALIGN(4);
 	} > FLASH
 
