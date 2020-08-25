@@ -5,9 +5,9 @@
 #include <sheduler.h>
 
 #define LED_1_BLINK_PERIOD  500
-#define LED_2_BLINK_PERIOD  700
-#define LED_3_BLINK_PERIOD 1000
-#define LED_4_BLINK_PERIOD 1200
+#define LED_2_BLINK_PERIOD  501
+#define LED_3_BLINK_PERIOD  502
+#define LED_4_BLINK_PERIOD  503
 void task1(void);
 void task2(void);
 void task3(void);
