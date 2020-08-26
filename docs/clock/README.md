@@ -21,6 +21,11 @@ Clock control unit showed below:
 > Image is taken from [NordicSemiconductor](https://infocenter.nordicsemi.com) site.
 > Any copyright belongs to NordicSemiconductors©
 
+\
+\
+\
+\
+
 The **HFINT** soucre will be used when **HFCLK** is requested and **HFXO** has
 not been started. \
 The **HFXO** is started by triggering the **HFCLKSTART** task and stopped by
