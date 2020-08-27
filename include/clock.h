@@ -16,5 +16,14 @@ void startHfxoClock(void);
 void stopHfxoClock(void);
 void setHfxoDebounce(HfxoDebounceTime debounceTime);
 
+// currently external LFXO is supported
+typedef enum {
+    LFCLK_XTAL = 1
+} LfClkSource;
+
+void setLfClkSource(LfClkSource source);
+void startLfxoClock(void);
+void stopLfxoClock(void);
+
 
 #endif  // CLOCK_H

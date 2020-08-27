@@ -43,10 +43,13 @@ typedef volatile struct __attribute__ ((packed)) {
 
 static ClockRegisters* clock = (ClockRegisters *)0x40000000u;
 
-#define TASKS_HFCLKSTART_BIT 0
+#define TASKS_HFCLKSTART_BIT    0
+#define TASKS_HFCLKSTOP_BIT     0
 #define EVENTS_HFCLKSTARTED_BIT 0
 
-#define TASKS_HFCLKSTOP_BIT 0
+#define TASKS_LFCLKSTART_BIT    0
+#define TASKS_LFCLKSTOP_BIT     0
+#define EVENTS_LFCLKSTARTED_BIT 0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -76,19 +79,52 @@ void stopHfxoClock(void) {
 
 void setHfxoDebounce(HfxoDebounceTime debounceTime) {
     switch (debounceTime) {
-        case HFXO_DEBOUNCE_16US:
-        case HFXO_DEBOUNCE_32US:
-        case HFXO_DEBOUNCE_64US:
-        case HFXO_DEBOUNCE_128US:
-        case HFXO_DEBOUNCE_256US:
-        case HFXO_DEBOUNCE_512US:
-        case HFXO_DEBOUNCE_1024US:
-        case HFXO_DEBOUNCE_2048US:
+        case HFXO_DEBOUNCE_16US :
+        case HFXO_DEBOUNCE_32US :
+        case HFXO_DEBOUNCE_64US :
+        case HFXO_DEBOUNCE_128US :
+        case HFXO_DEBOUNCE_256US :
+        case HFXO_DEBOUNCE_512US :
+        case HFXO_DEBOUNCE_1024US :
+        case HFXO_DEBOUNCE_2048US :
             SET_BIT_HI(clock->HFXODEBOUNCE, debounceTime);
             break;
-        default:
+        default :
             // set max debounce for sure
             SET_BIT_HI(clock->HFXODEBOUNCE, HFXO_DEBOUNCE_2048US);
             break;
     }
+}
+
+void setLfClkSource(LfClkSource source) {
+    switch (source) {
+        case LFCLK_XTAL :
+            clock->LFCLKSRC |= LFCLK_XTAL;
+            break;
+        default :
+            clock->LFCLKSRC |= LFCLK_XTAL;
+            break;
+    }
+
+}
+
+static bool LfClkStarted(void) {
+    bool res;
+    if ( GET_BIT(clock->EVENTS_LFCLKSTARTED, EVENTS_LFCLKSTARTED_BIT) ) {
+        res = true;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
+void startLfxoClock(void) {
+    SET_BIT_HI(clock->TASKS_LFCLKSTART, TASKS_LFCLKSTART_BIT);
+    while ( LfClkStarted() == false) {
+        ;
+    }
+}
+
+void stopLfxoClock(void) {
+    SET_BIT_HI(clock->TASKS_LFCLKSTOP, TASKS_LFCLKSTOP_BIT);
 }
