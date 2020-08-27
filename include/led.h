@@ -4,10 +4,10 @@
 #include <gpio.h>
 
 typedef enum {
-	LED_1 = GPIO_PIN_13,
-	LED_2 = GPIO_PIN_14,
-	LED_3 = GPIO_PIN_15,
-	LED_4 = GPIO_PIN_16
+    LED_1 = GPIO_PIN_13,
+    LED_2 = GPIO_PIN_14,
+    LED_3 = GPIO_PIN_15,
+    LED_4 = GPIO_PIN_16
 } LED;
 
 void initLed(LED led);
