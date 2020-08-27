@@ -11,10 +11,10 @@ typedef volatile struct __attribute__((packed)) {
 static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 // SYST_CSR fields
-#define SYST_COUNTFLAG	16
-#define SYST_CLKSOURCE	2
-#define SYST_TICKINT	1
-#define SYST_ENABLE	0
+#define SYST_COUNTFLAG  16
+#define SYST_CLKSOURCE  2
+#define SYST_TICKINT    1
+#define SYST_ENABLE     0
 
 
 static volatile systime_t systime;
