@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <clock.h>
 
 typedef volatile struct __attribute__ ((packed)) {
@@ -51,11 +52,20 @@ static ClockRegisters* clock = (ClockRegisters *)0x40000000u;
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit) ( (reg) & (1 << (bit)) )
 
+static bool HfxoClkStarted(void) {
+    bool res;
+    if ( GET_BIT(clock->EVENTS_HFCLKSTARTED, EVENTS_HFCLKSTARTED_BIT) ) {
+        res = true;
+    } else {
+        res = false;
+    }
+    return res;
+}
+
 void startHfxoClock(void) {
     SET_BIT_HI(clock->TASKS_HFCLKSTART, TASKS_HFCLKSTART_BIT);
 
-    // using negative logic on purpose here
-    while ( !GET_BIT(clock->EVENTS_HFCLKSTARTED, EVENTS_HFCLKSTARTED_BIT) ) {
+    while ( HfxoClkStarted() == false ) {
         ;
     }
 }
@@ -64,3 +74,21 @@ void stopHfxoClock(void) {
     SET_BIT_HI(clock->TASKS_HFCLKSTOP, TASKS_HFCLKSTOP_BIT);
 }
 
+void setHfxoDebounce(HfxoDebounceTime debounceTime) {
+    switch (debounceTime) {
+        case HFXO_DEBOUNCE_16US:
+        case HFXO_DEBOUNCE_32US:
+        case HFXO_DEBOUNCE_64US:
+        case HFXO_DEBOUNCE_128US:
+        case HFXO_DEBOUNCE_256US:
+        case HFXO_DEBOUNCE_512US:
+        case HFXO_DEBOUNCE_1024US:
+        case HFXO_DEBOUNCE_2048US:
+            SET_BIT_HI(clock->HFXODEBOUNCE, debounceTime);
+            break;
+        default:
+            // set max debounce for sure
+            SET_BIT_HI(clock->HFXODEBOUNCE, HFXO_DEBOUNCE_2048US);
+            break;
+    }
+}
