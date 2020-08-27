@@ -14,29 +14,29 @@ void task3(void);
 void task4(void);
 
 int main(void) {
-	initSysTime(RELOAD_1MS_64MHZ);
-	initLed(LED_1);
-	initLed(LED_2);
-	initLed(LED_3);
-	initLed(LED_4);
+    initSysTime(RELOAD_1MS_64MHZ);
+    initLed(LED_1);
+    initLed(LED_2);
+    initLed(LED_3);
+    initLed(LED_4);
 
-	addTaskSheduler(&task1, LED_1_BLINK_PERIOD);
-	addTaskSheduler(&task2, LED_2_BLINK_PERIOD);
-	addTaskSheduler(&task3, LED_3_BLINK_PERIOD);
-	addTaskSheduler(&task4, LED_4_BLINK_PERIOD);
+    addTaskSheduler(&task1, LED_1_BLINK_PERIOD);
+    addTaskSheduler(&task2, LED_2_BLINK_PERIOD);
+    addTaskSheduler(&task3, LED_3_BLINK_PERIOD);
+    addTaskSheduler(&task4, LED_4_BLINK_PERIOD);
 
-	runSheduler();
+    runSheduler();
 }
 
 void task1(void) {
-	invertLed(LED_1);
+    invertLed(LED_1);
 }
 void task2(void) {
-	invertLed(LED_2);
+    invertLed(LED_2);
 }
 void task3(void) {
-	invertLed(LED_3);
+    invertLed(LED_3);
 }
 void task4(void) {
-	invertLed(LED_4);
+    invertLed(LED_4);
 }
