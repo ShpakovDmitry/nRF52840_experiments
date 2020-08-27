@@ -19,9 +19,9 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t DIRSET;            /* 0x518 DIR set register */
     uint32_t DIRCLR;            /* 0x51C DIR clear register */
     uint32_t LATCH;             /* 0x520 Latch register */
-	uint32_t DETECTMODE;        /* 0x524 Mode select */
-	uint32_t reserved1[118];    /* 0x528 - 0x6FC reserved */
-	uint32_t PIN_CNF[32];       /* 0x700 - 0x77C Configuration of GPIO pins*/
+    uint32_t DETECTMODE;        /* 0x524 Mode select */
+    uint32_t reserved1[118];    /* 0x528 - 0x6FC reserved */
+    uint32_t PIN_CNF[32];       /* 0x700 - 0x77C Configuration of GPIO pins*/
 } GpioRegisters;
 
 static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
