@@ -15,4 +15,4 @@ void setLedHigh(LED led);
 void setLedLow(LED led);
 void invertLed(LED led);
 
-#endif	// LED_H
+#endif  // LED_H
