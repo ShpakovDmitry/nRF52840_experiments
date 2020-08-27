@@ -3,6 +3,7 @@
 #include <systime.h>
 #include <led.h>
 #include <sheduler.h>
+#include <clock.h>
 
 #define LED_1_BLINK_PERIOD  500
 #define LED_2_BLINK_PERIOD  501
@@ -14,6 +15,7 @@ void task3(void);
 void task4(void);
 
 int main(void) {
+    startHfxoClock();
     initSysTime(RELOAD_1MS_64MHZ);
     initLed(LED_1);
     initLed(LED_2);
