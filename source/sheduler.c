@@ -28,15 +28,17 @@ ShedulerError addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
 }
 
 void runSheduler(void) {
+    shedtime_t lastShedTime;
     while (1) {
+        lastShedTime = getShedulerTime();
         for (uint8_t i = 0; i < MAX_NUM_TASKS; i++) {
             TaskDescriptor* task = &taskTable[i];
             if (task->taskEntry == NULL) {
                 continue;
             }
 
-            if ( getShedulerTime() - task->lastRun >= task->period ) {
-                task->lastRun = getShedulerTime();
+            if ( lastShedTime - task->lastRun >= task->period ) {
+                task->lastRun = lastShedTime;
                 task->taskEntry();
             }
         }
