@@ -1,4 +1,5 @@
 #include <systime.h>
+#include <sheduler.h>
 
 typedef volatile struct __attribute__((packed)) {
     uint32_t reserved0[4];  /* 0x000 - 0x00C reserved*/
@@ -30,6 +31,7 @@ static void enableSysTickInt(void) {
 void SysTimeHandler(void) {
     disableSysTickInt();
     systime++;
+    tickShedulerTime();
     enableSysTickInt();
 }
 

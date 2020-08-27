@@ -1,18 +1,18 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <systime.h>
 #include <sheduler.h>
 
 typedef struct {
     TaskEntry taskEntry;
-    systime_t period;
-    systime_t lastRun;
+    shedtime_t period;
+    shedtime_t lastRun;
 } TaskDescriptor;
 
+static volatile shedtime_t shedtime;
 static TaskDescriptor taskTable[MAX_NUM_TASKS] = { 0 };
 static uint8_t tableIdx = 0;
 
-ShedulerError addTaskSheduler(TaskEntry taskEntry, systime_t period) {
+ShedulerError addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
     if ( tableIdx >= MAX_NUM_TASKS ) {
         return SHEDULER_TOO_MANY_TASKS;
     }
@@ -35,10 +35,18 @@ void runSheduler(void) {
                 continue;
             }
 
-            if ( getSysTime() - task->lastRun >= task->period ) {
-                task->lastRun = getSysTime();
+            if ( getShedulerTime() - task->lastRun >= task->period ) {
+                task->lastRun = getShedulerTime();
                 task->taskEntry();
             }
         }
     }
+}
+
+void tickShedulerTime(void) {
+    shedtime++;
+}
+
+shedtime_t getShedulerTime(void) {
+    return shedtime;
 }
