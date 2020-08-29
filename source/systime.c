@@ -40,7 +40,8 @@ systime_t getSysTime(void) {
 }
 
 void initSysTime(uint32_t reloadVal) {
-    sysTickRegister->SYST_RVR = reloadVal & 0x00FFFFFF;
+    uint32_t reloadMask = 0x00FFFFFF;
+    sysTickRegister->SYST_RVR = reloadVal & reloadMask;
     sysTickRegister->SYST_CVR = 0;
     sysTickRegister->SYST_CSR |= (1 << SYST_ENABLE);
     sysTickRegister->SYST_CSR |= (1 << SYST_TICKINT);
