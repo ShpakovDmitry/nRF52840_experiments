@@ -20,12 +20,15 @@ static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 static volatile systime_t systime;
 
+#define SET_REG_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
+#define SET_REG_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
+
 static void disableSysTickInt(void) {
-    sysTickRegister->SYST_CSR &= ~(1 << SYST_TICKINT);
+    SET_REG_BIT_LO(sysTickRegister->SYST_CSR, SYST_TICKINT);
 }
 
 static void enableSysTickInt(void) {
-    sysTickRegister->SYST_CSR |=  (1 << SYST_TICKINT);
+    SET_REG_BIT_HI(sysTickRegister->SYST_CSR, SYST_TICKINT);
 }
 
 void SysTimeHandler(void) {
