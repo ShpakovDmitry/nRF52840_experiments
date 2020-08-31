@@ -20,9 +20,9 @@ static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 static volatile systime_t systime;
 
-#define SET_REG_BIT_LO(reg, bit) ( (sysTickRegister->(reg)) &= ~(1 << (bit)) )
-#define SET_REG_BIT_HI(reg, bit) ( (sysTickRegister->(reg)) |=  (1 << (bit)) )
-#define SET_REG_VAL(reg, val) ( (sysTickRegister->(reg)) = (val) )
+#define SET_REG_BIT_LO(reg, bit) ( (sysTickRegister->reg) &= ~(1 << (bit)) )
+#define SET_REG_BIT_HI(reg, bit) ( (sysTickRegister->reg) |=  (1 << (bit)) )
+#define SET_REG_VAL(reg, val) ( (sysTickRegister->reg) = (val) )
 
 static void disableSysTickInt(void) {
     SET_REG_BIT_LO(SYST_CSR, SYST_TICKINT);
