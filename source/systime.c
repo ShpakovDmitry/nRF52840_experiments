@@ -20,15 +20,16 @@ static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
 
 static volatile systime_t systime;
 
-#define SET_REG_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
-#define SET_REG_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
+#define SET_REG_BIT_LO(reg, bit) ( (sysTickRegister->(reg)) &= ~(1 << (bit)) )
+#define SET_REG_BIT_HI(reg, bit) ( (sysTickRegister->(reg)) |=  (1 << (bit)) )
+#define SET_REG_VAL(reg, val) ( (sysTickRegister->(reg)) = (val) )
 
 static void disableSysTickInt(void) {
-    SET_REG_BIT_LO(sysTickRegister->SYST_CSR, SYST_TICKINT);
+    SET_REG_BIT_LO(SYST_CSR, SYST_TICKINT);
 }
 
 static void enableSysTickInt(void) {
-    SET_REG_BIT_HI(sysTickRegister->SYST_CSR, SYST_TICKINT);
+    SET_REG_BIT_HI(SYST_CSR, SYST_TICKINT);
 }
 
 void SysTimeHandler(void) {
@@ -43,9 +44,10 @@ systime_t getSysTime(void) {
 }
 
 void initSysTime(uint32_t reloadVal) {
-    uint32_t reloadMask = 0x00FFFFFF;
-    sysTickRegister->SYST_RVR = reloadVal & reloadMask;
-    sysTickRegister->SYST_CVR = 0;
-    sysTickRegister->SYST_CSR |= (1 << SYST_ENABLE);
-    sysTickRegister->SYST_CSR |= (1 << SYST_TICKINT);
+    static const uint32_t reloadMask = 0x00FFFFFF;
+    static const uint32_t systcvrval = 0x00000000;
+    SET_REG_VAL(SYST_RVR, reloadVal & reloadMask);
+    SET_REG_VAL(SYST_CVR, systcvrval);
+    SET_REG_BIT_HI(SYST_CSR, SYST_ENABLE);
+    SET_REG_BIT_HI(SYST_CSR, SYST_TICKINT);
 }
