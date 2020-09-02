@@ -12,7 +12,7 @@ typedef struct {
 static volatile shedtime_t shedtime;
 static TaskDescriptor taskTable[MAX_NUM_TASKS] = { 0 };
 
-static int findEmptyTaskDescriptor(void) {
+static int findTaskInTaskTable(void) {
     int i;
     for (i = 0; i < MAX_NUM_TASKS; i++) {
         if ( taskTable[i].taskEntry == NULL ) {
@@ -36,7 +36,7 @@ static int findPidInTaskTable(pid_t pid) {
 
 pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
     int i;
-    i = findEmptyTaskDescriptor();
+    i = findTaskInTaskTable();
     if ( i == -1 ) {
         return -1;
     }
