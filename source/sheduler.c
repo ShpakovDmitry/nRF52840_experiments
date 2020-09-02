@@ -4,27 +4,45 @@
 
 typedef struct {
     TaskEntry taskEntry;
+    pid_t pid;
     shedtime_t period;
     shedtime_t lastRun;
 } TaskDescriptor;
 
 static volatile shedtime_t shedtime;
 static TaskDescriptor taskTable[MAX_NUM_TASKS] = { 0 };
-static uint8_t tableIdx = 0;
 
-ShedulerError addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
-    if ( tableIdx >= MAX_NUM_TASKS ) {
-        return SHEDULER_TOO_MANY_TASKS;
+static int findEmptyTaskDescriptor(void) {
+    int i;
+    for (i = 0; i < MAX_NUM_TASKS; i++) {
+        if ( taskTable[i].taskEntry == NULL ) {
+            break;
+        }
     }
+
+    return ( i == MAX_NUM_TASKS ? -1 : i);
+}
+
+pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
+    int i;
+    i = findEmptyTaskDescriptor();
+    if ( i == -1 ) {
+        return -1;
+    }
+
+    pid_t pid;
+    pid = (pid_t) i;    // pid is position in taskTable[]
 
     TaskDescriptor task = {
         .taskEntry = taskEntry,
+        .pid = pid,
         .period = period,
         .lastRun = 0
     };
-    taskTable[tableIdx++] = task;
 
-    return SHEDULER_OK;
+    taskTable[i] = task;
+
+    return pid;
 }
 
 void runSheduler(void) {
