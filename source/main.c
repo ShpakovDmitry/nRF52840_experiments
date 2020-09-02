@@ -15,6 +15,7 @@ void task3(void);
 void task4(void);
 
 int main(void) {
+    setHfxoDebounce(HFXO_DEBOUNCE_1024US);
     startHfxoClock();
     initSysTime(RELOAD_1MS_64MHZ);
     initLed(LED_1);
