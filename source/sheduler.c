@@ -23,6 +23,17 @@ static int findEmptyTaskDescriptor(void) {
     return ( i == MAX_NUM_TASKS ? -1 : i);
 }
 
+static int findPidInTaskTable(pid_t pid) {
+    int i;
+    for (i = 0; i < MAX_NUM_TASKS; i++) {
+        if ( taskTable[i].pid == pid ) {
+            break;
+        }
+    }
+
+    return ( i == MAX_NUM_TASKS ? -1 : i);
+}
+
 pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
     int i;
     i = findEmptyTaskDescriptor();
@@ -43,6 +54,21 @@ pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
     taskTable[i] = task;
 
     return pid;
+}
+
+int deleteTaskSheduler(pid_t pid) {
+   int i;
+   i = findPidInTaskTable(pid);
+   if ( i == -1 ) {
+        return -1;
+   }
+   TaskDescriptor* task = &taskTable[i];
+   task->taskEntry = NULL;
+   task->pid = -1;
+   task->period = 0;
+   task->lastRun = 0;
+
+   return 0;
 }
 
 void runSheduler(void) {

@@ -8,6 +8,7 @@ typedef uint32_t shedtime_t;
 typedef int pid_t;
 
 pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period);
+int deleteTaskSheduler(pid_t pid);
 void runSheduler(void);
 void tickShedulerTime(void);
 shedtime_t getShedulerTime(void);
