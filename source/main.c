@@ -9,10 +9,10 @@
 #define LED_2_BLINK_PERIOD  501
 #define LED_3_BLINK_PERIOD  502
 #define LED_4_BLINK_PERIOD  503
-void task1(void);
-void task2(void);
-void task3(void);
-void task4(void);
+int task1(void);
+int task2(void);
+int task3(void);
+int task4(void);
 
 int main(void) {
     setHfxoDebounce(HFXO_DEBOUNCE_1024US);
@@ -31,15 +31,19 @@ int main(void) {
     runSheduler();
 }
 
-void task1(void) {
+int task1(void) {
     invertLed(LED_1);
+    return 0;
 }
-void task2(void) {
+int task2(void) {
     invertLed(LED_2);
+    return 0;
 }
-void task3(void) {
+int task3(void) {
     invertLed(LED_3);
+    return 0;
 }
-void task4(void) {
+int task4(void) {
     invertLed(LED_4);
+    return 0;
 }

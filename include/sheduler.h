@@ -3,7 +3,7 @@
 
 #define MAX_NUM_TASKS 10
 
-typedef void (*TaskEntry)(void);
+typedef int (*TaskEntry)(void);
 typedef uint32_t shedtime_t;
 typedef int pid_t;
 

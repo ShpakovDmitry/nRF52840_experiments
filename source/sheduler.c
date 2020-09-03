@@ -96,7 +96,9 @@ void runSheduler(void) {
 
             if ( lastShedTime - task->lastRun >= task->period ) {
                 task->lastRun = lastShedTime;
-                task->taskEntry();
+                if ( task->taskEntry() == -1 ) {
+                    deleteTaskSheduler(task->pid);
+                }
             }
         }
     }
