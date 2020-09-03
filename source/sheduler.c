@@ -71,6 +71,19 @@ int deleteTaskSheduler(pid_t pid) {
    return 0;
 }
 
+int changeTaskPeriodSheduler(pid_t pid, shedtime_t period) {
+    int i;
+    i = findPidInTaskTable(pid);
+    if ( i == -1 ) {
+        return -1;
+    }
+
+    TaskDescriptor* task = &taskTable[i];
+    task->period = period;
+    
+    return 0;
+}
+
 void runSheduler(void) {
     shedtime_t lastShedTime;
     while (1) {
