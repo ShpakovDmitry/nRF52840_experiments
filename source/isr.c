@@ -2,16 +2,16 @@
 
 extern uint32_t stackTop;
 
-void dummyFn(void);
-void cStartup(void)                 __attribute__ ((weak, alias("dummyFn")));
-void NmiHandler(void)               __attribute__ ((weak, alias("dummyFn")));
-void HardFaultHandler(void)         __attribute__ ((weak, alias("dummyFn")));
-void MemManageFaultHandler(void)    __attribute__ ((weak, alias("dummyFn")));
-void BusFaultHandler(void)          __attribute__ ((weak, alias("dummyFn")));
-void UsageFaultHandler(void)        __attribute__ ((weak, alias("dummyFn")));
-void SvCallHandler(void)            __attribute__ ((weak, alias("dummyFn")));
-void PendSVHandler(void)            __attribute__ ((weak, alias("dummyFn")));
-void SysTimeHandler(void)           __attribute__ ((weak, alias("dummyFn")));
+void DummyException(void);
+void cStartup(void)                 __attribute__ ((weak, alias("DummyException")));
+void NmiHandler(void)               __attribute__ ((weak, alias("DummyException")));
+void HardFaultHandler(void)         __attribute__ ((weak, alias("DummyException")));
+void MemManageFaultHandler(void)    __attribute__ ((weak, alias("DummyException")));
+void BusFaultHandler(void)          __attribute__ ((weak, alias("DummyException")));
+void UsageFaultHandler(void)        __attribute__ ((weak, alias("DummyException")));
+void SvCallHandler(void)            __attribute__ ((weak, alias("DummyException")));
+void PendSVHandler(void)            __attribute__ ((weak, alias("DummyException")));
+void SysTimeHandler(void)           __attribute__ ((weak, alias("DummyException")));
 
 __attribute__((section(".vectors")))
 const void *vectors[] = {
@@ -33,7 +33,7 @@ const void *vectors[] = {
     &SysTimeHandler         /* SysTick */
 };
 
-__attribute__((interrupt("FIQ"))) void dummyFn(void) {
+__attribute__((interrupt("FIQ"))) void DummyException(void) {
     while (1) {
         ;
     }
