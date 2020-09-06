@@ -29,6 +29,8 @@ int main(void) {
     addTaskSheduler(&task4, LED_4_BLINK_PERIOD);
 
     runSheduler();
+
+    return 0;
 }
 
 int task1(void) {
