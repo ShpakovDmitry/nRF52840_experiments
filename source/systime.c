@@ -32,7 +32,7 @@ static void enableSysTickInt(void) {
     SET_REG_BIT_HI(SYST_CSR, SYST_TICKINT);
 }
 
-void SysTimeHandler(void) {
+__attribute__((interrupt("FIQ"))) void SysTimeHandler(void) {
     disableSysTickInt();
     systime++;
     tickShedulerTime();
