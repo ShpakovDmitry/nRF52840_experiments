@@ -33,7 +33,7 @@ const void *vectors[] = {
     &SysTimeHandler         /* SysTick */
 };
 
-void dummyFn(void) {
+__attribute__((interrupt("FIQ"))) void dummyFn(void) {
     while (1) {
         ;
     }
