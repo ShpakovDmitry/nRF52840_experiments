@@ -88,3 +88,9 @@ __attribute__((interrupt("FIQ"))) void DummyException(void) {
         ;
     }
 }
+
+__attribute__((interrupt("IRQ"))) void DummyInterrupt(void) {
+    while (1) {
+        ;
+    }
+}
