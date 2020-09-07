@@ -13,6 +13,53 @@ void SvCallHandler(void)            __attribute__ ((weak, alias("DummyException"
 void PendSVHandler(void)            __attribute__ ((weak, alias("DummyException")));
 void SysTimeHandler(void)           __attribute__ ((weak, alias("DummyException")));
 
+void PowerClockHandler(void)        __attribute__ ((weak, alias("DummyInterrupt")));
+void RadioHandler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
+void Uart0Handler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
+void Spi0Twi0Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Spi1Twi1Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void NfcTagHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void GpioteHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void SaadcHandler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
+void Timer0Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void Timer1Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void Timer2Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void Rtc0Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void TempHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void RngHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void EcbHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void AarCcmHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void WdtHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void Rtc1Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void QdecHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void CompLpcompHandler(void)        __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu0Swi0Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu1Swi1Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu2Swi2Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu3Swi3Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu4Swi4Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Egu5Swi5Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
+void Timer3Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void Timer4Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
+void Pwm0Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void PdmHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void AclNvmcHandler(void)           __attribute__ ((weak, alias("DummyInterrupt")));
+void PpiHandle(void)                __attribute__ ((weak, alias("DummyInterrupt")));
+void MvuHandle(void)                __attribute__ ((weak, alias("DummyInterrupt")));
+void Pwm1Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void Pwm2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void Spi2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void Rtc2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void I2cHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void FpuHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
+void UsbdHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void Uart1Handler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
+void QspiHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void CcHostRgfCryptoHandler(void)   __attribute__ ((weak, alias("DummyInterrupt")));
+void Pwm3Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+void Spi3Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+
+
 __attribute__((section(".vectors")))
 const void *vectors[] = {
     &stackTop,              /* Initial stack pointer value */
