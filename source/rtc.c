@@ -34,6 +34,7 @@ static RtcRegisters* rtc[3] = {
 
 #define TASKS_START_BIT         0
 #define TASKS_STOP_BIT          0
+#define TASKS_CLEAR_BIT          0
 #define TASKS_TRIGOVRFLW_BIT    0
 
 #define EVENTS_TICK_BIT         0
