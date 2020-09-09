@@ -32,8 +32,9 @@ static RtcRegisters* rtc[3] = {
     (RtcRegisters* )0x40024000
 };
 
-#define TASKS_START_BIT 0
-#define TASKS_STOP_BIT  0
+#define TASKS_START_BIT         0
+#define TASKS_STOP_BIT          0
+#define TASKS_TRIGOVRFLW_BIT    0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -69,4 +70,12 @@ void clearCounterRtc(RtcModule rtcModule) {
     }
 
     SET_BIT_HI(rtc[rtcModule]->TASKS_CLEAR, TASKS_CLEAR_BIT);
+}
+
+void setTrigOvrFlw(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
 }
