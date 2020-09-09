@@ -8,4 +8,6 @@ void stopCounterRtc(RtcModule rtcModule);
 void clearCounterRtc(RtcModule rtcModule);
 void setTrigOvrFlw(RtcModule rtcModule);
 
+bool eventTickRtc(RtcModule rtcModule);
+
 #endif  // RTC_H

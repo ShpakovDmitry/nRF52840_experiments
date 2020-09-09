@@ -36,6 +36,8 @@ static RtcRegisters* rtc[3] = {
 #define TASKS_STOP_BIT          0
 #define TASKS_TRIGOVRFLW_BIT    0
 
+#define EVENTS_TICK_BIT         0
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -78,4 +80,18 @@ void setTrigOvrFlw(RtcModule rtcModule) {
     }
 
     SET_BIT_HI(rtc[rtcModule]->TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
+}
+
+bool eventTickRtc(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return false;
+    }
+    
+    bool res = false;
+
+    if ( GET_BIT(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT) == 1 ) {
+        res = true;
+    }
+
+    return res;
 }
