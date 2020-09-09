@@ -33,10 +33,11 @@ static RtcRegisters* rtc[3] = {
 };
 
 #define TASKS_START_BIT 0
+#define TASKS_STOP_BIT  0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
-#define GET_BIT(reg, bit) ( (reg) & (1 << (bit)) )
+#define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
 
 static bool isCorrectModuleRtc(RtcModule rtcModule) {
     bool isCorrect = false;
@@ -52,4 +53,12 @@ void startCounterRtc(RtcModule rtcModule) {
     }
     
     SET_BIT_HI(rtc[rtcModule]->TASKS_START, TASKS_START_BIT);
+}
+
+void stopCounterRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_HI( rtc[rtcModule]->TASKS_STOP, TASKS_STOP_BIT );
 }
