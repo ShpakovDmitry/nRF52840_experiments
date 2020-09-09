@@ -34,10 +34,11 @@ static RtcRegisters* rtc[3] = {
 
 #define TASKS_START_BIT         0
 #define TASKS_STOP_BIT          0
-#define TASKS_CLEAR_BIT          0
+#define TASKS_CLEAR_BIT         0
 #define TASKS_TRIGOVRFLW_BIT    0
 
 #define EVENTS_TICK_BIT         0
+#define EVENTS_OVRFLW_BIT       0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -91,6 +92,20 @@ bool eventTickRtc(RtcModule rtcModule) {
     bool res = false;
 
     if ( GET_BIT(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT) == 1 ) {
+        res = true;
+    }
+
+    return res;
+}
+
+bool eventOvrflwRtc(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return false;
+    }
+    
+    bool res = false;
+
+    if ( GET_BIT(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT) == 1 ) {
         res = true;
     }
 
