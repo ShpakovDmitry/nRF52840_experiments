@@ -60,5 +60,13 @@ void stopCounterRtc(RtcModule rtcModule) {
         return;
     }
     
-    SET_BIT_HI( rtc[rtcModule]->TASKS_STOP, TASKS_STOP_BIT );
+    SET_BIT_HI(rtc[rtcModule]->TASKS_STOP, TASKS_STOP_BIT);
+}
+
+void clearCounterRtc(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->TASKS_CLEAR, TASKS_CLEAR_BIT);
 }
