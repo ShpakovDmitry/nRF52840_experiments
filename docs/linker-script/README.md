@@ -1,11 +1,12 @@
 ### Memory regions
 nRF52840 FLASH memory region starts at address 0x00000000 and have size of 1M,
 also its RAM region start at address 0x20000000 and have size of 256k.
+
+![memory model](images/cortexM4_memory_model.png)
+
 FLASH is readable only and executable, but RAM is readable, writeable and executable.
 So this will end up with the following memory region description in linker script:
 
-### Memory model
-![memory model](images/cortexM4_memory_model.png)
 
 ### Linker script
 
@@ -75,5 +76,5 @@ stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
 
 ---
 
-> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> All images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
 > Any copyright belongs to NordicSemiconductors©
