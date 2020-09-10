@@ -14,6 +14,8 @@ However LF clock could be generated using:
 * synthesized from 64 MHz oscillator
 
 Clock control unit showed below:
+
+
 ![clock\_control](images/clock_control.png)
 
 ---
