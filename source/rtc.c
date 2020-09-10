@@ -52,49 +52,62 @@ static bool isCorrectModuleRtc(RtcModule rtcModule) {
     return isCorrect;
 }
 
-static void taskTrigger(RtcModule rtcModule, uint32_t reg, uint8_t taskMask) {
+void startCounterRtc(RtcModule rtcModule) {
     if ( isCorrectModuleRtc(rtcModule) == false ) {
         return;
     }
     
-    SET_BIT_HI(rtc[rtcModule]->(reg), taskMask);
+    SET_BIT_HI(rtc[rtcModule]->TASKS_START, TASKS_START_BIT);
 }
 
-static bool eventGenerated(RtcModule rtcModule, uint32_t reg, uint8_t eventMask) {
+void stopCounterRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_HI(rtc[rtcModule]->TASKS_STOP, TASKS_STOP_BIT);
+}
+
+void clearCounterRtc(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->TASKS_CLEAR, TASKS_CLEAR_BIT);
+}
+
+void setTrigOvrFlw(RtcModule rtcModule) {
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
+}
+
+bool eventTickRtc(RtcModule rtcModule) {
     if (isCorrectModuleRtc(rtcModule) == false ) {
         return false;
     }
     
     bool res = false;
 
-    if ( GET_BIT(rtc[rtcModule]->(reg), eventMask) == 1 ) {
+    if ( GET_BIT(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT) == 1 ) {
         res = true;
     }
 
     return res;
-
-}
-
-void startCounterRtc(RtcModule rtcModule) {
-    taskTrigger(rtcModule, TASKS_START, TASKS_START_BIT);
-}
-
-void stopCounterRtc(RtcModule rtcModule) {
-    taskTrigger(rtcModule, TASKS_STOP, TASKS_STOP_BIT);
-}
-
-void clearCounterRtc(RtcModule rtcModule) {
-    taskTrigger(rtcModule, TASKS_CLEAR, TASKS_CLEAR_BIT);
-}
-
-void setTrigOvrFlw(RtcModule rtcModule) {
-    taskTrigger(rtcModule, TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
-}
-
-bool eventTickRtc(RtcModule rtcModule) {
-    return eventGenerated(rtcModule, EVENTS_TICK, EVENTS_TICK_BIT);
 }
 
 bool eventOvrflwRtc(RtcModule rtcModule) {
-    return eventGenerated(rtcModule, EVENTS_OVRFLW, EVENTS_OVRFLW_BIT);
+    if (isCorrectModuleRtc(rtcModule) == false ) {
+        return false;
+    }
+    
+    bool res = false;
+
+    if ( GET_BIT(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT) == 1 ) {
+        res = true;
+    }
+
+    return res;
 }
