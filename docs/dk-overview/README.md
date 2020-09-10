@@ -21,5 +21,5 @@ for full information about development kit.
 
 ---
 
-> All information and images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
+> All images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
 > Any copyright belongs to NordicSemiconductors©
