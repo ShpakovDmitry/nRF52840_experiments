@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <gpio.h>
 
 #define GPIO_SET_DIR_OUT(dir, bit) ( (dir->DIRSET) = (1 << (bit)) )
@@ -24,34 +25,30 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t PIN_CNF[32];       /* 0x700 - 0x77C Configuration of GPIO pins*/
 } GpioRegisters;
 
-static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
-static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
+static GpioRegisters* gpio[2] = {
+    (GpioRegisters* )0x50000000u,
+    (GpioRegisters* )0x50000300u
+};
 
-static GpioRegisters* chooseGpioRegister(GpioPort gpioPort) {
-    GpioRegisters* gpio;
-    switch (gpioPort) {
-        case GPIO_0:
-            gpio = gpio0;
-            break;
-        case GPIO_1:
-            gpio = gpio1;
-            break;
-        default:
-            break;
+static bool isCorrectPortGpio(GpioPort gpioPort) {
+    bool isCorrect = false;
+    if ( gpioPort >= GPIO_0 && gpioPort <= GPIO_1 ) {
+        isCorrect = true;
     }
-
-    return gpio;
+    return isCorrect;
 }
 
 void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
-    GpioRegisters* gpio = chooseGpioRegister(gpioPort);
+    if ( isCorrectPortGpio(gpioPort) == false ) {
+        return;
+    }
 
     switch (gpioDir) {
         case GPIO_INPUT:
-            GPIO_SET_DIR_IN(gpio, gpioPin);
+            GPIO_SET_DIR_IN(gpio[gpioPort], gpioPin);
             break;
         case GPIO_OUTPUT:
-            GPIO_SET_DIR_OUT(gpio, gpioPin);
+            GPIO_SET_DIR_OUT(gpio[gpioPort], gpioPin);
             break;
         default:
             break;
@@ -59,14 +56,16 @@ void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
 }
 
 void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
-    GpioRegisters* gpio = chooseGpioRegister(gpioPort);
+    if ( isCorrectPortGpio(gpioPort) == false ) {
+        return;
+    }
 
     switch (gpioOut) {
     case GPIO_LOW:
-        GPIO_SET_LO(gpio, gpioPin);
+        GPIO_SET_LO(gpio[gpioPort], gpioPin);
         break;
     case GPIO_HIGH:
-        GPIO_SET_HI(gpio, gpioPin);
+        GPIO_SET_HI(gpio[gpioPort], gpioPin);
         break;
     default:
         break;
@@ -74,10 +73,13 @@ void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
 }
 
 GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
-    GpioRegisters* gpio = chooseGpioRegister(gpioPort);
+    if ( isCorrectPortGpio(gpioPort) == false ) {
+        return -1;
+    }
+
     GpioOut gpioOut;
 
-    if ( GET_GPIO_INPUT(gpio, gpioPin) ) {
+    if ( GET_GPIO_INPUT(gpio[gpioPort], gpioPin) ) {
         gpioOut = GPIO_HIGH;
     } else {
         gpioOut = GPIO_LOW;
@@ -87,10 +89,12 @@ GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
 }
 
 GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin) {
-    GpioRegisters* gpio = chooseGpioRegister(gpioPort);
+    if ( isCorrectPortGpio(gpioPort) == false ) {
+        return -1;
+    }
     GpioOut gpioOut;
 
-    if ( GET_GPIO_DRIVER(gpio, gpioPin) ) {
+    if ( GET_GPIO_DRIVER(gpio[gpioPort], gpioPin) ) {
         gpioOut = GPIO_HIGH;
     } else {
         gpioOut = GPIO_LOW;
