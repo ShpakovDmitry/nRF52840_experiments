@@ -51,4 +51,18 @@ to prevent PCLK16M and HFCLK being requested when those events are triggered.
 This is managed using the `EVTEN` register. \
 For example, if the TICK event is not required for an application, this event
 should be disabled as it is frequently occuring and may increase power
-consumption if HFCLK otherwise could be powered down for long durations. \
+consumption if HFCLK otherwise could be powered down for long durations.
+
+###### TASK and EVENT jitter/delay
+Jitter or delay in the RTC is due to the peripheral clock being a low frequency
+clock (LFCLK) which is not synchronous to the faster PCLK16M. \
+The following is a summary of jitter introduced on tasks and events.
+
+| Task                           | Delay        |
+|:-------------------------------|:-----------: |
+| CLEAR, STOP, START, TRIGOVRFLW | +15 to 46 us |
+
+| Operation/Function             | Jitter       |
+|:-------------------------------|:-----------: |
+| START to COUNTER increment     | +/- 15 us    |
+| COMPARE to COMPARE             | +/- 62.5 us  |
