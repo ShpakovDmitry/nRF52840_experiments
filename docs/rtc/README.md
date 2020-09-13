@@ -66,3 +66,8 @@ The following is a summary of jitter introduced on tasks and events.
 |:-------------------------------|:-----------: |
 | START to COUNTER increment     | +/- 15 us    |
 | COMPARE to COMPARE             | +/- 62.5 us  |
+
+#### Registers
+| Base address | Peripheral | Instance | Description | Configuration |
+|:-------------|:-----------|:---------|:------------|:--------------|
+|0x4000B000|RTC|RTC0|Real-time counter 0|CC[0..2] implemented, CC[3] not|
