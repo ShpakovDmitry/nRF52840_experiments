@@ -39,6 +39,7 @@ static RtcRegisters* rtc[3] = {
 
 #define EVENTS_TICK_BIT         0
 #define EVENTS_OVRFLW_BIT       0
+#define EVENTS_COMPARE_BIT      0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -47,6 +48,14 @@ static RtcRegisters* rtc[3] = {
 static bool isCorrectModuleRtc(RtcModule rtcModule) {
     bool isCorrect = false;
     if ( rtcModule >= RTC_0 && rtcModule <= RTC_2 ) {
+        isCorrect = true;
+    }
+    return isCorrect;
+}
+
+static bool isCorrectCompareReg(CompareReg compareReg) {
+    bool isCorrect = false;
+    if ( compareReg >= CC_0 && compareReg <= CC_3 ) {
         isCorrect = true;
     }
     return isCorrect;
@@ -109,5 +118,27 @@ bool eventOvrflwRtc(RtcModule rtcModule) {
         res = true;
     }
 
+    return res;
+}
+
+bool eventCompare(RtcModule rtcModule, CompareReg compareReg) {
+    if ( isCorrectModuleRtc(rtcModule) == false) {
+        return false;
+    }
+
+    if ( isCorrectCompareReg(compareReg) == false ) {
+        return false;
+    }
+    
+    // according to datasheet CC[3] not implemented in RTC[0]
+    if (rtcModule == RTC_0 && compareReg == CC_3) {
+        return false;
+    }
+
+    bool res = false;
+    if ( GET_BIT(rtc[rtcModule]->CC[compareReg], EVENTS_COMPARE_BIT) == 1 ) {
+        res = true;
+    }
+    
     return res;
 }
