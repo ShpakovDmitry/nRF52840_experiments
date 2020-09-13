@@ -203,3 +203,11 @@ void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
 
     SET_BIT_HI(rtc[rtcModule]->INTENCLR, getInterruptBit(rtcInterrupt));
 }
+
+uint32_t getCounterRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return 0;
+    }
+
+    return rtc[rtcModule]->COUNTER;
+}

@@ -19,4 +19,6 @@ bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
+uint32_t getCounterRtc(RtcModule rtcModule);
+
 #endif  // RTC_H
