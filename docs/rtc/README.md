@@ -114,5 +114,13 @@ void startCounterRtc(RtcModule rtcModule);
 void stopCounterRtc(RtcModule rtcModule);
 void clearCounterRtc(RtcModule rtcModule);
 void setTrigOvrFlw(RtcModule rtcModule);
+
+bool eventTickRtc(RtcModule rtcModule);
+bool eventOvrflwRtc(RtcModule rtcModule);
+bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
+
+void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+
 // TODO add remaining ones
 ```
