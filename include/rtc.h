@@ -1,6 +1,8 @@
 #ifndef RTC_H
 #define RTC_H
 
+#define MAX_PRESCALER_RTC 4096
+
 typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
 typedef enum { CC_0 = 0, CC_1, CC_2, CC_3} CompareReg;
 typedef enum {
@@ -20,5 +22,6 @@ void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
 uint32_t getCounterRtc(RtcModule rtcModule);
+void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler);
 
 #endif  // RTC_H

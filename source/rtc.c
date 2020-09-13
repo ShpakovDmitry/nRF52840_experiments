@@ -211,3 +211,15 @@ uint32_t getCounterRtc(RtcModule rtcModule) {
 
     return rtc[rtcModule]->COUNTER;
 }
+
+void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    if ( prescaler > MAX_PRESCALER_RTC ) {
+        prescaler = MAX_PRESCALER_RTC;
+    }
+
+    rtc[rtcModule]->PRESCALER = prescaler;
+}
