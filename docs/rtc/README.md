@@ -16,12 +16,12 @@ f_RTC [kHz] = 32.768 / ( PRESCALER + 1 )
 ```
 Examples:
 ```
-1.  Desired `COUNTER` frequency 100 Hz
+1.  Desired COUNTER frequency 100 Hz
     PRESCALER = round( 32.768 kHz / 100 Hz ) - 1 = 327
     f_RTC = 99.9 Hz
     10009.576 us counter period
 
-2.  Desired `COUNTER` frequency 8 Hz
+2.  Desired COUNTER frequency 8 Hz
     PRESCALER = round( 32.768 kHz / 8 Hz ) - 1 = 4095
     f_RTC = 8 Hz
     125 ms counter period
@@ -32,3 +32,15 @@ Examples:
 | 2^8 - 1   | 7812.5 us         | 131072 seconds |
 | 2^12 - 1  | 125 ms            | 582.542 hours  |
 
+###### Overflow features
+The `TRIGOVRFLW` task set the `COUNTER` calue to `0xFFFFF0` to allow software
+test the overflow condition. Overflow occurs when `COUNTER` overflows from
+`0xFFFFFF` to `0`. The `OVRFLW` event is disabled by default.
+
+###### TICK event
+The `TICK` event enables low poewr "tick-less" RTOS implementation as it
+optionally privides a regular interrupt source for a RTOS without the need
+to use ARM SysTick feature.
+Using the RTC `TICK` event rather than the SysTick allows the CPU to be powered
+down while still keeping RTOS sheduling active. The `TICK` event is disabled
+by default.
