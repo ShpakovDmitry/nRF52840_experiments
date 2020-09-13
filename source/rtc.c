@@ -191,3 +191,15 @@ void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
 
     SET_BIT_HI(rtc[rtcModule]->INTENSET, getInterruptBit(rtcInterrupt));
 }
+
+void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->INTENCLR, getInterruptBit(rtcInterrupt));
+}

@@ -17,5 +17,6 @@ bool eventOvrflwRtc(RtcModule rtcModule);
 bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
 
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
 #endif  // RTC_H
