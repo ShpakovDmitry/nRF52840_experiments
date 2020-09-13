@@ -2,6 +2,7 @@
 #define RTC_H
 
 #define MAX_PRESCALER_RTC 4096
+#define MAX_COMPARE_VAL 16777215u
 
 typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
 typedef enum { CC_0 = 0, CC_1, CC_2, CC_3} CompareReg;
@@ -26,5 +27,7 @@ void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler);
 
 void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+
+void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value);
 
 #endif  // RTC_H

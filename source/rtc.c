@@ -247,3 +247,19 @@ void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
 
     SET_BIT_HI(rtc[rtcModule]->EVTENCLR, getInterruptBit(rtcInterrupt));
 }
+
+void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    if ( isCorrectCompareReg(compareReg) == false ) {
+        return;
+    }
+
+    if ( value > MAX_COMPARE_VAL ) {
+        value = MAX_COMPARE_VAL;    // saturate
+    }
+
+    rtc[rtcModule]->CC[compareReg] = value;
+}
