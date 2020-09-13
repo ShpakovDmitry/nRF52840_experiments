@@ -14,6 +14,7 @@ void setTrigOvrFlw(RtcModule rtcModule);
 
 bool eventTickRtc(RtcModule rtcModule);
 bool eventOvrflwRtc(RtcModule rtcModule);
+bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
 
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
