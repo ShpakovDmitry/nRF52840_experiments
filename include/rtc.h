@@ -1,7 +1,7 @@
 #ifndef RTC_H
 #define RTC_H
 
-#define MAX_PRESCALER_RTC 4096
+#define MAX_PRESCALER_RTC 4095u
 #define MAX_COMPARE_VAL 16777215u
 
 typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
