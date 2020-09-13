@@ -223,3 +223,27 @@ void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler) {
 
     rtc[rtcModule]->PRESCALER = prescaler;
 }
+
+void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->EVTENSET, getInterruptBit(rtcInterrupt));
+}
+
+void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->EVTENCLR, getInterruptBit(rtcInterrupt));
+}

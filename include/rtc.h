@@ -24,4 +24,7 @@ void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 uint32_t getCounterRtc(RtcModule rtcModule);
 void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler);
 
+void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+
 #endif  // RTC_H
