@@ -109,6 +109,11 @@ static RtcRegisters* rtc[3] = {
 Control over RTC is given by routines declared in `rtc.h` file:
 ```c
 typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
+typedef enum { CC_0 = 0, CC_1, CC_2, CC_3} CompareReg;
+typedef enum {
+    INT_TICK = 0, INT_OVRFLW,
+    INT_CC0, INT_CC1, INT_CC2, INT_CC3} RtcInterrupt;
+
 
 void startCounterRtc(RtcModule rtcModule);
 void stopCounterRtc(RtcModule rtcModule);
@@ -122,5 +127,12 @@ bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
-// TODO add remaining ones
+uint32_t getCounterRtc(RtcModule rtcModule);
+void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler);
+
+void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+
+void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value);
+uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg);
 ```
