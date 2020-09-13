@@ -71,3 +71,5 @@ The following is a summary of jitter introduced on tasks and events.
 | Base address | Peripheral | Instance | Description | Configuration |
 |:-------------|:-----------|:---------|:------------|:--------------|
 |0x4000B000|RTC|RTC0|Real-time counter 0|CC[0..2] implemented, CC[3] not|
+|0x40011000|RTC|RTC1|Real-time counter 1|CC[0..3] implemented|
+|0x40024000|RTC|RTC2|Real-time counter 2|CC[0..3] implemented|
