@@ -100,8 +100,19 @@ typedef volatile struct __attribute__ ((packed)) {
 } RtcRegisters;
 
 static RtcRegisters* rtc[3] = {
-    (RtcRegisters* )0x4000B000,
-    (RtcRegisters* )0x40011000,
-    (RtcRegisters* )0x40024000
+    (RtcRegisters* )0x4000B000u,
+    (RtcRegisters* )0x40011000u,
+    (RtcRegisters* )0x40024000u
 };
+```
+
+Control over RTC is given by routines declared in `rtc.h` file:
+```c
+typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
+
+void startCounterRtc(RtcModule rtcModule);
+void stopCounterRtc(RtcModule rtcModule);
+void clearCounterRtc(RtcModule rtcModule);
+void setTrigOvrFlw(RtcModule rtcModule);
+// TODO add remaining ones
 ```
