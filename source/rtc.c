@@ -263,3 +263,15 @@ void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value
 
     rtc[rtcModule]->CC[compareReg] = value;
 }
+
+uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return 0;
+    }
+
+    if ( isCorrectCompareReg(compareReg) == false ) {
+        return 0;
+    }
+
+    return rtc[rtcModule]->CC[compareReg];
+}

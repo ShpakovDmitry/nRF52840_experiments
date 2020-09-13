@@ -29,5 +29,6 @@ void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
 
 void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value);
+uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg);
 
 #endif  // RTC_H
