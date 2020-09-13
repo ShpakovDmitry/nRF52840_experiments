@@ -61,6 +61,43 @@ static bool isCorrectCompareReg(CompareReg compareReg) {
     return isCorrect;
 }
 
+static bool isCorrectInterruptRtc(RtcInterrupt rtcInterrupt) {
+    bool isCorrect = false;
+    if ( rtcInterrupt >= INT_TICK && rtcInterrupt <= INT_CC3 ) {
+        isCorrect = true;
+    }
+    return isCorrect;
+}
+
+static int getInterruptBit(RtcInterrupt rtcInterrupt) {
+    int val;
+
+    switch (rtcInterrupt) {
+        case INT_TICK:
+            val = 0;
+            break;
+        case INT_OVRFLW:
+            val = 1;
+            break;
+        case INT_CC0:
+            val = 16;
+            break;
+        case INT_CC1:
+            val = 17;
+            break;
+        case INT_CC2:
+            val = 18;
+            break;
+        case INT_CC3:
+            val = 19;
+            break;
+        default:
+            val = 31;   // using this will take no effect
+            break;
+    }
+    return val;
+}
+
 void startCounterRtc(RtcModule rtcModule) {
     if ( isCorrectModuleRtc(rtcModule) == false ) {
         return;
@@ -141,4 +178,16 @@ bool eventCompare(RtcModule rtcModule, CompareReg compareReg) {
     }
     
     return res;
+}
+
+void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+
+    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+        return;
+    }
+
+    SET_BIT_HI(rtc[rtcModule]->INTENSET, getInterruptBit(rtcInterrupt));
 }
