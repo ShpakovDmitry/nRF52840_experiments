@@ -44,3 +44,11 @@ to use ARM SysTick feature.
 Using the RTC `TICK` event rather than the SysTick allows the CPU to be powered
 down while still keeping RTOS sheduling active. The `TICK` event is disabled
 by default.
+
+###### Event control feature
+To optimize RTC power consumption, events in RTC can be individually disabled
+to prevent PCLK16M and HFCLK being requested when those events are triggered.
+This is managed using the `EVTEN` register. \
+For example, if the TICK event is not required for an application, this event
+should be disabled as it is frequently occuring and may increase power
+consumption if HFCLK otherwise could be powered down for long durations. \
