@@ -30,16 +30,28 @@ static GpioRegisters* gpio[2] = {
     (GpioRegisters* )0x50000300u
 };
 
-static bool isCorrectPortGpio(GpioPort gpioPort) {
+static bool isCorrectPortAndPin(GpioPort gpioPort, GpioPin gpioPin) {
     bool isCorrect = false;
-    if ( gpioPort >= GPIO_0 && gpioPort <= GPIO_1 ) {
-        isCorrect = true;
+    switch (gpioPort) {
+        case GPIO_0:
+            if (gpioPin >= GPIO_PIN_0 && gpioPin <= GPIO_PIN_31) {
+                isCorrect = true;
+            }
+            break;
+        case GPIO_1:
+            if (gpioPin >= GPIO_PIN_0 && gpioPin <= GPIO_PIN_15) {
+                isCorrect = true;
+            }
+            break;
+        default:    // empty because false is default;
+            break;
     }
+
     return isCorrect;
 }
 
 void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
-    if ( isCorrectPortGpio(gpioPort) == false ) {
+    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
         return;
     }
 
@@ -56,7 +68,7 @@ void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
 }
 
 void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
-    if ( isCorrectPortGpio(gpioPort) == false ) {
+    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
         return;
     }
 
@@ -73,7 +85,7 @@ void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
 }
 
 GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
-    if ( isCorrectPortGpio(gpioPort) == false ) {
+    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
         return -1;
     }
 
@@ -89,7 +101,7 @@ GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
 }
 
 GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin) {
-    if ( isCorrectPortGpio(gpioPort) == false ) {
+    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
         return -1;
     }
     GpioOut gpioOut;
