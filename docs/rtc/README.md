@@ -26,3 +26,9 @@ Examples:
     f_RTC = 8 Hz
     125 ms counter period
 ```
+| Prescaler | Counter resolution| Overflow       |
+|:---------:|:-----------------:| -------------- |
+| 0         | 30.517 us         | 512 seconds    |
+| 2^8 - 1   | 7812.5 us         | 131072 seconds |
+| 2^12 - 1  | 125 ms            | 582.542 hours  |
+
