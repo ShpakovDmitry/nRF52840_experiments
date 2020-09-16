@@ -15,3 +15,14 @@ Table of NVIC registers
 |0xE000E300 - 0xE000E31C|NVIC\_IABR[0..7]|Interrupt Active Bit register     |
 |0xE000E400 - 0xE000E4EC|NVIC\_IPR[0..7] |Interrupt Priority register       |
 
+
+###### ICRT
+```
+31|              24|             16|              8|      4|3     0|
+  ------------------------------------------------------------------
+  |                     Reserved                           |       |
+  ------------------------------------------------------------------
+                                                               |
+                                                               |
+                                                 INTLINESUM----+
+```
