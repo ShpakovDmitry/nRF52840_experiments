@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rtc.h>
+#include <sheduler.h>
+#include <nvic.h>
 
 #define RTC_0_BASE_ADDRESS 0x4000B000u
 #define RTC_1_BASE_ADDRESS 0x40011000u
@@ -278,4 +280,9 @@ uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg) {
     }
 
     return rtc[rtcModule]->CC[compareReg];
+}
+
+void Rtc0Handler(void) {
+    rtc[0]->EVENTS_TICK = 0;
+    tickShedulerTime();
 }

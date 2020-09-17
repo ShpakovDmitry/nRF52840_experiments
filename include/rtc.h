@@ -1,6 +1,8 @@
 #ifndef RTC_H
 #define RTC_H
 
+#include <stdbool.h>
+
 #define MAX_PRESCALER_RTC 4095u
 #define MAX_COMPARE_VAL 16777215u
 

@@ -37,7 +37,6 @@ static void enableSysTickInt(void) {
 __attribute__((interrupt("FIQ"))) void SysTimeHandler(void) {
     disableSysTickInt();
     systime++;
-    tickShedulerTime();
     enableSysTickInt();
 }
 
