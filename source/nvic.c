@@ -22,6 +22,4 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t STIR;              // 0xF00 Sortware Trigger Interrupt
 } NvicRegisters;
 
-static NvicRegisters* nvic[1] = {
-    (NvicRegisters* ) NVIC_BASE_ADDR
-};
+static NvicRegisters* nvic = (NvicRegisters* ) NVIC_BASE_ADDR;
