@@ -2,6 +2,8 @@
 #include <stdbool.h>
 #include <clock.h>
 
+#define CLOCK_BASE_ADDRESS 0x40000000u
+
 typedef volatile struct __attribute__ ((packed)) {
     uint32_t TASKS_HFCLKSTART;      /* 0x000 start HFXO crystal oscillator */
     uint32_t TASKS_HFCLKSTOP;       /* 0x004 stop HFXO crystal oscillator */
@@ -41,7 +43,7 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t LFRCMODE;              /* 0x5B4 LFRC mode configuration */
 } ClockRegisters;
 
-static ClockRegisters* clock = (ClockRegisters *)0x40000000u;
+static ClockRegisters* clock = (ClockRegisters *) CLOCK_BASE_ADDRESS;
 
 #define TASKS_HFCLKSTART_BIT    0
 #define TASKS_HFCLKSTOP_BIT     0

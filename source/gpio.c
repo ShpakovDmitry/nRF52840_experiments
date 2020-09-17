@@ -1,6 +1,9 @@
 #include <stdbool.h>
 #include <gpio.h>
 
+#define GPIO_0_BASE_ADDRESS 0x50000000u
+#define GPIO_1_BASE_ADDRESS 0x50000300u
+
 #define GPIO_SET_DIR_OUT(dir, bit) ( (dir->DIRSET) = (1 << (bit)) )
 #define GPIO_SET_DIR_IN(dir, bit)  ( (dir->DIRCLR) = (1 << (bit)) )
 
@@ -26,8 +29,8 @@ typedef volatile struct __attribute__((packed)) {
 } GpioRegisters;
 
 static GpioRegisters* gpio[2] = {
-    (GpioRegisters* )0x50000000u,
-    (GpioRegisters* )0x50000300u
+    (GpioRegisters* ) GPIO_0_BASE_ADDRESS,
+    (GpioRegisters* ) GPIO_1_BASE_ADDRESS
 };
 
 static bool isCorrectPortAndPin(GpioPort gpioPort, GpioPin gpioPin) {

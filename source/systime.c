@@ -1,6 +1,8 @@
 #include <systime.h>
 #include <sheduler.h>
 
+#define SYS_TICK_BASE_ADDRESS 0xE000E000u
+
 typedef volatile struct __attribute__((packed)) {
     uint32_t reserved0[4];  /* 0x000 - 0x00C reserved*/
     uint32_t SYST_CSR;      /* 0x010 - SysTick control and status register */
@@ -9,7 +11,7 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t SYST_CALIB;    /* 0x01C - SysTick calibration value register */
 } SysTickRegister;
 
-static SysTickRegister* sysTickRegister = (SysTickRegister *)0xE000E000u;
+static SysTickRegister* sysTickRegister = (SysTickRegister *) SYS_TICK_BASE_ADDRESS;
 
 // SYST_CSR fields
 #define SYST_COUNTFLAG  16

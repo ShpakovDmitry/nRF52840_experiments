@@ -2,6 +2,10 @@
 #include <stdbool.h>
 #include <rtc.h>
 
+#define RTC_0_BASE_ADDRESS 0x4000B000u
+#define RTC_1_BASE_ADDRESS 0x40011000u
+#define RTC_2_BASE_ADDRESS 0x40024000u
+
 typedef volatile struct __attribute__ ((packed)) {
     uint32_t TASKS_START;       // 0x000 Start RTC counter
     uint32_t TASKS_STOP;        // 0x004 Stop RTC counter
@@ -27,9 +31,9 @@ typedef volatile struct __attribute__ ((packed)) {
 } RtcRegisters;
 
 static RtcRegisters* rtc[3] = {
-    (RtcRegisters* )0x4000B000,
-    (RtcRegisters* )0x40011000,
-    (RtcRegisters* )0x40024000
+    (RtcRegisters* ) RTC_0_BASE_ADDRESS,
+    (RtcRegisters* ) RTC_1_BASE_ADDRESS,
+    (RtcRegisters* ) RTC_2_BASE_ADDRESS
 };
 
 #define TASKS_START_BIT         0
