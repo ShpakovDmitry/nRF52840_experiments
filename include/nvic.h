@@ -1,6 +1,8 @@
 #ifndef NVIC_H
 #define NVIC_H
 
+#include <stdbool.h>
+
 typedef enum {
     POWER_CLOCK                         = 0,
     RADIO                               = 1,
@@ -58,5 +60,6 @@ void NVIC_enableIrq(IrqNvic irqNvic);
 void NVIC_disableIrq(IrqNvic irqNvic);
 void NVIC_setPendingIrq(IrqNvic irqNvic);
 void NVIC_clearPendingIrq(IrqNvic irqNvic);
+bool NVIC_isPendingIrq(IrqNvic irqNvic);
 
 #endif  // NVIC_H

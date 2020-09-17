@@ -78,3 +78,16 @@ void NVIC_clearPendingIrq(IrqNvic irqNvic) {
     irqBit = getBitPosition(irqNvic);
     SET_BIT_HI(nvic->NVIC_ICPR[irqReg], irqBit);
 }
+
+bool NVIC_isPendingIrq(IrqNvic irqNvic) {
+    bool res = false;
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irqNvic);
+    irqBit = getBitPosition(irqNvic);
+    if ( GET_BIT(nvic->NVIC_IABR[irqReg], irqBit) == 1 ) {
+        res = true;
+    }
+
+    return res;
+}
