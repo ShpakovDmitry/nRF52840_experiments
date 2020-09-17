@@ -186,6 +186,37 @@ bool eventCompare(RtcModule rtcModule, CompareReg compareReg) {
     return res;
 }
 
+void clearEventTickRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT);
+}
+void clearEventOvrflwRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT);
+}
+void clearEventCompareRtc(RtcModule rtcModule, CompareReg compareReg) {
+    if ( isCorrectModuleRtc(rtcModule) == false) {
+        return;
+    }
+
+    if ( isCorrectCompareReg(compareReg) == false ) {
+        return;
+    }
+    
+    // according to datasheet CC[3] not implemented in RTC[0]
+    if (rtcModule == RTC_0 && compareReg == CC_3) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->CC[compareReg], EVENTS_COMPARE_BIT);
+}
+
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
     if ( isCorrectModuleRtc(rtcModule) == false ) {
         return;
@@ -283,6 +314,6 @@ uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg) {
 }
 
 void Rtc0Handler(void) {
-    rtc[0]->EVENTS_TICK = 0;
+    clearEventTickRtc(RTC_0);
     tickShedulerTime();
 }
