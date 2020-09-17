@@ -57,5 +57,6 @@ void NVIC_disableGlobalIrq(void);
 void NVIC_enableIrq(IrqNvic irqNvic);
 void NVIC_disableIrq(IrqNvic irqNvic);
 void NVIC_setPendingIrq(IrqNvic irqNvic);
+void NVIC_clearPendingIrq(IrqNvic irqNvic);
 
 #endif  // NVIC_H

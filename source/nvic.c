@@ -70,3 +70,11 @@ void NVIC_setPendingIrq(IrqNvic irqNvic) {
     irqBit = getBitPosition(irqNvic);
     SET_BIT_HI(nvic->NVIC_ISPR[irqReg], irqBit);
 }
+
+void NVIC_clearPendingIrq(IrqNvic irqNvic) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irqNvic);
+    irqBit = getBitPosition(irqNvic);
+    SET_BIT_HI(nvic->NVIC_ICPR[irqReg], irqBit);
+}
