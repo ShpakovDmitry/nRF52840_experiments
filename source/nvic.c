@@ -53,3 +53,12 @@ void NVIC_enableIrq(IrqNvic irqNvic) {
     irqBit = getBitPosition(irqNvic);
     SET_BIT_HI(nvic->NVIC_ISER[irqReg], irqBit);
 }
+
+
+void NVIC_disableIrq(IrqNvic irqNvic) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irqNvic);
+    irqBit = getBitPosition(irqNvic);
+    SET_BIT_HI(nvic->NVIC_ICER[irqReg], irqBit);
+}
