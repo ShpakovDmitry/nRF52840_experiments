@@ -18,7 +18,7 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t reserved5[24];     // 0x2A0 - 0x2FC reserved
     uint32_t NVIC_IABR[8];      // 0x300 - 0x31C Interrupt Active-bit
     uint32_t reserved6[56];     // 0x320 - 0x3FC reserved
-    uint32_t NVIC_IPR[60];      // 0x400 - 0x4EC Interrupt Priority
+    uint8_t  NVIC_IPR[240];     // 0x400 - 0x4EC Interrupt Priority
     uint32_t reserved7[644];    // 0x4F0 - 0xEFC reserved
     uint32_t STIR;              // 0xF00 Sortware Trigger Interrupt
 } NvicRegisters;
