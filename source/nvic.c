@@ -44,6 +44,7 @@ static uint8_t getRegPosition(IrqNvic irqNvic) {
 
 static uint8_t getBitPosition(IrqNvic irqNvic) {
     return ((uint8_t)irqNvic % (uint8_t)BITS_IN_ARM_WORD);
+
 }
 
 void NVIC_enableIrq(IrqNvic irqNvic) {
@@ -54,11 +55,18 @@ void NVIC_enableIrq(IrqNvic irqNvic) {
     SET_BIT_HI(nvic->NVIC_ISER[irqReg], irqBit);
 }
 
-
 void NVIC_disableIrq(IrqNvic irqNvic) {
     uint8_t irqReg, irqBit;
 
     irqReg = getRegPosition(irqNvic);
     irqBit = getBitPosition(irqNvic);
     SET_BIT_HI(nvic->NVIC_ICER[irqReg], irqBit);
+}
+
+void NVIC_setPendingIrq(IrqNvic irqNvic) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irqNvic);
+    irqBit = getBitPosition(irqNvic);
+    SET_BIT_HI(nvic->NVIC_ISPR[irqReg], irqBit);
 }
