@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <rtc.h>
+#include <sheduler.h>
+#include <nvic.h>
 
 #define RTC_0_BASE_ADDRESS 0x4000B000u
 #define RTC_1_BASE_ADDRESS 0x40011000u
@@ -184,6 +186,37 @@ bool eventCompare(RtcModule rtcModule, CompareReg compareReg) {
     return res;
 }
 
+void clearEventTickRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT);
+}
+void clearEventOvrflwRtc(RtcModule rtcModule) {
+    if ( isCorrectModuleRtc(rtcModule) == false ) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT);
+}
+void clearEventCompareRtc(RtcModule rtcModule, CompareReg compareReg) {
+    if ( isCorrectModuleRtc(rtcModule) == false) {
+        return;
+    }
+
+    if ( isCorrectCompareReg(compareReg) == false ) {
+        return;
+    }
+    
+    // according to datasheet CC[3] not implemented in RTC[0]
+    if (rtcModule == RTC_0 && compareReg == CC_3) {
+        return;
+    }
+    
+    SET_BIT_LO(rtc[rtcModule]->CC[compareReg], EVENTS_COMPARE_BIT);
+}
+
 void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
     if ( isCorrectModuleRtc(rtcModule) == false ) {
         return;
@@ -278,4 +311,9 @@ uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg) {
     }
 
     return rtc[rtcModule]->CC[compareReg];
+}
+
+void Rtc0Handler(void) {
+    clearEventTickRtc(RTC_0);
+    tickShedulerTime();
 }

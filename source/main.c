@@ -4,6 +4,8 @@
 #include <led.h>
 #include <sheduler.h>
 #include <clock.h>
+#include <rtc.h>
+#include <nvic.h>
 
 #define LED_1_BLINK_PERIOD  500
 #define LED_2_BLINK_PERIOD  501
@@ -18,6 +20,17 @@ int main(void) {
     setHfxoDebounce(HFXO_DEBOUNCE_1024US);
     startHfxoClock();
     initSysTime(RELOAD_1MS_64MHZ);
+
+    setLfClkSource(LFCLK_XTAL);
+    startLfxoClock();
+
+    setPrescalerRtc(RTC_0, 32);
+    startCounterRtc(RTC_0);
+    enableInterruptRtc(RTC_0, INT_TICK);
+
+    NVIC_enableIrq(RTC0);
+    NVIC_enableGlobalIrq();
+
     initLed(LED_1);
     initLed(LED_2);
     initLed(LED_3);
