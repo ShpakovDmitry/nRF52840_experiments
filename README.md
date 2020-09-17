@@ -17,11 +17,13 @@ $ git clone https://github.com/ShpakovDmitry/nRF52840DK_BareMetal_Blink.git
 
 <details>
 <summary>Peripherals</summary>
+
 1. [Clock](/docs/clock/README.md)
 1. [GPIO](/docs/gpio/README.md)
 1. [SysTime](/docs/systime/README.md)
 1. [RTC](/docs/rtc/README.md)
 1. [NVIC](/docs/nvic/README.md)
+
 </details>
 
 1. [Cooperative sheduler](/docs/cooperative-sheduler/README.md)
