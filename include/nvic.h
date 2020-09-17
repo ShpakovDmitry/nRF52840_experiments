@@ -51,4 +51,7 @@ typedef enum {
     SPIM3                               = 47
 } IrqNvic;
 
+void NVIC_enableGlobalIrq(void);
+void NVIC_disableGlobalIrq(void);
+
 #endif  // NVIC_H

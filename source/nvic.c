@@ -23,3 +23,12 @@ typedef volatile struct __attribute__ ((packed)) {
 } NvicRegisters;
 
 static NvicRegisters* nvic = (NvicRegisters* ) NVIC_BASE_ADDR;
+
+
+void NVIC_enableGlobalIrq(void) {
+    __asm__("CPSIE I");
+}
+
+void NVIC_disableGlobalIrq(void) {
+    __asm__("CPSID I");
+}
