@@ -24,6 +24,9 @@ typedef volatile struct __attribute__ ((packed)) {
 
 static NvicRegisters* nvic = (NvicRegisters* ) NVIC_BASE_ADDR;
 
+#define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
+#define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
+#define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
 
 void NVIC_enableGlobalIrq(void) {
     __asm__("CPSIE I");
@@ -31,4 +34,22 @@ void NVIC_enableGlobalIrq(void) {
 
 void NVIC_disableGlobalIrq(void) {
     __asm__("CPSID I");
+}
+
+#define BITS_IN_ARM_WORD 32
+
+static uint8_t getRegPosition(IrqNvic irqNvic) {
+    return ((uint8_t)irqNvic / (uint8_t)BITS_IN_ARM_WORD);
+}
+
+static uint8_t getBitPosition(IrqNvic irqNvic) {
+    return ((uint8_t)irqNvic % (uint8_t)BITS_IN_ARM_WORD);
+}
+
+void NVIC_enableIrq(IrqNvic irqNvic) {
+    uint8_t irqReg, irqBit;
+
+    irqReg = getRegPosition(irqNvic);
+    irqBit = getBitPosition(irqNvic);
+    SET_BIT_HI(nvic->NVIC_ISER[irqReg], irqBit);
 }

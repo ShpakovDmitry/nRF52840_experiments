@@ -54,4 +54,6 @@ typedef enum {
 void NVIC_enableGlobalIrq(void);
 void NVIC_disableGlobalIrq(void);
 
+void NVIC_enableIrq(IrqNvic irqNvic);
+
 #endif  // NVIC_H
