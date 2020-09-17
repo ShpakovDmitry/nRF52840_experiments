@@ -1,6 +1,7 @@
 #ifndef NVIC_H
 #define NVIC_H
 
+#include <stdint.h>
 #include <stdbool.h>
 
 typedef enum {
@@ -53,6 +54,12 @@ typedef enum {
     SPIM3                               = 47
 } IrqNvic;
 
+#define MAX_PRIORITY 7
+#define MIN_PRIORITY 0
+
+#define LOWEST_PRIORITY MAX_PRIORITY
+#define HIGHEST_PRIORITY MIN_PRIORITY
+
 void NVIC_enableGlobalIrq(void);
 void NVIC_disableGlobalIrq(void);
 
@@ -61,5 +68,6 @@ void NVIC_disableIrq(IrqNvic irqNvic);
 void NVIC_setPendingIrq(IrqNvic irqNvic);
 void NVIC_clearPendingIrq(IrqNvic irqNvic);
 bool NVIC_isPendingIrq(IrqNvic irqNvic);
+void NVIC_setPriorityIrq(IrqNvic irqNvic, uint8_t priority);
 
 #endif  // NVIC_H

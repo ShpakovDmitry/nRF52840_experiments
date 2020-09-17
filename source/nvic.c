@@ -1,5 +1,6 @@
 #include <nvic.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 #define NVIC_BASE_ADDR 0xE000E000u
 
@@ -47,6 +48,22 @@ static uint8_t getBitPosition(IrqNvic irqNvic) {
 
 }
 
+static bool isCorrectPriority(uint8_t priority) {
+    bool res = false;
+
+    if (priority <= MAX_PRIORITY) { // no need to check negative value
+        res = true;
+    }
+
+    return res;
+}
+
+#define MSB_PRIORITY 3  // in IPR 3 MSB matters
+#define BITS_IN_BYTE 8
+static uint8_t getPriorityValue(uint8_t priority) {
+    return ( priority << (BITS_IN_BYTE - MSB_PRIORITY));
+}
+
 void NVIC_enableIrq(IrqNvic irqNvic) {
     uint8_t irqReg, irqBit;
 
@@ -90,4 +107,15 @@ bool NVIC_isPendingIrq(IrqNvic irqNvic) {
     }
 
     return res;
+}
+
+void NVIC_setPriorityIrq(IrqNvic irqNvic, uint8_t priority) {
+    if ( isCorrectPriority(priority) == false ) {
+        return;
+    }
+
+    uint8_t priorityVal;
+    priorityVal = getPriorityValue(priority);
+
+    nvic->NVIC_IPR[irqNvic] = priorityVal;
 }
