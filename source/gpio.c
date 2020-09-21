@@ -26,23 +26,23 @@ typedef volatile struct __attribute__((packed)) {
     uint32_t DETECTMODE;        /* 0x524 Mode select */
     uint32_t reserved1[118];    /* 0x528 - 0x6FC reserved */
     uint32_t PIN_CNF[32];       /* 0x700 - 0x77C Configuration of GPIO pins*/
-} GpioRegisters;
+} GPIO_Registers;
 
-static GpioRegisters* gpio[2] = {
-    (GpioRegisters* ) GPIO_0_BASE_ADDRESS,
-    (GpioRegisters* ) GPIO_1_BASE_ADDRESS
+static GPIO_Registers* gpio[2] = {
+    (GPIO_Registers* ) GPIO_0_BASE_ADDRESS,
+    (GPIO_Registers* ) GPIO_1_BASE_ADDRESS
 };
 
-static bool isCorrectPortAndPin(GpioPort gpioPort, GpioPin gpioPin) {
+static bool GPIO_isCorrectPortAndPin(GPIO_Port port, GPIO_Pin pin) {
     bool isCorrect = false;
-    switch (gpioPort) {
+    switch (port) {
         case GPIO_0:
-            if (gpioPin >= GPIO_PIN_0 && gpioPin <= GPIO_PIN_31) {
+            if (pin >= GPIO_PIN_0 && pin <= GPIO_PIN_31) {
                 isCorrect = true;
             }
             break;
         case GPIO_1:
-            if (gpioPin >= GPIO_PIN_0 && gpioPin <= GPIO_PIN_15) {
+            if (pin >= GPIO_PIN_0 && pin <= GPIO_PIN_15) {
                 isCorrect = true;
             }
             break;
@@ -53,67 +53,67 @@ static bool isCorrectPortAndPin(GpioPort gpioPort, GpioPin gpioPin) {
     return isCorrect;
 }
 
-void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir) {
-    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
+void GPIO_setDirection(GPIO_Port port, GPIO_Pin pin, GPIO_Direction direction) {
+    if ( GPIO_isCorrectPortAndPin(port, pin) == false ) {
         return;
     }
 
-    switch (gpioDir) {
+    switch (direction) {
         case GPIO_INPUT:
-            GPIO_SET_DIR_IN(gpio[gpioPort], gpioPin);
+            GPIO_SET_DIR_IN(gpio[port], pin);
             break;
         case GPIO_OUTPUT:
-            GPIO_SET_DIR_OUT(gpio[gpioPort], gpioPin);
+            GPIO_SET_DIR_OUT(gpio[port], pin);
             break;
         default:
             break;
     }
 }
 
-void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut) {
-    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
+void GPIO_setOutput(GPIO_Port port, GPIO_Pin pin, GPIO_Output output) {
+    if ( GPIO_isCorrectPortAndPin(port, pin) == false ) {
         return;
     }
 
-    switch (gpioOut) {
+    switch (output) {
     case GPIO_LOW:
-        GPIO_SET_LO(gpio[gpioPort], gpioPin);
+        GPIO_SET_LO(gpio[port], pin);
         break;
     case GPIO_HIGH:
-        GPIO_SET_HI(gpio[gpioPort], gpioPin);
+        GPIO_SET_HI(gpio[port], pin);
         break;
     default:
         break;
     }
 }
 
-GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin) {
-    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
+GPIO_Output GPIO_getInput(GPIO_Port port, GPIO_Pin pin) {
+    if ( GPIO_isCorrectPortAndPin(port, pin) == false ) {
         return -1;
     }
 
-    GpioOut gpioOut;
+    GPIO_Output output;
 
-    if ( GET_GPIO_INPUT(gpio[gpioPort], gpioPin) ) {
-        gpioOut = GPIO_HIGH;
+    if ( GET_GPIO_INPUT(gpio[port], pin) ) {
+        output = GPIO_HIGH;
     } else {
-        gpioOut = GPIO_LOW;
+        output = GPIO_LOW;
     }
 
-    return gpioOut;
+    return output;
 }
 
-GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin) {
-    if ( isCorrectPortAndPin(gpioPort, gpioPin) == false ) {
+GPIO_Output GPIO_getDriver(GPIO_Port port, GPIO_Pin pin) {
+    if ( GPIO_isCorrectPortAndPin(port, pin) == false ) {
         return -1;
     }
-    GpioOut gpioOut;
+    GPIO_Output output;
 
-    if ( GET_GPIO_DRIVER(gpio[gpioPort], gpioPin) ) {
-        gpioOut = GPIO_HIGH;
+    if ( GET_GPIO_DRIVER(gpio[port], pin) ) {
+        output = GPIO_HIGH;
     } else {
-        gpioOut = GPIO_LOW;
+        output = GPIO_LOW;
     }
 
-    return gpioOut;
+    return output;
 }

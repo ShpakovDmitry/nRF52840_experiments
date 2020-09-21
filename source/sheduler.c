@@ -3,67 +3,67 @@
 #include <sheduler.h>
 
 typedef struct {
-    TaskEntry taskEntry;
-    pid_t pid;
-    shedtime_t period;
-    shedtime_t lastRun;
-} TaskDescriptor;
+    Sheduler_Task task;
+    Sheduler_Pid pid;
+    Sheduler_Time period;
+    Sheduler_Time lastRun;
+} Sheduler_TaskDescriptor;
 
-static volatile shedtime_t shedtime;
-static TaskDescriptor taskTable[MAX_NUM_TASKS] = { 0 };
+static volatile Sheduler_Time shedtime;
+static Sheduler_TaskDescriptor taskTable[SHEDULER_MAX_TASKS] = { 0 };
 
-static int findTaskInTaskTable(void) {
+static int Sheduler_findTaskInTaskTable(void) {
     int i;
-    for (i = 0; i < MAX_NUM_TASKS; i++) {
-        if ( taskTable[i].taskEntry == NULL ) {
+    for (i = 0; i < SHEDULER_MAX_TASKS; i++) {
+        if ( taskTable[i].task == NULL ) {
             break;
         }
     }
 
-    return ( i == MAX_NUM_TASKS ? -1 : i);
+    return ( i == SHEDULER_MAX_TASKS ? -1 : i);
 }
 
-static int findPidInTaskTable(pid_t pid) {
+static int Sheduler_findPidInTaskTable(Sheduler_Pid pid) {
     int i;
-    for (i = 0; i < MAX_NUM_TASKS; i++) {
+    for (i = 0; i < SHEDULER_MAX_TASKS; i++) {
         if ( taskTable[i].pid == pid ) {
             break;
         }
     }
 
-    return ( i == MAX_NUM_TASKS ? -1 : i);
+    return ( i == SHEDULER_MAX_TASKS ? -1 : i);
 }
 
-pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period) {
+Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
     int i;
-    i = findTaskInTaskTable();
+    i = Sheduler_findTaskInTaskTable();
     if ( i == -1 ) {
         return -1;
     }
 
-    pid_t pid;
-    pid = (pid_t) i;    // pid is position in taskTable[]
+    Sheduler_Pid pid;
+    pid = (Sheduler_Pid) i;    // pid is position in taskTable[]
 
-    TaskDescriptor task = {
-        .taskEntry = taskEntry,
+    Sheduler_TaskDescriptor taskToAdd = {
+        .task = task,
         .pid = pid,
         .period = period,
         .lastRun = 0
     };
 
-    taskTable[i] = task;
+    taskTable[i] = taskToAdd;
 
     return pid;
 }
 
-int deleteTaskSheduler(pid_t pid) {
+int Sheduler_deleteTask(Sheduler_Pid pid) {
    int i;
-   i = findPidInTaskTable(pid);
+   i = Sheduler_findPidInTaskTable(pid);
    if ( i == -1 ) {
         return -1;
    }
-   TaskDescriptor* task = &taskTable[i];
-   task->taskEntry = NULL;
+   Sheduler_TaskDescriptor* task = &taskTable[i];
+   task->task = NULL;
    task->pid = -1;
    task->period = 0;
    task->lastRun = 0;
@@ -71,43 +71,43 @@ int deleteTaskSheduler(pid_t pid) {
    return 0;
 }
 
-int changeTaskPeriodSheduler(pid_t pid, shedtime_t period) {
+int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period) {
     int i;
-    i = findPidInTaskTable(pid);
+    i = Sheduler_findPidInTaskTable(pid);
     if ( i == -1 ) {
         return -1;
     }
 
-    TaskDescriptor* task = &taskTable[i];
+    Sheduler_TaskDescriptor* task = &taskTable[i];
     task->period = period;
     
     return 0;
 }
 
-void runSheduler(void) {
-    shedtime_t lastShedTime;
+void Sheduler_run(void) {
+    Sheduler_Time lastShedTime;
     while (1) {
-        lastShedTime = getShedulerTime();
-        for (uint8_t i = 0; i < MAX_NUM_TASKS; i++) {
-            TaskDescriptor* task = &taskTable[i];
-            if (task->taskEntry == NULL) {
+        lastShedTime = Sheduler_getTime();
+        for (uint8_t i = 0; i < SHEDULER_MAX_TASKS; i++) {
+            Sheduler_TaskDescriptor* task = &taskTable[i];
+            if (task->task == NULL) {
                 continue;
             }
 
             if ( lastShedTime - task->lastRun >= task->period ) {
                 task->lastRun = lastShedTime;
-                if ( task->taskEntry() == -1 ) {
-                    deleteTaskSheduler(task->pid);
+                if ( task->task() == -1 ) {
+                    Sheduler_deleteTask(task->pid);
                 }
             }
         }
     }
 }
 
-void tickShedulerTime(void) {
+void Sheduler_tickTime(void) {
     shedtime++;
 }
 
-shedtime_t getShedulerTime(void) {
+Sheduler_Time Sheduler_getTime(void) {
     return shedtime;
 }

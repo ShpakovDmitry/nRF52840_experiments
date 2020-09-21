@@ -10,9 +10,9 @@ typedef enum {
     LED_4 = GPIO_PIN_16
 } LED;
 
-void initLed(LED led);
-void setLedHigh(LED led);
-void setLedLow(LED led);
-void invertLed(LED led);
+void LED_init(LED led);
+void LED_setHigh(LED led);
+void LED_setLow(LED led);
+void LED_invert(LED led);
 
 #endif  // LED_H

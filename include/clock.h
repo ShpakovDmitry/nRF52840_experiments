@@ -10,20 +10,19 @@ typedef enum {
     HFXO_DEBOUNCE_512US,
     HFXO_DEBOUNCE_1024US,
     HFXO_DEBOUNCE_2048US
-} HfxoDebounceTime;
+} Clock_HighFreqDebounceTime;
 
-void startHfxoClock(void);
-void stopHfxoClock(void);
-void setHfxoDebounce(HfxoDebounceTime debounceTime);
-
-// currently external LFXO is supported
 typedef enum {
-    LFCLK_XTAL = 1
-} LfClkSource;
+    CLOCK_LOW_FREQ_INTERNAL = 0,
+    CLOCK_LOW_FREQ_EXTERNAL = 1
+} Clock_LowFreqSource;
 
-void setLfClkSource(LfClkSource source);
-void startLfxoClock(void);
-void stopLfxoClock(void);
+void Clock_startHighFreqXo(void);
+void Clock_stopHighFreqXo(void);
+void Clock_setHighFreqXoDebounce(Clock_HighFreqDebounceTime debounceTime);
 
+void Clock_setLowFreqSource(Clock_LowFreqSource source);
+void Clock_startLowFreqXo(void);
+void Clock_stopLowFreqXo(void);
 
 #endif  // CLOCK_H

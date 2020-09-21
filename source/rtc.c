@@ -30,12 +30,12 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t PRESCALER;         // 0x508 12-bit prescaler for COUNTER frequency
     uint32_t reserved5[13];     // 0x50C - 0x53C reserved
     uint32_t CC[4];             // 0x540 - 0x54C Compare register
-} RtcRegisters;
+} RTC_Registers;
 
-static RtcRegisters* rtc[3] = {
-    (RtcRegisters* ) RTC_0_BASE_ADDRESS,
-    (RtcRegisters* ) RTC_1_BASE_ADDRESS,
-    (RtcRegisters* ) RTC_2_BASE_ADDRESS
+static RTC_Registers* rtc[3] = {
+    (RTC_Registers* ) RTC_0_BASE_ADDRESS,
+    (RTC_Registers* ) RTC_1_BASE_ADDRESS,
+    (RTC_Registers* ) RTC_2_BASE_ADDRESS
 };
 
 #define TASKS_START_BIT         0
@@ -51,50 +51,50 @@ static RtcRegisters* rtc[3] = {
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
 
-static bool isCorrectModuleRtc(RtcModule rtcModule) {
+static bool RTC_isCorrectModule(RTC_Module module) {
     bool isCorrect = false;
-    if ( rtcModule >= RTC_0 && rtcModule <= RTC_2 ) {
+    if ( module >= RTC_0 && module <= RTC_2 ) {
         isCorrect = true;
     }
     return isCorrect;
 }
 
-static bool isCorrectCompareReg(CompareReg compareReg) {
+static bool RTC_isCorrectCompareReg(RTC_CC CC) {
     bool isCorrect = false;
-    if ( compareReg >= CC_0 && compareReg <= CC_3 ) {
+    if ( CC >= CC_0 && CC <= CC_3 ) {
         isCorrect = true;
     }
     return isCorrect;
 }
 
-static bool isCorrectInterruptRtc(RtcInterrupt rtcInterrupt) {
+static bool RTC_isCorrectInterrupt(RTC_Interrupt interrupt) {
     bool isCorrect = false;
-    if ( rtcInterrupt >= INT_TICK && rtcInterrupt <= INT_CC3 ) {
+    if ( interrupt >= RTC_INT_TICK && interrupt <= RTC_INT_CC3 ) {
         isCorrect = true;
     }
     return isCorrect;
 }
 
-static int getInterruptBit(RtcInterrupt rtcInterrupt) {
+static int RTC_getInterruptBit(RTC_Interrupt interrupt) {
     int val;
 
-    switch (rtcInterrupt) {
-        case INT_TICK:
+    switch (interrupt) {
+        case RTC_INT_TICK:
             val = 0;
             break;
-        case INT_OVRFLW:
+        case RTC_INT_OVRFLW:
             val = 1;
             break;
-        case INT_CC0:
+        case RTC_INT_CC0:
             val = 16;
             break;
-        case INT_CC1:
+        case RTC_INT_CC1:
             val = 17;
             break;
-        case INT_CC2:
+        case RTC_INT_CC2:
             val = 18;
             break;
-        case INT_CC3:
+        case RTC_INT_CC3:
             val = 19;
             break;
         default:
@@ -104,153 +104,153 @@ static int getInterruptBit(RtcInterrupt rtcInterrupt) {
     return val;
 }
 
-void startCounterRtc(RtcModule rtcModule) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_startCounter(RTC_Module module) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
     
-    SET_BIT_HI(rtc[rtcModule]->TASKS_START, TASKS_START_BIT);
+    SET_BIT_HI(rtc[module]->TASKS_START, TASKS_START_BIT);
 }
 
-void stopCounterRtc(RtcModule rtcModule) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_stopCounter(RTC_Module module) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
     
-    SET_BIT_HI(rtc[rtcModule]->TASKS_STOP, TASKS_STOP_BIT);
+    SET_BIT_HI(rtc[module]->TASKS_STOP, TASKS_STOP_BIT);
 }
 
-void clearCounterRtc(RtcModule rtcModule) {
-    if (isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_clearCounter(RTC_Module module) {
+    if (RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->TASKS_CLEAR, TASKS_CLEAR_BIT);
+    SET_BIT_HI(rtc[module]->TASKS_CLEAR, TASKS_CLEAR_BIT);
 }
 
-void setTrigOvrFlw(RtcModule rtcModule) {
-    if (isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_setTrigOvrFlw(RTC_Module module) {
+    if (RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
+    SET_BIT_HI(rtc[module]->TASKS_TRIGOVRFLW, TASKS_TRIGOVRFLW_BIT);
 }
 
-bool eventTickRtc(RtcModule rtcModule) {
-    if (isCorrectModuleRtc(rtcModule) == false ) {
+bool RTC_isEventTick(RTC_Module module) {
+    if (RTC_isCorrectModule(module) == false ) {
         return false;
     }
     
     bool res = false;
 
-    if ( GET_BIT(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT) == 1 ) {
+    if ( GET_BIT(rtc[module]->EVENTS_TICK, EVENTS_TICK_BIT) == 1 ) {
         res = true;
     }
 
     return res;
 }
 
-bool eventOvrflwRtc(RtcModule rtcModule) {
-    if (isCorrectModuleRtc(rtcModule) == false ) {
+bool RTC_isEventOvrflw(RTC_Module module) {
+    if (RTC_isCorrectModule(module) == false ) {
         return false;
     }
     
     bool res = false;
 
-    if ( GET_BIT(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT) == 1 ) {
+    if ( GET_BIT(rtc[module]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT) == 1 ) {
         res = true;
     }
 
     return res;
 }
 
-bool eventCompare(RtcModule rtcModule, CompareReg compareReg) {
-    if ( isCorrectModuleRtc(rtcModule) == false) {
+bool RTC_isEventCompare(RTC_Module module, RTC_CC CC) {
+    if ( RTC_isCorrectModule(module) == false) {
         return false;
     }
 
-    if ( isCorrectCompareReg(compareReg) == false ) {
+    if ( RTC_isCorrectCompareReg(CC) == false ) {
         return false;
     }
     
     // according to datasheet CC[3] not implemented in RTC[0]
-    if (rtcModule == RTC_0 && compareReg == CC_3) {
+    if (module == RTC_0 && CC == CC_3) {
         return false;
     }
 
     bool res = false;
-    if ( GET_BIT(rtc[rtcModule]->CC[compareReg], EVENTS_COMPARE_BIT) == 1 ) {
+    if ( GET_BIT(rtc[module]->CC[CC], EVENTS_COMPARE_BIT) == 1 ) {
         res = true;
     }
     
     return res;
 }
 
-void clearEventTickRtc(RtcModule rtcModule) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_clearEventTick(RTC_Module module) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
     
-    SET_BIT_LO(rtc[rtcModule]->EVENTS_TICK, EVENTS_TICK_BIT);
+    SET_BIT_LO(rtc[module]->EVENTS_TICK, EVENTS_TICK_BIT);
 }
-void clearEventOvrflwRtc(RtcModule rtcModule) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_clearEventOvrflw(RTC_Module module) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
     
-    SET_BIT_LO(rtc[rtcModule]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT);
+    SET_BIT_LO(rtc[module]->EVENTS_OVRFLW, EVENTS_OVRFLW_BIT);
 }
-void clearEventCompareRtc(RtcModule rtcModule, CompareReg compareReg) {
-    if ( isCorrectModuleRtc(rtcModule) == false) {
+void RTC_clearEventCompare(RTC_Module module, RTC_CC CC) {
+    if ( RTC_isCorrectModule(module) == false) {
         return;
     }
 
-    if ( isCorrectCompareReg(compareReg) == false ) {
+    if ( RTC_isCorrectCompareReg(CC) == false ) {
         return;
     }
     
     // according to datasheet CC[3] not implemented in RTC[0]
-    if (rtcModule == RTC_0 && compareReg == CC_3) {
+    if (module == RTC_0 && CC == CC_3) {
         return;
     }
     
-    SET_BIT_LO(rtc[rtcModule]->CC[compareReg], EVENTS_COMPARE_BIT);
+    SET_BIT_LO(rtc[module]->CC[CC], EVENTS_COMPARE_BIT);
 }
 
-void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_enableInterrupt(RTC_Module module, RTC_Interrupt interrupt) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+    if ( RTC_isCorrectInterrupt(interrupt) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->INTENSET, getInterruptBit(rtcInterrupt));
+    SET_BIT_HI(rtc[module]->INTENSET, RTC_getInterruptBit(interrupt));
 }
 
-void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_disableInterrupt(RTC_Module module, RTC_Interrupt interrupt) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+    if ( RTC_isCorrectInterrupt(interrupt) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->INTENCLR, getInterruptBit(rtcInterrupt));
+    SET_BIT_HI(rtc[module]->INTENCLR, RTC_getInterruptBit(interrupt));
 }
 
-uint32_t getCounterRtc(RtcModule rtcModule) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+uint32_t RTC_getCounterValue(RTC_Module module) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return 0;
     }
 
-    return rtc[rtcModule]->COUNTER;
+    return rtc[module]->COUNTER;
 }
 
-void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_setPrescaler(RTC_Module module, uint16_t prescaler) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
     
@@ -258,39 +258,39 @@ void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler) {
         prescaler = MAX_PRESCALER_RTC;
     }
 
-    rtc[rtcModule]->PRESCALER = prescaler;
+    rtc[module]->PRESCALER = prescaler;
 }
 
-void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_enableEventRouting(RTC_Module module, RTC_Interrupt interrupt) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+    if ( RTC_isCorrectInterrupt(interrupt) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->EVTENSET, getInterruptBit(rtcInterrupt));
+    SET_BIT_HI(rtc[module]->EVTENSET, RTC_getInterruptBit(interrupt));
 }
 
-void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_disableEventRouting(RTC_Module module, RTC_Interrupt interrupt) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    if ( isCorrectInterruptRtc(rtcInterrupt) == false ) {
+    if ( RTC_isCorrectInterrupt(interrupt) == false ) {
         return;
     }
 
-    SET_BIT_HI(rtc[rtcModule]->EVTENCLR, getInterruptBit(rtcInterrupt));
+    SET_BIT_HI(rtc[module]->EVTENCLR, RTC_getInterruptBit(interrupt));
 }
 
-void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+void RTC_setCompareReg(RTC_Module module, RTC_CC CC, uint32_t value) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return;
     }
 
-    if ( isCorrectCompareReg(compareReg) == false ) {
+    if ( RTC_isCorrectCompareReg(CC) == false ) {
         return;
     }
 
@@ -298,22 +298,22 @@ void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value
         value = MAX_COMPARE_VAL;    // saturate
     }
 
-    rtc[rtcModule]->CC[compareReg] = value;
+    rtc[module]->CC[CC] = value;
 }
 
-uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg) {
-    if ( isCorrectModuleRtc(rtcModule) == false ) {
+uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC CC) {
+    if ( RTC_isCorrectModule(module) == false ) {
         return 0;
     }
 
-    if ( isCorrectCompareReg(compareReg) == false ) {
+    if ( RTC_isCorrectCompareReg(CC) == false ) {
         return 0;
     }
 
-    return rtc[rtcModule]->CC[compareReg];
+    return rtc[module]->CC[CC];
 }
 
 void Rtc0Handler(void) {
-    clearEventTickRtc(RTC_0);
-    tickShedulerTime();
+    RTC_clearEventTick(RTC_0);
+    Sheduler_tickTime();
 }
