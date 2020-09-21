@@ -24,9 +24,9 @@ int main(void) {
     Clock_setLowFreqSource(CLOCK_LOW_FREQ_EXTERNAL);
     Clock_startLowFreqXo();
 
-    setPrescalerRtc(RTC_0, 32);
-    startCounterRtc(RTC_0);
-    enableInterruptRtc(RTC_0, INT_TICK);
+    RTC_setPrescaler(RTC_0, 32);
+    RTC_startCounter(RTC_0);
+    RTC_enableInterrupt(RTC_0, RTC_INT_TICK);
 
     NVIC_enableIrq(RTC0);
     NVIC_enableGlobalIrq();

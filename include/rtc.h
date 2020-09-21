@@ -6,35 +6,35 @@
 #define MAX_PRESCALER_RTC 4095u
 #define MAX_COMPARE_VAL 16777215u
 
-typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RtcModule;
-typedef enum { CC_0 = 0, CC_1, CC_2, CC_3} CompareReg;
+typedef enum { RTC_0 = 0, RTC_1, RTC_2 } RTC_Module;
+typedef enum { CC_0 = 0, CC_1, CC_2, CC_3} RTC_CC;
 typedef enum {
-    INT_TICK = 0, INT_OVRFLW,
-    INT_CC0, INT_CC1, INT_CC2, INT_CC3} RtcInterrupt;
+    RTC_INT_TICK = 0, RTC_INT_OVRFLW,
+    RTC_INT_CC0, RTC_INT_CC1, RTC_INT_CC2, RTC_INT_CC3} RTC_Interrupt;
 
-void startCounterRtc(RtcModule rtcModule);
-void stopCounterRtc(RtcModule rtcModule);
-void clearCounterRtc(RtcModule rtcModule);
-void setTrigOvrFlw(RtcModule rtcModule);
+void RTC_startCounter(RTC_Module module);
+void RTC_stopCounter(RTC_Module module);
+void RTC_clearCounter(RTC_Module module);
+void RTC_setTrigOvrFlw(RTC_Module module);
 
-bool eventTickRtc(RtcModule rtcModule);
-bool eventOvrflwRtc(RtcModule rtcModule);
-bool eventCompare(RtcModule rtcModule, CompareReg compareReg);
+bool RTC_isEventTick(RTC_Module module);
+bool RTC_isEventOvrflw(RTC_Module module);
+bool RTC_isEventCompare(RTC_Module module, RTC_CC cc);
 
-void clearEventTickRtc(RtcModule rtcModule);
-void clearEventOvrflwRtc(RtcModule rtcModule);
-void clearEventCompareRtc(RtcModule rtcModule, CompareReg compareReg);
+void RTC_clearEventTick(RTC_Module module);
+void RTC_clearEventOvrflw(RTC_Module module);
+void RTC_clearEventCompare(RTC_Module module, RTC_CC cc);
 
-void enableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
-void disableInterruptRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void RTC_enableInterrupt(RTC_Module module, RTC_Interrupt interrupt);
+void RTC_disableInterrupt(RTC_Module module, RTC_Interrupt interrupt);
 
-uint32_t getCounterRtc(RtcModule rtcModule);
-void setPrescalerRtc(RtcModule rtcModule, uint16_t prescaler);
+uint32_t RTC_getCounterValue(RTC_Module module);
+void RTC_setPrescaler(RTC_Module module, uint16_t prescaler);
 
-void enableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
-void disableEventRoutingRtc(RtcModule rtcModule, RtcInterrupt rtcInterrupt);
+void RTC_enableEventRouting(RTC_Module module, RTC_Interrupt interrupt);
+void RTC_disableEventRouting(RTC_Module module, RTC_Interrupt interrupt);
 
-void setCompareRegRtc(RtcModule rtcModule, CompareReg compareReg, uint32_t value);
-uint32_t getCompareRegRtc(RtcModule rtcModule, CompareReg compareReg);
+void RTC_setCompareReg(RTC_Module module, RTC_CC cc, uint32_t value);
+uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC cc);
 
 #endif  // RTC_H
