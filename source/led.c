@@ -2,19 +2,19 @@
 #include <gpio.h>
 
 void initLed(LED led) {
-    setGpioDir(GPIO_0, led, GPIO_OUTPUT);
+    GPIO_setDirection(GPIO_0, led, GPIO_OUTPUT);
     setLedLow(led);
 }
 
 void setLedHigh(LED led) {
-    setGpioOutput(GPIO_0, led, GPIO_LOW);   /* low - because in sink mode */
+    GPIO_setOutput(GPIO_0, led, GPIO_LOW);   /* low - because in sink mode */
 }
 
 void setLedLow(LED led) {
-    setGpioOutput(GPIO_0, led, GPIO_HIGH);  /* high - because in sink mode */
+    GPIO_setOutput(GPIO_0, led, GPIO_HIGH);  /* high - because in sink mode */
 }
 void invertLed(LED led) {
-    if ( getGpioDriver(GPIO_0, led) == GPIO_HIGH ) {
+    if ( GPIO_getDriver(GPIO_0, led) == GPIO_HIGH ) {
         setLedHigh(led);
     } else {
         setLedLow(led);

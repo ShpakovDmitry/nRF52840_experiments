@@ -3,9 +3,9 @@
 
 #include <stdint.h>
 
-typedef enum { GPIO_0 = 0, GPIO_1 } GpioPort;
-typedef enum { GPIO_INPUT = 0, GPIO_OUTPUT } GpioDir;
-typedef enum { GPIO_LOW = 0, GPIO_HIGH } GpioOut;
+typedef enum { GPIO_0 = 0, GPIO_1 } GPIO_Port;
+typedef enum { GPIO_INPUT = 0, GPIO_OUTPUT } GPIO_Direction;
+typedef enum { GPIO_LOW = 0, GPIO_HIGH } GPIO_Output;
 typedef enum {
     GPIO_PIN_0 = 0, GPIO_PIN_1, GPIO_PIN_2, GPIO_PIN_3,
     GPIO_PIN_4,  GPIO_PIN_5,  GPIO_PIN_6,  GPIO_PIN_7,
@@ -15,11 +15,11 @@ typedef enum {
     GPIO_PIN_20, GPIO_PIN_21, GPIO_PIN_22, GPIO_PIN_23,
     GPIO_PIN_24, GPIO_PIN_25, GPIO_PIN_26, GPIO_PIN_27,
     GPIO_PIN_28, GPIO_PIN_29, GPIO_PIN_30, GPIO_PIN_31
-} GpioPin;
+} GPIO_Pin;
 
-void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir);
-void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut);
-GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin);
-GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin);
+void GPIO_setDirection(GPIO_Port port, GPIO_Pin pin, GPIO_Direction direction);
+void GPIO_setOutput(GPIO_Port port, GPIO_Pin pin, GPIO_Output output);
+GPIO_Output GPIO_getInput(GPIO_Port port, GPIO_Pin pin);
+GPIO_Output GPIO_getDriver(GPIO_Port port, GPIO_Pin pin);
 
 #endif	// GPIO_H
