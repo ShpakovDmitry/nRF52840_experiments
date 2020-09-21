@@ -19,7 +19,7 @@ int task4(void);
 int main(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
     Clock_startHighFreqXo();
-    initSysTime(RELOAD_1MS_64MHZ);
+    SysTick_init(RELOAD_1MS_64MHZ);
 
     Clock_setLowFreqSource(CLOCK_LOW_FREQ_EXTERNAL);
     Clock_startLowFreqXo();
