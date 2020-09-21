@@ -31,10 +31,10 @@ int main(void) {
     NVIC_enableIrq(RTC0);
     NVIC_enableGlobalIrq();
 
-    initLed(LED_1);
-    initLed(LED_2);
-    initLed(LED_3);
-    initLed(LED_4);
+    LED_init(LED_1);
+    LED_init(LED_2);
+    LED_init(LED_3);
+    LED_init(LED_4);
 
     addTaskSheduler(&task1, LED_1_BLINK_PERIOD);
     addTaskSheduler(&task2, LED_2_BLINK_PERIOD);
@@ -47,18 +47,18 @@ int main(void) {
 }
 
 int task1(void) {
-    invertLed(LED_1);
+    LED_invert(LED_1);
     return 0;
 }
 int task2(void) {
-    invertLed(LED_2);
+    LED_invert(LED_2);
     return 0;
 }
 int task3(void) {
-    invertLed(LED_3);
+    LED_invert(LED_3);
     return 0;
 }
 int task4(void) {
-    invertLed(LED_4);
+    LED_invert(LED_4);
     return 0;
 }

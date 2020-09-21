@@ -1,22 +1,22 @@
 #include <led.h>
 #include <gpio.h>
 
-void initLed(LED led) {
+void LED_init(LED led) {
     GPIO_setDirection(GPIO_0, led, GPIO_OUTPUT);
-    setLedLow(led);
+    LED_setLow(led);
 }
 
-void setLedHigh(LED led) {
+void LED_setHigh(LED led) {
     GPIO_setOutput(GPIO_0, led, GPIO_LOW);   /* low - because in sink mode */
 }
 
-void setLedLow(LED led) {
+void LED_setLow(LED led) {
     GPIO_setOutput(GPIO_0, led, GPIO_HIGH);  /* high - because in sink mode */
 }
-void invertLed(LED led) {
+void LED_invert(LED led) {
     if ( GPIO_getDriver(GPIO_0, led) == GPIO_HIGH ) {
-        setLedHigh(led);
+        LED_setHigh(led);
     } else {
-        setLedLow(led);
+        LED_setLow(led);
     }
 }
