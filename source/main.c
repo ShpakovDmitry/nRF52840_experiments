@@ -17,12 +17,12 @@ int task3(void);
 int task4(void);
 
 int main(void) {
-    setHfxoDebounce(HFXO_DEBOUNCE_1024US);
-    startHfxoClock();
+    Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
+    Clock_startHighFreqXo();
     initSysTime(RELOAD_1MS_64MHZ);
 
-    setLfClkSource(LFCLK_XTAL);
-    startLfxoClock();
+    Clock_setLowFreqSource(CLOCK_LOW_FREQ_EXTERNAL);
+    Clock_startLowFreqXo();
 
     setPrescalerRtc(RTC_0, 32);
     startCounterRtc(RTC_0);

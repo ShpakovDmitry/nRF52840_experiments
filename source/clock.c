@@ -41,9 +41,9 @@ typedef volatile struct __attribute__ ((packed)) {
     uint32_t TRACECONFIG;           /* 0x55C clocking options for TPDI */
     uint32_t reserved10[21];        /* 0x560 - 0x5B0 reserved */
     uint32_t LFRCMODE;              /* 0x5B4 LFRC mode configuration */
-} ClockRegisters;
+} Clock_Registers;
 
-static ClockRegisters* clock = (ClockRegisters *) CLOCK_BASE_ADDRESS;
+static Clock_Registers* clock = (Clock_Registers *) CLOCK_BASE_ADDRESS;
 
 #define TASKS_HFCLKSTART_BIT    0
 #define TASKS_HFCLKSTOP_BIT     0
@@ -57,7 +57,7 @@ static ClockRegisters* clock = (ClockRegisters *) CLOCK_BASE_ADDRESS;
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit) ( (reg) & (1 << (bit)) )
 
-static bool HfxoClkStarted(void) {
+static bool Clock_isHighFreqXoStarted(void) {
     bool res;
     if ( GET_BIT(clock->EVENTS_HFCLKSTARTED, EVENTS_HFCLKSTARTED_BIT) ) {
         res = true;
@@ -67,19 +67,19 @@ static bool HfxoClkStarted(void) {
     return res;
 }
 
-void startHfxoClock(void) {
+void Clock_startHighFreqXo(void) {
     SET_BIT_HI(clock->TASKS_HFCLKSTART, TASKS_HFCLKSTART_BIT);
 
-    while ( HfxoClkStarted() == false ) {
+    while ( Clock_isHighFreqXoStarted() == false ) {
         ;
     }
 }
 
-void stopHfxoClock(void) {
+void Clock_stopHighFreqXo(void) {
     SET_BIT_HI(clock->TASKS_HFCLKSTOP, TASKS_HFCLKSTOP_BIT);
 }
 
-void setHfxoDebounce(HfxoDebounceTime debounceTime) {
+void Clock_setHighFreqXoDebounce(Clock_HighFreqDebounceTime debounceTime) {
     switch (debounceTime) {
         case HFXO_DEBOUNCE_16US :
         case HFXO_DEBOUNCE_32US :
@@ -98,19 +98,19 @@ void setHfxoDebounce(HfxoDebounceTime debounceTime) {
     }
 }
 
-void setLfClkSource(LfClkSource source) {
+void Clock_setLowFreqSource(Clock_LowFreqSource source) {
     switch (source) {
-        case LFCLK_XTAL :
-            clock->LFCLKSRC |= LFCLK_XTAL;
+        case CLOCK_LOW_FREQ_EXTERNAL :
+            clock->LFCLKSRC |= CLOCK_LOW_FREQ_EXTERNAL;
             break;
         default :
-            clock->LFCLKSRC |= LFCLK_XTAL;
+            clock->LFCLKSRC |= CLOCK_LOW_FREQ_EXTERNAL;
             break;
     }
 
 }
 
-static bool LfClkStarted(void) {
+static bool Clock_isLowFreqStarted(void) {
     bool res;
     if ( GET_BIT(clock->EVENTS_LFCLKSTARTED, EVENTS_LFCLKSTARTED_BIT) ) {
         res = true;
@@ -120,13 +120,13 @@ static bool LfClkStarted(void) {
     return res;
 }
 
-void startLfxoClock(void) {
+void Clock_startLowFreqXo(void) {
     SET_BIT_HI(clock->TASKS_LFCLKSTART, TASKS_LFCLKSTART_BIT);
-    while ( LfClkStarted() == false) {
+    while ( Clock_isLowFreqStarted() == false) {
         ;
     }
 }
 
-void stopLfxoClock(void) {
+void Clock_stopLowFreqXo(void) {
     SET_BIT_HI(clock->TASKS_LFCLKSTOP, TASKS_LFCLKSTOP_BIT);
 }
