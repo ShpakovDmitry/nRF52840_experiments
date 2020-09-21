@@ -315,5 +315,5 @@ uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC CC) {
 
 void Rtc0Handler(void) {
     RTC_clearEventTick(RTC_0);
-    tickShedulerTime();
+    Sheduler_tickTime();
 }

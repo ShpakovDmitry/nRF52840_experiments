@@ -36,12 +36,12 @@ int main(void) {
     LED_init(LED_3);
     LED_init(LED_4);
 
-    addTaskSheduler(&task1, LED_1_BLINK_PERIOD);
-    addTaskSheduler(&task2, LED_2_BLINK_PERIOD);
-    addTaskSheduler(&task3, LED_3_BLINK_PERIOD);
-    addTaskSheduler(&task4, LED_4_BLINK_PERIOD);
+    Sheduler_addTask(&task1, LED_1_BLINK_PERIOD);
+    Sheduler_addTask(&task2, LED_2_BLINK_PERIOD);
+    Sheduler_addTask(&task3, LED_3_BLINK_PERIOD);
+    Sheduler_addTask(&task4, LED_4_BLINK_PERIOD);
 
-    runSheduler();
+    Sheduler_run();
 
     return 0;
 }

@@ -1,17 +1,17 @@
 #ifndef SHEDULER_H
 #define SHEDULER_H
 
-#define MAX_NUM_TASKS 10
+#define SHEDULER_MAX_TASKS 10
 
-typedef int (*TaskEntry)(void);
-typedef uint32_t shedtime_t;
-typedef int pid_t;
+typedef int (*Sheduler_Task)(void);
+typedef uint32_t Sheduler_Time;
+typedef int Sheduler_Pid;
 
-pid_t addTaskSheduler(TaskEntry taskEntry, shedtime_t period);
-int deleteTaskSheduler(pid_t pid);
-int changeTaskPeriodSheduler(pid_t pid, shedtime_t period);
-void runSheduler(void);
-void tickShedulerTime(void);
-shedtime_t getShedulerTime(void);
+Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period);
+int Sheduler_deleteTask(Sheduler_Pid pid);
+int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period);
+void Sheduler_run(void);
+void Sheduler_tickTime(void);
+Sheduler_Time Sheduler_getTime(void);
 
 #endif  // SHEDULER_H
