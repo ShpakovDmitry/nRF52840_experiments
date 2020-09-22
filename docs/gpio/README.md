@@ -23,32 +23,31 @@ GPIO is defined as memory mapped IO structure:
 
 ```c
 typedef volatile struct __attribute__((packed)) {
-	uint32_t reserved0[321];/* 0x000 - 0x500 reserved */
-	uint32_t OUT;		/* 0x504 Write GPIO port */
-	uint32_t OUTSET;	/* 0x508 Set individual bits in GPIO port */
-	uint32_t OUTCLR;	/* 0x50C Clear individual bit in GPIO port */
-	uint32_t IN;		/* 0x510 Read GPIO port */
-	uint32_t DIR;		/* 0x514 Direction of GPIO port */
-	uint32_t DIRSET;	/* 0x518 DIR set register */
-	uint32_t DIRCLR;	/* 0x51C DIR clear register */
-	uint32_t LATCH;		/* 0x520 Latch register indicating what GPIO pins
-				   that have met the criteria set in the
-				   PIN_CNF[n].SENSE registers*/
-	uint32_t DETECTMODE;	/* 0x524 Select between default DETECT signal
-				   behaviour and LDETECT mode*/
-	uint32_t reserved1[118];/* 0x528 - 0x6FC reserved */
-	uint32_t PIN_CNF[32];	/* 0x700 - 0x77C Configuration of GPIO pins*/
-} GpioRegisters;
+    uint32_t reserved0[321];    /* 0x000 - 0x500 reserved */
+    uint32_t OUT;               /* 0x504 Write GPIO port */
+    uint32_t OUTSET;            /* 0x508 Set individual bits in GPIO port */
+    uint32_t OUTCLR;            /* 0x50C Clear individual bit in GPIO port */
+    uint32_t IN;                /* 0x510 Read GPIO port */
+    uint32_t DIR;               /* 0x514 Direction of GPIO port */
+    uint32_t DIRSET;            /* 0x518 DIR set register */
+    uint32_t DIRCLR;            /* 0x51C DIR clear register */
+    uint32_t LATCH;             /* 0x520 Latch register */
+    uint32_t DETECTMODE;        /* 0x524 Mode select */
+    uint32_t reserved1[118];    /* 0x528 - 0x6FC reserved */
+    uint32_t PIN_CNF[32];       /* 0x700 - 0x77C Configuration of GPIO pins*/
+} GPIO_Registers;
 
-static GpioRegisters* gpio0 = (GpioRegisters* )0x50000000u;
-static GpioRegisters* gpio1 = (GpioRegisters* )0x50000300u;
+static GPIO_Registers* gpio[2] = {
+    (GPIO_Registers* ) GPIO_0_BASE_ADDRESS,
+    (GPIO_Registers* ) GPIO_1_BASE_ADDRESS
+};
 ```
 
 GPIO is encapsulated and interaction is done only throught routines given in
 `gpio.h` header file:
 ```c
-void setGpioDir(GpioPort gpioPort, GpioPin gpioPin, GpioDir gpioDir);
-void setGpioOutput(GpioPort gpioPort, GpioPin gpioPin, GpioOut gpioOut);
-GpioOut getGpioInput(GpioPort gpioPort, GpioPin gpioPin);
-GpioOut getGpioDriver(GpioPort gpioPort, GpioPin gpioPin);
+void GPIO_setDirection(GPIO_Port port, GPIO_Pin pin, GPIO_Direction direction);
+void GPIO_setOutput(GPIO_Port port, GPIO_Pin pin, GPIO_Output output);
+GPIO_Output GPIO_getInput(GPIO_Port port, GPIO_Pin pin);
+GPIO_Output GPIO_getDriver(GPIO_Port port, GPIO_Pin pin);
 ```
