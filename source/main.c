@@ -16,7 +16,7 @@ int task2(void);
 int task3(void);
 int task4(void);
 
-int main(void) {
+void HardwareInit(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
     Clock_startHighFreqXo();
     SysTick_init(RELOAD_1MS_64MHZ);
@@ -35,6 +35,10 @@ int main(void) {
     LED_init(LED_2);
     LED_init(LED_3);
     LED_init(LED_4);
+}
+
+int main(void) {
+    HardwareInit();
 
     Sheduler_addTask(&task1, LED_1_BLINK_PERIOD);
     Sheduler_addTask(&task2, LED_2_BLINK_PERIOD);
