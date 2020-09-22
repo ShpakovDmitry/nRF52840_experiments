@@ -6,30 +6,27 @@ System time is needed for sheduler. Every task needs description of its entry
 point, and time period at which it wants to be executed.
 ```c
 typedef struct {
-	TaskEntry taskEntry;
-	systime_t period;
-	systime_t lastRun;
-} TaskDescriptor;
+    Sheduler_Task task;
+    Sheduler_Pid pid;
+    Sheduler_Time period;
+    Sheduler_Time lastRun;
+} Sheduler_TaskDescriptor;
 ```
 
-`taskEntry` is pointer to task routine. It could return some value to indicate
+`task` is pointer to task routine. It could return some value to indicate
 some event happeded to sheduller, but for now nothing will be returned to
 sheduler. \
 So:
 ```c
-typedef void (*TaskEntry)(void);
+typedef void (*Sheduler_Task)(void);
 ```
 Also we need method to add tasks to sheduller:
 ```c
-ShedulerError addTaskSheduler(TaskEntry taskEntry, systime_t period);
+Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period);
 ```
-Here `ShedulerError` returns code if taks added successfully of failed:
-```c
-typedef enum {
-	SHEDULER_OK = 0,
-	SHEDULER_TOO_MANY_TASKS
-} ShedulerError;
-```
+Here `Sheduler_Pid` is task process ID, if taks added successfully or is -1 if
+addition to sheduler failed:
+
 As we do not have dynamic memory allocation at the moment, we will use
 static memory alocation for sheduler tasks. So we will specify how many
 tasks sheduller will handle:
@@ -38,5 +35,19 @@ tasks sheduller will handle:
 ```
 After tasks are set in sheduler, sheduler should be executed.
 ```c
-void runSheduler(void);
+void Sheduler_run(void);
+```
+
+All control routines over sheduler are listed below:
+```c
+typedef int (*Sheduler_Task)(void);
+typedef uint32_t Sheduler_Time;
+typedef int Sheduler_Pid;
+
+Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period);
+int Sheduler_deleteTask(Sheduler_Pid pid);
+int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period);
+void Sheduler_run(void);
+void Sheduler_tickTime(void);
+Sheduler_Time Sheduler_getTime(void);
 ```
