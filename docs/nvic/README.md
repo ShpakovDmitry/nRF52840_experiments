@@ -15,5 +15,17 @@ Table of NVIC registers
 |0xE000E300 - 0xE000E31C|NVIC\_IABR[0..7]|Interrupt Active Bit register     |
 |0xE000E400 - 0xE000E4EC|NVIC\_IPR[0..7] |Interrupt Priority register       |
 
+Control over NVIC is done by following routines:
+```c
+void NVIC_enableGlobalIrq(void);
+void NVIC_disableGlobalIrq(void);
+
+void NVIC_enableIrq(IrqNvic irqNvic);
+void NVIC_disableIrq(IrqNvic irqNvic);
+void NVIC_setPendingIrq(IrqNvic irqNvic);
+void NVIC_clearPendingIrq(IrqNvic irqNvic);
+bool NVIC_isPendingIrq(IrqNvic irqNvic);
+void NVIC_setPriorityIrq(IrqNvic irqNvic, uint8_t priority);
+```
 Please refer to ARM Cortex-M4 manual to get full description of registers
 listed above.
