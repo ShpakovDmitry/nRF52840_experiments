@@ -20,6 +20,7 @@ $ git clone https://github.com/ShpakovDmitry/nRF52840DK_BareMetal_Blink.git
     1. [SysTime](/docs/systime/README.md)
     1. [RTC](/docs/rtc/README.md)
     1. [NVIC](/docs/nvic/README.md)
+    1. [UART](/docs/uart/README.md)
 1. [Cooperative sheduler](/docs/cooperative-sheduler/README.md)
 1. [Blink](/docs/blink/README.md)
 1. [Building firmware](/docs/building_firmware/README.md)
