@@ -11,10 +11,10 @@
 #define LED_2_BLINK_PERIOD  501
 #define LED_3_BLINK_PERIOD  502
 #define LED_4_BLINK_PERIOD  503
-int BlinkLed1(void);
-int BlinkLed2(void);
-int BlinkLed3(void);
-int BlinkLed4(void);
+int blinkLed1(void);
+int blinkLed2(void);
+int blinkLed3(void);
+int blinkLed4(void);
 
 void HardwareInit(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
@@ -40,29 +40,29 @@ void HardwareInit(void) {
 int main(void) {
     HardwareInit();
 
-    Sheduler_addTask(&BlinkLed1, LED_1_BLINK_PERIOD);
-    Sheduler_addTask(&BlinkLed2, LED_2_BLINK_PERIOD);
-    Sheduler_addTask(&BlinkLed3, LED_3_BLINK_PERIOD);
-    Sheduler_addTask(&BlinkLed4, LED_4_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed1, LED_1_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed2, LED_2_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed3, LED_3_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed4, LED_4_BLINK_PERIOD);
 
     Sheduler_run();
 
     return 0;
 }
 
-int BlinkLed1(void) {
+int blinkLed1(void) {
     LED_invert(LED_1);
     return 0;
 }
-int BlinkLed2(void) {
+int blinkLed2(void) {
     LED_invert(LED_2);
     return 0;
 }
-int BlinkLed3(void) {
+int blinkLed3(void) {
     LED_invert(LED_3);
     return 0;
 }
-int BlinkLed4(void) {
+int blinkLed4(void) {
     LED_invert(LED_4);
     return 0;
 }
