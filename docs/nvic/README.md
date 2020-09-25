@@ -47,6 +47,8 @@ call the same interrupt after the ISR routine is exited.
 Every ISR should be added `isr` attribute, for example:
 ```c
 __attribute__((isr)) void Rtc0Handler(void) {
+    // check which event generated interrupt
+    // clear this event
     // ISR code here
 }
 ```
