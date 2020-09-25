@@ -27,5 +27,28 @@ void NVIC_clearPendingIrq(IrqNvic irqNvic);
 bool NVIC_isPendingIrq(IrqNvic irqNvic);
 void NVIC_setPriorityIrq(IrqNvic irqNvic, uint8_t priority);
 ```
-Please refer to ARM Cortex-M4 manual to get full description of registers
-listed above.
+
+To set any peripheral interrupt to be active the following should be done:
+* set enable interrupt bit in periphery register
+* set enable interrupt bit in NVIC
+* enable global interrupts by calling `NVIC_enableGlobalIrq()`
+
+Also, interrupt handler should be written. By default there is a `weak`
+connection to `DummyInterrupt()` routine. To use own interrupt handler simple
+write the routine with the same name as appropriate interrupt routine name
+declared in `source/isr.c` file.
+When entering the interrupt service routine(ISR) the following should be done:
+* As there may be more than one interrupt source for periphery, in ISR there
+need to be checked which event were generated and then execute appropriate
+code path.
+* clear the generated interrupt event in periphery registers. This is to not
+call the same interrupt after the ISR routine is exited.
+
+Every ISR should be added `isr` attribute, for example:
+```c
+__attribute__((isr)) void Rtc0Handler(void) {
+    // ISR code here
+}
+```
+
+Also to get full description about NVIC, please refer to ARM Cortex-M4 manual.
