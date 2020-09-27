@@ -103,4 +103,46 @@ break condition, will be generated if the `RXD` line is held active low for
 longer than the length of a data frame. Effectively, a framing error is always
 generated before a break condition occurs.
 
+###### Using the UART without flow control
+If flow control is not enabled, the interface will behave as if the `CTS` and
+`RTS` lines are kept active all the time.
+
+###### Parity and stop bit configuration
+Automatic even parity generation for both transmission and reception can be
+configured using the register `CONFIG`. The amount of stop bits can also be
+configured throught the register `CONFIG`.
+
+###### Registers
+
+|Base address|Peripheral|Instance|Description                               |
+|:-----------|:---------|:-------|:-----------------------------------------|
+|0x40002000  |UART      |UART0   |Universal asynchronous receiver/transmiter|
+
+|Register      |Offset|Description                                             |
+|:-------------|:----:|:----------                                             |
+|TASKS\_STARTRX|0x000 |Start UART receiver                                     |
+|TASKS\_STOPRX |0x004 |Stop UART receiver                                      |
+|TASKS\_STARTTX|0x008 |Start UART transmitter                                  |
+|TASKS\_STOPTX |0x00C |Stop UART transmitter                                   |
+|TASKS\_SUSPEND|0x01C |Suspend UART                                            |
+|EVENTS\_CTS   |0x100 |CTS is activated (set low). Clear To Send.              |
+|EVENTS\_NCTS  |0x104 |CTS is deactivated (set high). Not Clear To Send.       |
+|EVENTS\_RXDRDY|0x108 |Data received in RXD                                    |
+|EVENTS\_TXDRDY|0x11C |Data sent from TXD                                      |
+|EVENTS\_ERROR |0x124 |Error detected                                          |
+|EVENTS\_RXTO  |0x144 |Receiver timeout                                        |
+|SHORTS        |0x200 |Shortcuts between local events and tasks                |
+|INTENSET      |0x304 |Enable interrupt                                        |
+|INTENCLR      |0x308 |Disable interrupt                                       |
+|ERRORSRC      |0x480 |Error source                                            |
+|ENABLE        |0x500 |Enable UART                                             |
+|PSEL.RTS      |0x508 |Pin select for RTS                                      |
+|PSEL.TXD      |0x50C |Pin select for TXD                                      |
+|PSEL.CTS      |0x510 |Pin select for CTS                                      |
+|PSEL.RXD      |0x514 |Pin select for RXD                                      |
+|RXD           |0x518 |RXD register                                            |
+|TXD           |0x51C |TXD register                                            |
+|BAUDRATE      |0x524 |Baud rate. Accuracy depends on the HFCLK source selected|
+|CONFIG        |0x56C |Configuration of parity and hardware flow control       |
+
 > TODO complete description
