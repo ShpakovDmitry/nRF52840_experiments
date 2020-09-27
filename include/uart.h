@@ -2,6 +2,7 @@
 #define UART_H
 
 #include <stdbool.h>
+#include <gpio.h>
 
 typedef enum {
     UART_SHORT_CTS_STARTRX,
@@ -23,6 +24,13 @@ typedef enum {
     UART_ERROR_FRAMING,
     UART_ERROR_BREAK
 } UART_ErrorSources;
+
+typedef enum {
+    UART_PIN_RTS,
+    UART_PIN_TXD,
+    UART_PIN_CTS,
+    UART_PIN_RXD
+} UART_Pin;
 
 void UART_startRx(void);
 void UART_stopRx(void);
@@ -47,5 +55,7 @@ UART_ErrorSources UART_getErrorSource(void);
 
 void UART_enable(void);
 void UART_disable(void);
+
+void UART_selectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
 
 #endif  // UART_H
