@@ -82,4 +82,25 @@ To secure that the CPU can detect all incoming `RXDRDY` events throught
 write a new byte to the `RXD` register, and therefore can also generate a new
 event, immediatelly after the `RXD` register is read (emptied) by the CPU.
 
+###### Suspending the UART
+The UART can be suspended by triggering the `SUSPEND` task.
+
+`SUSPEND` will affect both the UART receiver and the UART transmitter, i.e. the
+transmitter will stop transmitting and the receiver will stop receiving. UART
+transmission and reception can be resumed, after being suspended, by triggering
+`STARTTX` and `STARTRX` respectively.
+
+Following a `SUSPEND` task, an ongoing `TXD` byte transmission will be
+completed before the UART is suspended.
+
+When the `SUSPEND` task is triggered, the UART receiver will behave in the
+same way as it does when the `STOPRX` task is triggered.
+
+###### Error conditions
+An `ERROR` event, in the form of a framing error, will be generated if a valid
+stop bit is not detected in a frame. Another `ERROR` event, in the form of a
+break condition, will be generated if the `RXD` line is held active low for
+longer than the length of a data frame. Effectively, a framing error is always
+generated before a break condition occurs.
+
 > TODO complete description
