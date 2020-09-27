@@ -1,6 +1,6 @@
 ### UART
 
-nRF52840 has 2x UART on chip including one with DMA support. At the moment only
+nRF52840 has 2x UART on chip with DMA support. At the moment only
 UART **without** DMA will be used. UART module implements the following:
 * full-duplex operation
 * automatic flow control
@@ -145,4 +145,3 @@ configured throught the register `CONFIG`.
 |BAUDRATE      |0x524 |Baud rate. Accuracy depends on the HFCLK source selected|
 |CONFIG        |0x56C |Configuration of parity and hardware flow control       |
 
-> TODO complete description
