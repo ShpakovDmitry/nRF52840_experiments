@@ -7,6 +7,8 @@ UART **without** DMA will be used. UART module implements the following:
 * parity checking and generation for 9th data bit
 * up to 1Mega baud rate
 
+![UART module](images/uart_config.png)
+
 ###### Pin configuration
 The different signals `RXD`, `CTS`(Clear To Send, active low), `RTC`(Request
 To Send,active low), and `TXD` associated with the UART are mapped to physical
@@ -23,8 +25,13 @@ for the duration the device is in `ON` mode. `PSEL.RXD`, `PSEL.CTS`,
 | UART pin | Direction | Output value   |
 |:-------- |:--------- |:-------------- |
 | RXD      | Input     | Not applicable |
-| CTS      | Input     | Not applicable
+| CTS      | Input     | Not applicable |
 | RTS      | Output    | 1              |
 | TXD      | Output    | 1              |
+
+###### Shared resources
+The UART shares registers and other resources with other peripherals that have
+the same ID as the UART. Therefore, you must disable all peripherals that have
+the same ID as UART before the UART can be configured and used.
 
 > TODO complete description
