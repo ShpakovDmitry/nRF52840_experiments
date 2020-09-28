@@ -45,6 +45,7 @@ typedef volatile struct __attribute__((packed)) {
 static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 
 #define TASKS_STARTRX_BIT   0
+#define TASKS_STOPRX_BIT    0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -52,4 +53,8 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 
 void UART_startRx(void) {
     SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
+}
+
+void UART_stopRx(void) {
+    SET_BIT_HI(uart->TASKS_STOPRX, TASKS_STOPRX_BIT);
 }
