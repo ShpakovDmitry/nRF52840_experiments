@@ -57,5 +57,9 @@ void UART_enable(void);
 void UART_disable(void);
 
 void UART_selectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
+bool UART_readRxd(uint8_t* data);
+bool UART_writeTxd(uint8_t data);
+bool UART_setBaudrate(uint32_t baudRate);
+void UART_setHardwareFlowCtrl();
 
 #endif  // UART_H
