@@ -50,6 +50,8 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define TASKS_STOPTX_BIT    0
 #define TASKS_SUSPEND_BIT   0
 
+#define EVENTS_CTS_BIT      0
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -75,5 +77,9 @@ void UART_suspend(void) {
 }
 
 bool UART_isEventCts(void) {
-
+    bool res = false;
+    if ( GET_BIT(uart->EVENTS_CTS, EVENTS_CTS_BIT) ) {
+        res = true;
+    }
+    return res;
 }
