@@ -46,6 +46,9 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 
 #define TASKS_STARTRX_BIT   0
 #define TASKS_STOPRX_BIT    0
+#define TASKS_STARTTX_BIT   0
+#define TASKS_STOPTX_BIT    0
+#define TASKS_SUSPEND_BIT   0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -57,4 +60,20 @@ void UART_startRx(void) {
 
 void UART_stopRx(void) {
     SET_BIT_HI(uart->TASKS_STOPRX, TASKS_STOPRX_BIT);
+}
+
+void UART_startTx(void) {
+    SET_BIT_HI(uart->TASKS_STARTTX, TASKS_STARTTX_BIT);
+}
+
+void UART_stopTx(void) {
+    SET_BIT_HI(uart->TASKS_STOPTX, TASKS_STOPTX_BIT);
+}
+
+void UART_suspend(void) {
+    SET_BIT_HI(uart->TASKS_SUSPEND, TASKS_SUSPEND_BIT);
+}
+
+bool UART_isEventCts(void) {
+
 }
