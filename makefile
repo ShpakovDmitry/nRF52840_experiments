@@ -11,6 +11,7 @@ AS := $(ARCH)-as
 LD := $(ARCH)-ld
 OBJDUMP := $(ARCH)-objdump
 OBJCOPY := $(ARCH)-objcopy
+OBJSIZE := $(ARCH)-size
 
 SOURCE_DIR := source
 BUILD_DIR := build
@@ -29,7 +30,7 @@ LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sectio
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
 OBJDUMP_FLAGS := --disassemble-all $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
 OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
-
+OBJSIZE_FLAGS := $(BUILD_DIR)/$(TARGET).elf
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CC_FLAGS) $^ -o $@
@@ -38,6 +39,7 @@ $(BUILD_DIR)/$(TARGET).elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
 	$(LD) $(LD_FLAGS) $^ -o $@
 	$(OBJDUMP) $(OBJDUMP_FLAGS)
 	$(OBJCOPY) $(OBJCOPY_FLAGS)
+	$(OBJSIZE) $(OBJSIZE_FLAGS) 
 
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
