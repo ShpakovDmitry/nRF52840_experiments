@@ -53,6 +53,7 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define EVENTS_CTS_BIT      0
 #define EVENTS_NCTS_BIT     0
 #define EVENTS_RXDRDY_BIT   0
+#define EVENTS_TXDRDY_BIT   0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -97,6 +98,14 @@ bool UART_isEventNcts(void) {
 bool UART_isEventRxRdy(void) {
     bool res = false;
     if ( GET_BIT(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT) ) {
+        res = true;
+    }
+    return res;
+}
+
+bool UART_isEventTxRdy(void) {
+    bool res = false;
+    if ( GET_BIT(uart->EVENTS_TXDRDY, EVENTS_TXDRDY_BIT) ) {
         res = true;
     }
     return res;
