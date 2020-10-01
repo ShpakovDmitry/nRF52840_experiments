@@ -75,6 +75,12 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define DISABLE_REG_VALUE   0
 #define ENABLE_REG_VALUE    4
 
+#define PIN_BIT     0
+#define PORT_BIT    5
+#define CONNECT_BIT 31
+#define CLEAR       0
+#define SET         1
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -261,3 +267,26 @@ void UART_disable(void) {
     SET_REG_VAL(uart->ENABLE, DISABLE_REG_VALUE);
 }
 
+void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
+    switch (uartPin) {
+        case UART_PIN_RTS:
+            uart->PSEL_RTS = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_TXD:
+            uart->PSEL_TXD = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_CTS:
+            uart->PSEL_CTS = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_RXD:
+            uart->PSEL_RXD = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+
+    }
+}
