@@ -290,3 +290,28 @@ void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
 
     }
 }
+
+void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
+    switch (uartPin) {
+        case UART_PIN_RTS:
+            uart->PSEL_RTS = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_TXD:
+            uart->PSEL_TXD = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_CTS:
+            uart->PSEL_CTS = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        case UART_PIN_RXD:
+            uart->PSEL_RXD = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+                             (gpioPin << PIN_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+
+    }
+
+}
