@@ -57,6 +57,10 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define EVENTS_ERROR_BIT    0
 #define EVENTS_RXTO_BIT     0
 
+#define SHORTS_CTS_STARTRX_BIT  3
+#define SHORTS_NCTS_STOPTRX_BIT 4
+
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -127,4 +131,17 @@ bool UART_isEventRxTo(void) {
         res = true;
     }
     return res;
+}
+
+void UART_enableShort(UART_Shortcuts shortcut) {
+    switch (shortcut) {
+        case UART_SHORT_CTS_STARTRX:
+            SET_BIT_HI(uart->SHORTS, SHORTS_CTS_STARTRX_BIT);
+            break;
+        case UART_SHORT_NCTS_STOPRX:
+            SET_BIT_HI(uart->SHORTS, SHORTS_NCTS_STOPTRX_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
 }
