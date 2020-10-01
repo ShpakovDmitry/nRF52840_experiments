@@ -51,7 +51,7 @@ void UART_disableShort(UART_Shortcuts shortcut);
 void UART_enableInterrupt(UART_Interrupts interrupt);
 void UART_disableInterrupt(UART_Interrupts interrupt);
 
-UART_ErrorSources UART_getErrorSource(void);
+bool UART_isErrorSource(UART_ErrorSources errorSource);
 
 void UART_enable(void);
 void UART_disable(void);

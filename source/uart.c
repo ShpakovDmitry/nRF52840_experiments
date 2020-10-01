@@ -67,6 +67,11 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define INT_ERROR_BIT   9
 #define INT_RXTO_BIT    17
 
+#define ERROR_OVERRUN_BIT   0
+#define ERROR_PARITY_BIT    1
+#define ERROR_FRAMING_BIT   2
+#define ERROR_BREAK_BIT     3
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -215,3 +220,31 @@ void UART_disableInterrupt(UART_Interrupts interrupt) {
     }
 }
 
+bool UART_isErrorSource(UART_ErrorSources errorSource) {
+    bool res = false;
+    switch (errorSource) {
+        case UART_ERROR_OVERRUN:
+            if ( GET_BIT(uart->ERRORSRC, ERROR_OVERRUN_BIT) ){
+                res = true;
+            }
+            break;
+        case UART_ERROR_PARITY:
+            if ( GET_BIT(uart->ERRORSRC, ERROR_PARITY_BIT) ){
+                res = true;
+            }
+            break;
+        case UART_ERROR_FRAMING:
+            if ( GET_BIT(uart->ERRORSRC, ERROR_FRAMING_BIT) ){
+                res = true;
+            }
+            break;
+        case UART_ERROR_BREAK:
+            if ( GET_BIT(uart->ERRORSRC, ERROR_BREAK_BIT) ){
+                res = true;
+            }
+            break;
+        default:    // nothing to do here
+            break;
+    }
+    return res;
+}
