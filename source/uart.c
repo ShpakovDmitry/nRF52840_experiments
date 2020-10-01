@@ -72,9 +72,12 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define ERROR_FRAMING_BIT   2
 #define ERROR_BREAK_BIT     3
 
+#define ENABLE_REG_VALUE    4
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
+#define SET_REG_VAL(reg, val) ( (reg) = (val) )
 
 void UART_startRx(void) {
     SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
@@ -247,4 +250,8 @@ bool UART_isErrorSource(UART_ErrorSources errorSource) {
             break;
     }
     return res;
+}
+
+void UART_enable(void) {
+    SET_REG_VAL(uart->ENABLE, ENABLE_REG_VALUE);
 }
