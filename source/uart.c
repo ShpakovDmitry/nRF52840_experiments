@@ -55,6 +55,7 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define EVENTS_RXDRDY_BIT   0
 #define EVENTS_TXDRDY_BIT   0
 #define EVENTS_ERROR_BIT    0
+#define EVENTS_RXTO_BIT     0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -118,5 +119,12 @@ bool UART_isEventError(void) {
         res = true;
     }
     return res;
+}
 
+bool UART_isEventRxTo(void) {
+    bool res = false;
+    if ( GET_BIT(uart->EVENTS_RXTO, EVENTS_RXTO_BIT) ) {
+        res = true;
+    }
+    return res;
 }
