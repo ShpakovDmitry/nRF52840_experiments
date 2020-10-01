@@ -72,6 +72,7 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define ERROR_FRAMING_BIT   2
 #define ERROR_BREAK_BIT     3
 
+#define DISABLE_REG_VALUE   0
 #define ENABLE_REG_VALUE    4
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
@@ -255,3 +256,8 @@ bool UART_isErrorSource(UART_ErrorSources errorSource) {
 void UART_enable(void) {
     SET_REG_VAL(uart->ENABLE, ENABLE_REG_VALUE);
 }
+
+void UART_disable(void) {
+    SET_REG_VAL(uart->ENABLE, DISABLE_REG_VALUE);
+}
+
