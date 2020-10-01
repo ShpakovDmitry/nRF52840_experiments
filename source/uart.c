@@ -60,6 +60,12 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define SHORTS_CTS_STARTRX_BIT  3
 #define SHORTS_NCTS_STOPTRX_BIT 4
 
+#define INT_CTS_BIT     0
+#define INT_NCTS_BIT    1
+#define INT_RXDRDY_BIT  2
+#define INT_TXDRDY_BIT  7
+#define INT_ERROR_BIT   9
+#define INT_RXTO_BIT    17
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -153,6 +159,31 @@ void UART_disableShort(UART_Shortcuts shortcut) {
             break;
         case UART_SHORT_NCTS_STOPRX:
             SET_BIT_LO(uart->SHORTS, SHORTS_NCTS_STOPTRX_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
+}
+
+void UART_enableInterrupt(UART_Interrupts interrupt) {
+    switch (interrupt) {
+        case UART_INT_CTS:
+            SET_BIT_HI(uart->INTENSET, INT_CTS_BIT);
+            break;
+        case UART_INT_NCTS:
+            SET_BIT_HI(uart->INTENSET, INT_NCTS_BIT);
+            break;
+        case UART_INT_RXDRDY:
+            SET_BIT_HI(uart->INTENSET, INT_RXDRDY_BIT);
+            break;
+        case UART_INT_TXDRDY:
+            SET_BIT_HI(uart->INTENSET, INT_TXDRDY_BIT);
+            break;
+        case UART_INT_ERROR:
+            SET_BIT_HI(uart->INTENSET, INT_ERROR_BIT);
+            break;
+        case UART_INT_RXTO:
+            SET_BIT_HI(uart->INTENSET, INT_RXTO_BIT);
             break;
         default:    // nothing to do here
             break;
