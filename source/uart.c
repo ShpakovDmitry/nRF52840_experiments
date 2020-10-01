@@ -189,3 +189,29 @@ void UART_enableInterrupt(UART_Interrupts interrupt) {
             break;
     }
 }
+
+void UART_disableInterrupt(UART_Interrupts interrupt) {
+    switch (interrupt) {
+        case UART_INT_CTS:
+            SET_BIT_HI(uart->INTENCLR, INT_CTS_BIT);
+            break;
+        case UART_INT_NCTS:
+            SET_BIT_HI(uart->INTENCLR, INT_NCTS_BIT);
+            break;
+        case UART_INT_RXDRDY:
+            SET_BIT_HI(uart->INTENCLR, INT_RXDRDY_BIT);
+            break;
+        case UART_INT_TXDRDY:
+            SET_BIT_HI(uart->INTENCLR, INT_TXDRDY_BIT);
+            break;
+        case UART_INT_ERROR:
+            SET_BIT_HI(uart->INTENCLR, INT_ERROR_BIT);
+            break;
+        case UART_INT_RXTO:
+            SET_BIT_HI(uart->INTENCLR, INT_RXTO_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
+}
+
