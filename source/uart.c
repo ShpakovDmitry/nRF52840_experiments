@@ -145,3 +145,16 @@ void UART_enableShort(UART_Shortcuts shortcut) {
             break;
     }
 }
+
+void UART_disableShort(UART_Shortcuts shortcut) {
+    switch (shortcut) {
+        case UART_SHORT_CTS_STARTRX:
+            SET_BIT_LO(uart->SHORTS, SHORTS_CTS_STARTRX_BIT);
+            break;
+        case UART_SHORT_NCTS_STOPRX:
+            SET_BIT_LO(uart->SHORTS, SHORTS_NCTS_STOPTRX_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
+}
