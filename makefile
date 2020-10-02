@@ -28,18 +28,21 @@ CC_FLAGS += -idirafter ./include -fdata-sections -ffunction-sections
 CC_FLAGS += -ffreestanding
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
-OBJDUMP_FLAGS := --disassemble-all $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
-OBJCOPY_FLAGS := -O ihex $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
-OBJSIZE_FLAGS := $(BUILD_DIR)/$(TARGET).elf
+OBJDUMP_FLAGS := --disassemble-all
+OBJCOPY_FLAGS := -O ihex 
+OBJSIZE_FLAGS := 
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CC_FLAGS) $^ -o $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $(@:%.o=%.s)
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $(@:%.o=%.s)
 
 $(BUILD_DIR)/$(TARGET).elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
 	$(LD) $(LD_FLAGS) $^ -o $@
-	$(OBJDUMP) $(OBJDUMP_FLAGS)
-	$(OBJCOPY) $(OBJCOPY_FLAGS)
-	$(OBJSIZE) $(OBJSIZE_FLAGS) 
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $(BUILD_DIR)/$(TARGET).s
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $(BUILD_DIR)/$(TARGET).s
+	$(OBJCOPY) $(OBJCOPY_FLAGS) $@ $(BUILD_DIR)/$(TARGET).hex
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@
 
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
