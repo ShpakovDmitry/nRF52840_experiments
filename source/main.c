@@ -6,15 +6,18 @@
 #include <clock.h>
 #include <rtc.h>
 #include <nvic.h>
+#include <uart.h>
 
 #define LED_1_BLINK_PERIOD  500
 #define LED_2_BLINK_PERIOD  501
 #define LED_3_BLINK_PERIOD  502
 #define LED_4_BLINK_PERIOD  503
+#define SEND_MSG_PERIOD     1000
 int blinkLed1(void);
 int blinkLed2(void);
 int blinkLed3(void);
 int blinkLed4(void);
+int sendMessage(void);
 
 void HardwareInit(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
@@ -28,6 +31,15 @@ void HardwareInit(void) {
     RTC_startCounter(RTC_0);
     RTC_enableInterrupt(RTC_0, RTC_INT_TICK);
 
+    //UART config
+    UART_enable();
+    UART_setBaudrate(UART_BAUD_115200);
+    UART_disableHardwareFlowCtrl();
+    UART_excludeParityBit();
+    UART_setStopBits(UART_ONE_STOP_BIT);
+    UART_connectPin(UART_PIN_TXD, GPIO_0, GPIO_PIN_6);
+    UART_connectPin(UART_PIN_RXD, GPIO_0, GPIO_PIN_8);
+
     NVIC_enableIrq(RTC0);
     NVIC_enableGlobalIrq();
 
@@ -40,10 +52,11 @@ void HardwareInit(void) {
 int main(void) {
     HardwareInit();
 
-    Sheduler_addTask(&blinkLed1, LED_1_BLINK_PERIOD);
-    Sheduler_addTask(&blinkLed2, LED_2_BLINK_PERIOD);
-    Sheduler_addTask(&blinkLed3, LED_3_BLINK_PERIOD);
-    Sheduler_addTask(&blinkLed4, LED_4_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed1,    LED_1_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed2,    LED_2_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed3,    LED_3_BLINK_PERIOD);
+    Sheduler_addTask(&blinkLed4,    LED_4_BLINK_PERIOD);
+    Sheduler_addTask(&sendMessage,  SEND_MSG_PERIOD);
 
     Sheduler_run();
 
@@ -64,5 +77,10 @@ int blinkLed3(void) {
 }
 int blinkLed4(void) {
     LED_invert(LED_4);
+    return 0;
+}
+
+int sendMessage(void) {
+    UART_sendString("Hello, World!\r\n");
     return 0;
 }
