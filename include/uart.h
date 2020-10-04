@@ -102,5 +102,6 @@ void UART_excludeParityBit(void);
 void UART_setStopBits(UART_StopBits stopBits);
 
 void UART_sendByte(uint8_t data);
+void UART_sendString(char* str);
 
 #endif  // UART_H

@@ -402,3 +402,9 @@ void UART_sendByte(uint8_t data) {
     UART_clearEvent(UART_EVENT_TXDRDY);
     UART_startTask(UART_TASK_STOPTX);
 }
+
+void UART_sendString(char* str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        UART_sendByte(str[i]);
+    }
+}
