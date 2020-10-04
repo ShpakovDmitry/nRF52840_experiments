@@ -358,11 +358,11 @@ void UART_setBaudrate(UART_BaudRates baudRate) {
     uart->BAUDRATE = baudRegVal;
 }
 
-void UART_enableHardwareFlowCtrl() {
+void UART_enableHardwareFlowCtrl(void) {
     SET_BIT_HI(uart->CONFIG, HWFC_BIT);
 }
 
-void UART_disableHardwareFlowCtrl() {
+void UART_disableHardwareFlowCtrl(void) {
     SET_BIT_LO(uart->CONFIG, HWFC_BIT);
 }
 
