@@ -323,3 +323,30 @@ void UART_readRxd(uint8_t* data) {
 void UART_writeTxd(uint8_t data) {
     uart->TXD = data;
 }
+
+void UART_setBaudrate(UART_BaudRates baudRate) {
+    uint32_t baudRegVal;
+    switch (baudRate) {
+        case UART_BAUD_1200:   {baudRegVal = 0x0004f000; break; }
+        case UART_BAUD_2400:   {baudRegVal = 0x0009d000; break; }
+        case UART_BAUD_4800:   {baudRegVal = 0x0013b000; break; }
+        case UART_BAUD_9600:   {baudRegVal = 0x00275000; break; }
+        case UART_BAUD_14400:  {baudRegVal = 0x003b0000; break; }
+        case UART_BAUD_19200:  {baudRegVal = 0x004ea000; break; }
+        case UART_BAUD_28800:  {baudRegVal = 0x0075f000; break; }
+        case UART_BAUD_31250:  {baudRegVal = 0x00800000; break; }
+        case UART_BAUD_38400:  {baudRegVal = 0x009d5000; break; }
+        case UART_BAUD_56000:  {baudRegVal = 0x00e50000; break; }
+        case UART_BAUD_57600:  {baudRegVal = 0x00ebf000; break; }
+        case UART_BAUD_76800:  {baudRegVal = 0x013a9000; break; }
+        case UART_BAUD_115200: {baudRegVal = 0x01de7000; break; }
+        case UART_BAUD_230400: {baudRegVal = 0x03afb000; break; }
+        case UART_BAUD_250000: {baudRegVal = 0x04000000; break; }
+        case UART_BAUD_460800: {baudRegVal = 0x075f7000; break; }
+        case UART_BAUD_921600: {baudRegVal = 0x0ebed000; break; }
+        case UART_BAUD_1M:     {baudRegVal = 0x10000000; break; }
+        default:               {baudRegVal = 0x00000000; break; }
+    }
+    
+    uart->BAUDRATE = baudRegVal;
+}

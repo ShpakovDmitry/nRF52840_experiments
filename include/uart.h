@@ -32,6 +32,27 @@ typedef enum {
     UART_PIN_RXD
 } UART_Pin;
 
+typedef enum {
+    UART_BAUD_1200,
+    UART_BAUD_2400,
+    UART_BAUD_4800,
+    UART_BAUD_9600,
+    UART_BAUD_14400,
+    UART_BAUD_19200,
+    UART_BAUD_28800,
+    UART_BAUD_31250,
+    UART_BAUD_38400,
+    UART_BAUD_56000,
+    UART_BAUD_57600,
+    UART_BAUD_76800,
+    UART_BAUD_115200,
+    UART_BAUD_230400,
+    UART_BAUD_250000,
+    UART_BAUD_460800,
+    UART_BAUD_921600,
+    UART_BAUD_1M
+} UART_BaudRates;
+
 void UART_startRx(void);
 void UART_stopRx(void);
 void UART_startTx(void);
@@ -60,7 +81,7 @@ void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
 void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
 void UART_readRxd(uint8_t* data);
 void UART_writeTxd(uint8_t data);
-bool UART_setBaudrate(uint32_t baudRate);
+void UART_setBaudrate(UART_BaudRates baudRate);
 void UART_setHardwareFlowCtrl();
 
 #endif  // UART_H
