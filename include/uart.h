@@ -74,12 +74,6 @@ void UART_stopTx(void);
 void UART_suspend(void);
 
 bool UART_isEvent(UART_Events event);
-bool UART_isEventCts(void);
-bool UART_isEventNcts(void);
-bool UART_isEventRxRdy(void);
-bool UART_isEventTxRdy(void);
-bool UART_isEventError(void);
-bool UART_isEventRxTo(void);
 
 void UART_enableShort(UART_Shortcuts shortcut);
 void UART_disableShort(UART_Shortcuts shortcut);

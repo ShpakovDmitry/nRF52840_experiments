@@ -140,54 +140,6 @@ bool UART_isEvent(UART_Events event) {
     return res;
 }
 
-bool UART_isEventCts(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_CTS, EVENTS_CTS_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
-bool UART_isEventNcts(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_NCTS, EVENTS_NCTS_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
-bool UART_isEventRxRdy(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
-bool UART_isEventTxRdy(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_TXDRDY, EVENTS_TXDRDY_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
-bool UART_isEventError(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_ERROR, EVENTS_ERROR_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
-bool UART_isEventRxTo(void) {
-    bool res = false;
-    if ( GET_BIT(uart->EVENTS_RXTO, EVENTS_RXTO_BIT) ) {
-        res = true;
-    }
-    return res;
-}
-
 void UART_enableShort(UART_Shortcuts shortcut) {
     switch (shortcut) {
         case UART_SHORT_CTS_STARTRX:
