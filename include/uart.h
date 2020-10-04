@@ -58,12 +58,22 @@ typedef enum {
     UART_TWO_STOP_BITS
 } UART_StopBits;
 
+typedef enum {
+    UART_EVENT_CTS,
+    UART_EVENT_NCTS,
+    UART_EVENT_RXRDY,
+    UART_EVENT_TXDRDY,
+    UART_EVENT_ERROR,
+    UART_EVENT_RXTO
+} UART_Events;
+
 void UART_startRx(void);
 void UART_stopRx(void);
 void UART_startTx(void);
 void UART_stopTx(void);
 void UART_suspend(void);
 
+bool UART_isEvent(UART_Events event);
 bool UART_isEventCts(void);
 bool UART_isEventNcts(void);
 bool UART_isEventRxRdy(void);

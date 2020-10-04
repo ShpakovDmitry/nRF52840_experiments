@@ -113,6 +113,33 @@ void UART_suspend(void) {
     SET_BIT_HI(uart->TASKS_SUSPEND, TASKS_SUSPEND_BIT);
 }
 
+bool UART_isEvent(UART_Events event) {
+    bool res = false;
+    switch (event) {
+        case UART_EVENT_CTS:
+            res = GET_BIT(uart->EVENTS_CTS, EVENTS_CTS_BIT) ? true : false;
+            break;
+        case UART_EVENT_NCTS:
+            res = GET_BIT(uart->EVENTS_NCTS, EVENTS_NCTS_BIT) ? true : false;
+            break;
+        case UART_EVENT_RXRDY:
+            res = GET_BIT(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT) ? true : false;
+            break;
+        case UART_EVENT_TXDRDY:
+            res = GET_BIT(uart->EVENTS_TXDRDY, EVENTS_TXDRDY_BIT) ? true : false;
+            break;
+        case UART_EVENT_ERROR:
+            res = GET_BIT(uart->EVENTS_ERROR, EVENTS_ERROR_BIT) ? true : false;
+            break;
+        case UART_EVENT_RXTO:
+            res = GET_BIT(uart->EVENTS_RXTO, EVENTS_RXTO_BIT) ? true : false;
+            break;
+        default:    // nothing to do here
+            break;
+    }
+    return res;
+}
+
 bool UART_isEventCts(void) {
     bool res = false;
     if ( GET_BIT(uart->EVENTS_CTS, EVENTS_CTS_BIT) ) {
