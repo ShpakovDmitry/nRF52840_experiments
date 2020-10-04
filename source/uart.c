@@ -315,3 +315,15 @@ void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) 
     }
 
 }
+
+bool UART_readRxd(uint8_t* data) {
+    bool res = false;
+    if ( UART_isEventRxRdy() == true ) {
+        res = true;
+        uint8_t tmp;
+        tmp = uart->RXD;
+        *data = tmp;
+    }
+
+   return res;
+}
