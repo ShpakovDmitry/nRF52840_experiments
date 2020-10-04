@@ -83,5 +83,6 @@ void UART_readRxd(uint8_t* data);
 void UART_writeTxd(uint8_t data);
 void UART_setBaudrate(UART_BaudRates baudRate);
 void UART_enableHardwareFlowCtrl();
+void UART_disableHardwareFlowCtrl();
 
 #endif  // UART_H

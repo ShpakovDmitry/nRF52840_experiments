@@ -356,3 +356,7 @@ void UART_setBaudrate(UART_BaudRates baudRate) {
 void UART_enableHardwareFlowCtrl() {
     SET_BIT_HI(uart->CONFIG, HWFC_BIT);
 }
+
+void UART_disableHardwareFlowCtrl() {
+    SET_BIT_LO(uart->CONFIG, HWFC_BIT);
+}
