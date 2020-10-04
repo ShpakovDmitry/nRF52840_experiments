@@ -85,5 +85,6 @@ void UART_setBaudrate(UART_BaudRates baudRate);
 void UART_enableHardwareFlowCtrl();
 void UART_disableHardwareFlowCtrl();
 void UART_includeParityBit(void);
+void UART_excludeParityBit(void);
 
 #endif  // UART_H

@@ -366,3 +366,7 @@ void UART_disableHardwareFlowCtrl() {
 void UART_includeParityBit(void) {
     uart->CONFIG |= PARITY_INCLUDE_REG_VAL;
 }
+
+void UART_excludeParityBit(void) {
+    uart->CONFIG &= ~PARITY_INCLUDE_REG_VAL;
+}
