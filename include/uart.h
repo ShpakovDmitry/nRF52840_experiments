@@ -67,6 +67,15 @@ typedef enum {
     UART_EVENT_RXTO
 } UART_Events;
 
+typedef enum {
+    UART_TASK_STARTRX,
+    UART_TASK_STOPRX,
+    UART_TASK_STARTTX,
+    UART_TASK_STOPTX,
+    UART_TASK_SUSPEND
+} UART_Tasks;
+
+void UART_StartTask(UART_Tasks task);
 void UART_startRx(void);
 void UART_stopRx(void);
 void UART_startTx(void);

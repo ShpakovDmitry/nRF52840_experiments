@@ -93,6 +93,28 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
 #define SET_REG_VAL(reg, val) ( (reg) = (val) )
 
+void UART_StartTask(UART_Tasks task) {
+    switch (task) {
+        case UART_TASK_STARTRX:
+            SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
+            break;
+        case UART_TASK_STOPRX:
+            SET_BIT_HI(uart->TASKS_STOPRX, TASKS_STOPRX_BIT);
+            break;
+        case UART_TASK_STARTTX:
+            SET_BIT_HI(uart->TASKS_STARTTX, TASKS_STARTTX_BIT);
+            break;
+        case UART_TASK_STOPTX:
+            SET_BIT_HI(uart->TASKS_STOPTX, TASKS_STOPTX_BIT);
+            break;
+        case UART_TASK_SUSPEND:
+            SET_BIT_HI(uart->TASKS_SUSPEND, TASKS_SUSPEND_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
+}
+
 void UART_startRx(void) {
     SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
 }
