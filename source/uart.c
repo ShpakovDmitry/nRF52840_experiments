@@ -115,26 +115,6 @@ void UART_StartTask(UART_Tasks task) {
     }
 }
 
-void UART_startRx(void) {
-    SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
-}
-
-void UART_stopRx(void) {
-    SET_BIT_HI(uart->TASKS_STOPRX, TASKS_STOPRX_BIT);
-}
-
-void UART_startTx(void) {
-    SET_BIT_HI(uart->TASKS_STARTTX, TASKS_STARTTX_BIT);
-}
-
-void UART_stopTx(void) {
-    SET_BIT_HI(uart->TASKS_STOPTX, TASKS_STOPTX_BIT);
-}
-
-void UART_suspend(void) {
-    SET_BIT_HI(uart->TASKS_SUSPEND, TASKS_SUSPEND_BIT);
-}
-
 bool UART_isEvent(UART_Events event) {
     bool res = false;
     switch (event) {
