@@ -53,6 +53,11 @@ typedef enum {
     UART_BAUD_1M
 } UART_BaudRates;
 
+typedef enum {
+    UART_ONE_STOP_BIT,
+    UART_TWO_STOP_BITS
+} UART_StopBits;
+
 void UART_startRx(void);
 void UART_stopRx(void);
 void UART_startTx(void);
@@ -86,5 +91,6 @@ void UART_enableHardwareFlowCtrl();
 void UART_disableHardwareFlowCtrl();
 void UART_includeParityBit(void);
 void UART_excludeParityBit(void);
+void UART_setStopBits(UART_StopBits stopBits);
 
 #endif  // UART_H

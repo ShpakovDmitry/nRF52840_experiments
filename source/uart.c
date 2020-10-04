@@ -86,6 +86,8 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define PARITY_INCLUDE_REG_VAL 7
 #define PARITY_INCLUDE_BIT     1
 
+#define STOP_BITS_BIT   4
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -370,4 +372,17 @@ void UART_includeParityBit(void) {
 
 void UART_excludeParityBit(void) {
     uart->CONFIG &= ~(PARITY_INCLUDE_REG_VAL << PARITY_INCLUDE_BIT);
+}
+
+void UART_setStopBits(UART_StopBits stopBits) {
+    switch (stopBits) {
+        case UART_ONE_STOP_BIT:
+            SET_BIT_LO(uart->CONFIG, STOP_BITS_BIT);
+            break;
+        case UART_TWO_STOP_BITS:
+            SET_BIT_HI(uart->CONFIG, STOP_BITS_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
 }
