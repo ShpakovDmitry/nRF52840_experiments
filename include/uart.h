@@ -84,5 +84,6 @@ void UART_writeTxd(uint8_t data);
 void UART_setBaudrate(UART_BaudRates baudRate);
 void UART_enableHardwareFlowCtrl();
 void UART_disableHardwareFlowCtrl();
+void UART_includeParityBit(void);
 
 #endif  // UART_H
