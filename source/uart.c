@@ -367,3 +367,14 @@ void UART_setStopBits(UART_StopBits stopBits) {
             break;
     }
 }
+
+void UART_sendByte(uint8_t data) {
+    UART_clearEvent(UART_EVENT_TXDRDY);
+    UART_startTask(UART_TASK_STARTTX);
+    UART_writeTxd(data);
+    while ( UART_isEvent(UART_EVENT_TXDRDY) == false ) {
+        ;
+    }
+    UART_clearEvent(UART_EVENT_TXDRDY);
+    UART_startTask(UART_TASK_STOPTX);
+}

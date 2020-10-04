@@ -75,7 +75,7 @@ typedef enum {
     UART_TASK_SUSPEND
 } UART_Tasks;
 
-void UART_StartTask(UART_Tasks task);
+void UART_startTask(UART_Tasks task);
 bool UART_isEvent(UART_Events event);
 
 void UART_enableShort(UART_Shortcuts shortcut);
@@ -99,5 +99,7 @@ void UART_disableHardwareFlowCtrl(void);
 void UART_includeParityBit(void);
 void UART_excludeParityBit(void);
 void UART_setStopBits(UART_StopBits stopBits);
+
+void UART_sendByte(uint8_t data);
 
 #endif  // UART_H
