@@ -72,14 +72,13 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define ERROR_FRAMING_BIT   2
 #define ERROR_BREAK_BIT     3
 
-#define DISABLE_REG_VALUE   0
-#define ENABLE_REG_VALUE    4
+#define ENABLE_BIT  2
 
 #define PIN_BIT     0
 #define PORT_BIT    5
 #define CONNECT_BIT 31
-#define CLEAR       0
-#define SET         1
+#define CONNECT     0
+#define DISCONNECT  1
 
 #define HWFC_BIT    0
 
@@ -93,7 +92,7 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
 #define SET_REG_VAL(reg, val) ( (reg) = (val) )
 
-void UART_StartTask(UART_Tasks task) {
+void UART_startTask(UART_Tasks task) {
     switch (task) {
         case UART_TASK_STARTRX:
             SET_BIT_HI(uart->TASKS_STARTRX, TASKS_STARTRX_BIT);
@@ -273,29 +272,29 @@ bool UART_isErrorSource(UART_ErrorSources errorSource) {
 }
 
 void UART_enable(void) {
-    SET_REG_VAL(uart->ENABLE, ENABLE_REG_VALUE);
+    SET_BIT_HI(uart->ENABLE, ENABLE_BIT);
 }
 
 void UART_disable(void) {
-    SET_REG_VAL(uart->ENABLE, DISABLE_REG_VALUE);
+    SET_BIT_LO(uart->ENABLE, ENABLE_BIT);
 }
 
 void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
     switch (uartPin) {
         case UART_PIN_RTS:
-            uart->PSEL_RTS = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_RTS = (CONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_TXD:
-            uart->PSEL_TXD = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_TXD = (CONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_CTS:
-            uart->PSEL_CTS = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_CTS = (CONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_RXD:
-            uart->PSEL_RXD = (SET << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_RXD = (CONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         default:    // nothing to do here
@@ -307,19 +306,19 @@ void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
 void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin) {
     switch (uartPin) {
         case UART_PIN_RTS:
-            uart->PSEL_RTS = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_RTS = (DISCONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_TXD:
-            uart->PSEL_TXD = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_TXD = (DISCONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_CTS:
-            uart->PSEL_CTS = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_CTS = (DISCONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         case UART_PIN_RXD:
-            uart->PSEL_RXD = (CLEAR << CONNECT_BIT) | (gpioPort << PORT_BIT) |
+            uart->PSEL_RXD = (DISCONNECT << CONNECT_BIT) | (gpioPort << PORT_BIT) |
                              (gpioPin << PIN_BIT);
             break;
         default:    // nothing to do here
@@ -352,7 +351,7 @@ void UART_setBaudrate(UART_BaudRates baudRate) {
         case UART_BAUD_56000:  {baudRegVal = 0x00e50000; break; }
         case UART_BAUD_57600:  {baudRegVal = 0x00ebf000; break; }
         case UART_BAUD_76800:  {baudRegVal = 0x013a9000; break; }
-        case UART_BAUD_115200: {baudRegVal = 0x01de7000; break; }
+        case UART_BAUD_115200: {baudRegVal = 0x01d7e000; break; }
         case UART_BAUD_230400: {baudRegVal = 0x03afb000; break; }
         case UART_BAUD_250000: {baudRegVal = 0x04000000; break; }
         case UART_BAUD_460800: {baudRegVal = 0x075f7000; break; }
@@ -361,7 +360,7 @@ void UART_setBaudrate(UART_BaudRates baudRate) {
         default:               {baudRegVal = 0x00000000; break; }
     }
     
-    uart->BAUDRATE = baudRegVal;
+    SET_REG_VAL(uart->BAUDRATE, baudRegVal);
 }
 
 void UART_enableHardwareFlowCtrl(void) {
