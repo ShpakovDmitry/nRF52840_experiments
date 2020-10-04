@@ -81,6 +81,8 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define CLEAR       0
 #define SET         1
 
+#define HWFC_BIT    0
+
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 #define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
@@ -349,4 +351,8 @@ void UART_setBaudrate(UART_BaudRates baudRate) {
     }
     
     uart->BAUDRATE = baudRegVal;
+}
+
+void UART_enableHardwareFlowCtrl() {
+    SET_BIT_HI(uart->CONFIG, HWFC_BIT);
 }
