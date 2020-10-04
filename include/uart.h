@@ -77,6 +77,7 @@ typedef enum {
 
 void UART_startTask(UART_Tasks task);
 bool UART_isEvent(UART_Events event);
+void UART_clearEvent(UART_Events event);
 
 void UART_enableShort(UART_Shortcuts shortcut);
 void UART_disableShort(UART_Shortcuts shortcut);

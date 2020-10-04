@@ -142,6 +142,31 @@ bool UART_isEvent(UART_Events event) {
     return res;
 }
 
+void UART_clearEvent(UART_Events event) {
+     switch (event) {
+        case UART_EVENT_CTS:
+            SET_BIT_LO(uart->EVENTS_CTS, EVENTS_CTS_BIT);
+            break;
+        case UART_EVENT_NCTS:
+            SET_BIT_LO(uart->EVENTS_NCTS, EVENTS_NCTS_BIT);
+            break;
+        case UART_EVENT_RXRDY:
+            SET_BIT_LO(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT);
+            break;
+        case UART_EVENT_TXDRDY:
+            SET_BIT_LO(uart->EVENTS_TXDRDY, EVENTS_TXDRDY_BIT);
+            break;
+        case UART_EVENT_ERROR:
+            SET_BIT_LO(uart->EVENTS_ERROR, EVENTS_ERROR_BIT);
+            break;
+        case UART_EVENT_RXTO:
+            SET_BIT_LO(uart->EVENTS_RXTO, EVENTS_RXTO_BIT);
+            break;
+        default:    // nothing to do here
+            break;
+    }
+}
+
 void UART_enableShort(UART_Shortcuts shortcut) {
     switch (shortcut) {
         case UART_SHORT_CTS_STARTRX:
