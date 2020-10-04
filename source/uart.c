@@ -84,6 +84,7 @@ static UART_Registers* uart = (UART_Registers *) UART_BASE_ADDRESS;
 #define HWFC_BIT    0
 
 #define PARITY_INCLUDE_REG_VAL 7
+#define PARITY_INCLUDE_BIT     1
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -364,9 +365,9 @@ void UART_disableHardwareFlowCtrl() {
 }
 
 void UART_includeParityBit(void) {
-    uart->CONFIG |= PARITY_INCLUDE_REG_VAL;
+    uart->CONFIG |= (PARITY_INCLUDE_REG_VAL << PARITY_INCLUDE_BIT);
 }
 
 void UART_excludeParityBit(void) {
-    uart->CONFIG &= ~PARITY_INCLUDE_REG_VAL;
+    uart->CONFIG &= ~(PARITY_INCLUDE_REG_VAL << PARITY_INCLUDE_BIT);
 }
