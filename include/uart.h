@@ -59,7 +59,7 @@ void UART_disable(void);
 void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
 void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
 bool UART_readRxd(uint8_t* data);
-bool UART_writeTxd(uint8_t data);
+void UART_writeTxd(uint8_t data);
 bool UART_setBaudrate(uint32_t baudRate);
 void UART_setHardwareFlowCtrl();
 

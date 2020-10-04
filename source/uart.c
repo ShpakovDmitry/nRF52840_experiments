@@ -327,3 +327,7 @@ bool UART_readRxd(uint8_t* data) {
 
    return res;
 }
+
+void UART_writeTxd(uint8_t data) {
+    uart->TXD = data;
+}
