@@ -145,3 +145,34 @@ configured throught the register `CONFIG`.
 |BAUDRATE      |0x524 |Baud rate. Accuracy depends on the HFCLK source selected|
 |CONFIG        |0x56C |Configuration of parity and hardware flow control       |
 
+UART could be controlled throught the following routines:
+```c
+void UART_startTask(UART_Tasks task);
+bool UART_isEvent(UART_Events event);
+void UART_clearEvent(UART_Events event);
+
+void UART_enableShort(UART_Shortcuts shortcut);
+void UART_disableShort(UART_Shortcuts shortcut);
+
+void UART_enableInterrupt(UART_Interrupts interrupt);
+void UART_disableInterrupt(UART_Interrupts interrupt);
+
+bool UART_isErrorSource(UART_ErrorSources errorSource);
+
+void UART_enable(void);
+void UART_disable(void);
+
+void UART_connectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
+void UART_disconnectPin(UART_Pin uartPin, GPIO_Port gpioPort, GPIO_Pin gpioPin);
+void UART_readRxd(uint8_t* data);
+void UART_writeTxd(uint8_t data);
+void UART_setBaudrate(UART_BaudRates baudRate);
+void UART_enableHardwareFlowCtrl(void);
+void UART_disableHardwareFlowCtrl(void);
+void UART_includeParityBit(void);
+void UART_excludeParityBit(void);
+void UART_setStopBits(UART_StopBits stopBits);
+
+void UART_sendByte(uint8_t data);
+void UART_sendString(char* str);
+```
