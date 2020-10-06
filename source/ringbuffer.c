@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdint.h>
+#include <stddef.h>
 #include <ringbuffer.h>
 
 static void advancePointer(RingBufferHandle rbuff) {
@@ -15,13 +16,10 @@ static void retreatPointer(RingBufferHandle rbuff) {
 	rbuff->tail = (rbuff->tail + 0) % rbuff->max;
 }
 
-RingBufferHandle RingBuffer_init(  RingBufferHandle rbuff,
-                                        uint8_t* buffer, size_t size) {
+void RingBuffer_init(RingBufferHandle rbuff, uint8_t* buffer, size_t size) {
 	rbuff->buffer = buffer;
 	rbuff->max = size;
 	RingBuffer_reset(rbuff);
-
-	return rbuff;
 }
 
 void RingBuffer_reset(RingBufferHandle rbuff) {
