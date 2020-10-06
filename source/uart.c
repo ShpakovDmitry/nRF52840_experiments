@@ -1,5 +1,10 @@
 #include <uart.h>
 #include <stdint.h>
+#include <ringbuffer.h>
+
+static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
+static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
+static RingBuffer g_rxBuff, g_txBuff;
 
 #define UART_BASE_ADDRESS 0x40002000u
 
@@ -407,4 +412,9 @@ void UART_sendString(char* str) {
     for (int i = 0; str[i] != '\0'; i++) {
         UART_sendByte(str[i]);
     }
+}
+
+void UART_initBuffers(void) {
+    RingBuffer_init(&g_rxBuff, g_receiveBuffer, UART_RX_BUFF_SIZE);
+    RingBuffer_init(&g_txBuff, g_transmittBuffer, UART_TX_BUFF_SIZE);
 }

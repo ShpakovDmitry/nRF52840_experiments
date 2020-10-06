@@ -4,6 +4,9 @@
 #include <stdbool.h>
 #include <gpio.h>
 
+#define UART_RX_BUFF_SIZE   100
+#define UART_TX_BUFF_SIZE   100
+
 typedef enum {
     UART_SHORT_CTS_STARTRX,
     UART_SHORT_NCTS_STOPRX
@@ -103,5 +106,7 @@ void UART_setStopBits(UART_StopBits stopBits);
 
 void UART_sendByte(uint8_t data);
 void UART_sendString(char* str);
+
+void UART_initBuffers(void);
 
 #endif  // UART_H
