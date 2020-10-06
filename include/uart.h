@@ -64,7 +64,7 @@ typedef enum {
 typedef enum {
     UART_EVENT_CTS,
     UART_EVENT_NCTS,
-    UART_EVENT_RXRDY,
+    UART_EVENT_RXDRDY,
     UART_EVENT_TXDRDY,
     UART_EVENT_ERROR,
     UART_EVENT_RXTO

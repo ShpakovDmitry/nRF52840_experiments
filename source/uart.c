@@ -128,7 +128,7 @@ bool UART_isEvent(UART_Events event) {
         case UART_EVENT_NCTS:
             res = GET_BIT(uart->EVENTS_NCTS, EVENTS_NCTS_BIT) ? true : false;
             break;
-        case UART_EVENT_RXRDY:
+        case UART_EVENT_RXDRDY:
             res = GET_BIT(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT) ? true : false;
             break;
         case UART_EVENT_TXDRDY:
@@ -154,7 +154,7 @@ void UART_clearEvent(UART_Events event) {
         case UART_EVENT_NCTS:
             SET_BIT_LO(uart->EVENTS_NCTS, EVENTS_NCTS_BIT);
             break;
-        case UART_EVENT_RXRDY:
+        case UART_EVENT_RXDRDY:
             SET_BIT_LO(uart->EVENTS_RXDRDY, EVENTS_RXDRDY_BIT);
             break;
         case UART_EVENT_TXDRDY:
@@ -417,4 +417,37 @@ void UART_sendString(char* str) {
 void UART_initBuffers(void) {
     RingBuffer_init(&g_rxBuff, g_receiveBuffer, UART_RX_BUFF_SIZE);
     RingBuffer_init(&g_txBuff, g_transmittBuffer, UART_TX_BUFF_SIZE);
+}
+
+__attribute__((isr)) void Uart0Handler(void) {
+    if (UART_isEvent(UART_EVENT_CTS) == true) {
+        UART_disableInterrupt(UART_INT_CTS);
+        // place CTS interrupt handler here
+        UART_enableInterrupt(UART_INT_CTS);
+    }
+    if (UART_isEvent(UART_EVENT_NCTS) == true) {
+        UART_disableInterrupt(UART_INT_NCTS);
+        // place NCTS interrupt handler here
+        UART_enableInterrupt(UART_INT_NCTS);
+    }
+    if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
+        UART_disableInterrupt(UART_INT_RXDRDY);
+        // place RXDRDY interrupt handler here
+        UART_enableInterrupt(UART_INT_RXDRDY);
+    }
+    if (UART_isEvent(UART_EVENT_TXDRDY) == true) {
+        UART_disableInterrupt(UART_INT_TXDRDY);
+        // place TXDRDY interrupt handler here
+        UART_enableInterrupt(UART_INT_TXDRDY);
+    }
+    if (UART_isEvent(UART_EVENT_ERROR) == true) {
+        UART_disableInterrupt(UART_INT_ERROR);
+        // place ERROR interrupt handler here
+        UART_enableInterrupt(UART_INT_ERROR);
+    }
+    if (UART_isEvent(UART_EVENT_RXTO) == true) {
+        UART_disableInterrupt(UART_INT_RXTO);
+        // place RXTO interrupt handler here
+        UART_enableInterrupt(UART_INT_RXTO);
+    }
 }
