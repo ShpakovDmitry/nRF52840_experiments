@@ -432,7 +432,11 @@ __attribute__((isr)) void Uart0Handler(void) {
     }
     if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
         UART_disableInterrupt(UART_INT_RXDRDY);
-        // place RXDRDY interrupt handler here
+        
+        uint8_t data;
+        UART_readRxd(&data);
+        RingBuffer_put(&g_rxBuff, data);
+        
         UART_enableInterrupt(UART_INT_RXDRDY);
     }
     if (UART_isEvent(UART_EVENT_TXDRDY) == true) {
