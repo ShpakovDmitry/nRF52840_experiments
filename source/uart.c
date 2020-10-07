@@ -438,7 +438,7 @@ __attribute__((isr)) void Uart0Handler(void) {
         
         uint8_t data;
         UART_readRxd(&data);
-        RingBuffer_put(rxBuffHandle, data);
+        RingBuffer_put2(rxBuffHandle, data);
         
         UART_enableInterrupt(UART_INT_RXDRDY);
     }
