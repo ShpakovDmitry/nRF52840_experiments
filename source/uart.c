@@ -444,7 +444,12 @@ __attribute__((isr)) void Uart0Handler(void) {
     }
     if (UART_isEvent(UART_EVENT_TXDRDY) == true) {
         UART_disableInterrupt(UART_INT_TXDRDY);
-        // place TXDRDY interrupt handler here
+
+        uint8_t data;
+        if ( RingBuffer_get(txBuffHandle, &data) == true ) {
+            UART_writeTxd(data);
+        }
+
         UART_enableInterrupt(UART_INT_TXDRDY);
     }
     if (UART_isEvent(UART_EVENT_ERROR) == true) {
