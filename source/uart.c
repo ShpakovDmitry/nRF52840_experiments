@@ -5,6 +5,7 @@
 static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
 static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
 static RingBuffer g_rxBuff, g_txBuff;
+static RingBufferHandle rxBuffHandle, txBuffHandle;
 
 #define UART_BASE_ADDRESS 0x40002000u
 
@@ -415,8 +416,10 @@ void UART_sendString(char* str) {
 }
 
 void UART_initBuffers(void) {
-    RingBuffer_init(&g_rxBuff, g_receiveBuffer, UART_RX_BUFF_SIZE);
-    RingBuffer_init(&g_txBuff, g_transmittBuffer, UART_TX_BUFF_SIZE);
+    rxBuffHandle = &g_rxBuff;
+    txBuffHandle = &g_txBuff;
+    RingBuffer_init(rxBuffHandle, g_receiveBuffer, UART_RX_BUFF_SIZE);
+    RingBuffer_init(txBuffHandle, g_transmittBuffer, UART_TX_BUFF_SIZE);
 }
 
 __attribute__((isr)) void Uart0Handler(void) {
@@ -435,7 +438,7 @@ __attribute__((isr)) void Uart0Handler(void) {
         
         uint8_t data;
         UART_readRxd(&data);
-        RingBuffer_put(&g_rxBuff, data);
+        RingBuffer_put(rxBuffHandle, data);
         
         UART_enableInterrupt(UART_INT_RXDRDY);
     }
