@@ -436,6 +436,7 @@ __attribute__((isr)) void Uart0Handler(void) {
     if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
         UART_disableInterrupt(UART_INT_RXDRDY);
         
+        UART_clearEvent(UART_EVENT_RXDRDY);
         uint8_t data;
         UART_readRxd(&data);
         RingBuffer_put2(rxBuffHandle, data);
@@ -445,6 +446,7 @@ __attribute__((isr)) void Uart0Handler(void) {
     if (UART_isEvent(UART_EVENT_TXDRDY) == true) {
         UART_disableInterrupt(UART_INT_TXDRDY);
 
+        UART_clearEvent(UART_EVENT_TXDRDY);
         uint8_t data;
         if ( RingBuffer_get(txBuffHandle, &data) == true ) {
             UART_writeTxd(data);
