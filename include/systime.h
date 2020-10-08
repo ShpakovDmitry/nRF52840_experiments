@@ -7,6 +7,7 @@ typedef uint32_t SysTick_time;
 
 SysTick_time SysTick_get(void);
 void SysTick_init(uint32_t reloadVal);
+uint32_t SysTick_getCurrentRegVal(void);
 
 #define RELOAD_10MS_64MHZ   0x09C3FF    //  10 ms @ 64 MHZ CPU clock
 #define RELOAD_1MS_64MHZ 	0x00F9FF    //   1 ms @ 64 MHZ CPU clock
