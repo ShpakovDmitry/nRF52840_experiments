@@ -20,6 +20,7 @@ static SysTick_Register* sysTickRegister = (SysTick_Register *) SYS_TICK_BASE_AD
 #define SYST_ENABLE     0
 
 static volatile SysTick_time systime;
+static volatile SysTick_CpuTicks cpuTicks;
 
 #define SET_REG_BIT_LO(reg, bit) ( (sysTickRegister->reg) &= ~(1 << (bit)) )
 #define SET_REG_BIT_HI(reg, bit) ( (sysTickRegister->reg) |=  (1 << (bit)) )
@@ -36,6 +37,7 @@ static void SysTick_enableInterrupt(void) {
 __attribute__((interrupt("FIQ"))) void SysTimeHandler(void) {
     SysTick_disableInterrupt();
     systime++;
+    cpuTicks += sysTickRegister->SYST_RVR;
     SysTick_enableInterrupt();
 }
 
@@ -55,5 +57,14 @@ void SysTick_init(uint32_t reloadVal) {
 uint32_t SysTick_getCurrentRegVal(void) {
     uint32_t tmp;
     tmp = sysTickRegister->SYST_CVR;
+    return tmp;
+}
+
+uint64_t SysTick_getCpuTicks(void) {
+    uint64_t tmp;
+    SysTick_disableInterrupt();
+    tmp = (uint64_t) SysTick_getCurrentRegVal();
+    tmp += cpuTicks;
+    SysTick_enableInterrupt();
     return tmp;
 }
