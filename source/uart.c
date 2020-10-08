@@ -423,16 +423,6 @@ void UART_initBuffers(void) {
 }
 
 __attribute__((isr)) void Uart0Handler(void) {
-    if (UART_isEvent(UART_EVENT_CTS) == true) {
-        UART_disableInterrupt(UART_INT_CTS);
-        // place CTS interrupt handler here
-        UART_enableInterrupt(UART_INT_CTS);
-    }
-    if (UART_isEvent(UART_EVENT_NCTS) == true) {
-        UART_disableInterrupt(UART_INT_NCTS);
-        // place NCTS interrupt handler here
-        UART_enableInterrupt(UART_INT_NCTS);
-    }
     if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
         UART_disableInterrupt(UART_INT_RXDRDY);
         
@@ -453,15 +443,5 @@ __attribute__((isr)) void Uart0Handler(void) {
         }
 
         UART_enableInterrupt(UART_INT_TXDRDY);
-    }
-    if (UART_isEvent(UART_EVENT_ERROR) == true) {
-        UART_disableInterrupt(UART_INT_ERROR);
-        // place ERROR interrupt handler here
-        UART_enableInterrupt(UART_INT_ERROR);
-    }
-    if (UART_isEvent(UART_EVENT_RXTO) == true) {
-        UART_disableInterrupt(UART_INT_RXTO);
-        // place RXTO interrupt handler here
-        UART_enableInterrupt(UART_INT_RXTO);
     }
 }
