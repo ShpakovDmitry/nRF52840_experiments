@@ -37,7 +37,7 @@ static void SysTick_enableInterrupt(void) {
 __attribute__((interrupt("FIQ"))) void SysTimeHandler(void) {
     SysTick_disableInterrupt();
     systime++;
-    cpuTicks += sysTickRegister->SYST_RVR;
+    cpuTicks += sysTickRegister->SYST_RVR + 1;
     SysTick_enableInterrupt();
 }
 
