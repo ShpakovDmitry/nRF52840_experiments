@@ -39,8 +39,11 @@ void HardwareInit(void) {
     UART_setStopBits(UART_ONE_STOP_BIT);
     UART_connectPin(UART_PIN_TXD, GPIO_0, GPIO_PIN_6);
     UART_connectPin(UART_PIN_RXD, GPIO_0, GPIO_PIN_8);
+    UART_initBuffers();
+    UART_enableInterrupt(UART_INT_TXDRDY);
 
     NVIC_enableIrq(RTC0);
+    NVIC_enableIrq(UARTE0_UART0);
     NVIC_enableGlobalIrq();
 
     LED_init(LED_1);

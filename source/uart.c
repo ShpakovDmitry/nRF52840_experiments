@@ -1,11 +1,14 @@
 #include <uart.h>
 #include <stdint.h>
 #include <ringbuffer.h>
+#include <led.h>
 
 static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
 static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
-static RingBuffer g_rxBuff, g_txBuff;
-static RingBufferHandle rxBuffHandle, txBuffHandle;
+static RingBuffer g_rxBuff;
+static RingBuffer g_txBuff;
+static RingBufferHandle rxBuffHandle;
+static RingBufferHandle txBuffHandle;
 
 #define UART_BASE_ADDRESS 0x40002000u
 
@@ -398,15 +401,17 @@ void UART_setStopBits(UART_StopBits stopBits) {
     }
 }
 
-void UART_sendByte(uint8_t data) {
-    UART_clearEvent(UART_EVENT_TXDRDY);
-    UART_startTask(UART_TASK_STARTTX);
-    UART_writeTxd(data);
-    while ( UART_isEvent(UART_EVENT_TXDRDY) == false ) {
-        ;
+bool UART_sendByte(uint8_t data) {
+    bool res = true;;
+    if ( RingBuffer_isEmpty(txBuffHandle) == true ) {
+        UART_startTask(UART_TASK_STARTTX);
+        UART_writeTxd(data);
     }
-    UART_clearEvent(UART_EVENT_TXDRDY);
-    UART_startTask(UART_TASK_STOPTX);
+    else if ( RingBuffer_put2(txBuffHandle, data) == false ) {
+        return false;
+    }
+
+    return res;
 }
 
 void UART_sendString(char* str) {
