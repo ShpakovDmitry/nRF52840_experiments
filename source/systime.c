@@ -54,7 +54,7 @@ void SysTick_init(uint32_t reloadVal) {
     SET_REG_BIT_HI(SYST_CSR, SYST_TICKINT);
 }
 
-uint32_t SysTick_getCurrentRegVal(void) {
+static uint32_t SysTick_getCurrentRegVal(void) {
     uint32_t tmp;
     tmp = sysTickRegister->SYST_CVR;
     return tmp;
