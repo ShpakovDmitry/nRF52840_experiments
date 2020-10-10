@@ -42,7 +42,7 @@ size_t RingBuffer_getSize(RingBufferHandle rbuff) {
 	return size;
 }
 
-size_t RingBuffer_capacity(RingBufferHandle rbuff) {
+size_t RingBuffer_getCapacity(RingBufferHandle rbuff) {
 	return rbuff->max;
 }
 
