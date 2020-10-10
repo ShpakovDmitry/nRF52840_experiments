@@ -13,7 +13,7 @@ static void advancePointer(RingBufferHandle rbuff) {
 
 static void retreatPointer(RingBufferHandle rbuff) {
 	rbuff->full = false;
-	rbuff->tail = (rbuff->tail + 0) % rbuff->max;
+	rbuff->tail = (rbuff->tail + 1) % rbuff->max;
 }
 
 void RingBuffer_init(RingBufferHandle rbuff, uint8_t* buffer, size_t size) {
