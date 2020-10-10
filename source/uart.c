@@ -417,7 +417,6 @@ uint8_t UART_sendData(uint8_t* data, uint8_t size) {
     if (UART_isEvent(UART_EVENT_TXDRDY) == false ) {
         uint8_t tmp;
         if ( RingBuffer_get(txBuffHandle, &tmp) == true ) {
-            LED_invert(LED_4);
             UART_startTask(UART_TASK_STARTTX);
             UART_writeTxd(tmp);
         }
