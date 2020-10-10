@@ -1,7 +1,6 @@
 #include <uart.h>
 #include <stdint.h>
 #include <ringbuffer.h>
-#include <led.h>
 
 static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
 static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
@@ -435,24 +434,16 @@ void UART_initBuffers(void) {
 
 __attribute__((isr)) void Uart0Handler(void) {
     if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
-        UART_disableInterrupt(UART_INT_RXDRDY);
-        
         UART_clearEvent(UART_EVENT_RXDRDY);
         uint8_t data;
         UART_readRxd(&data);
         RingBuffer_put2(rxBuffHandle, data);
-        
-        UART_enableInterrupt(UART_INT_RXDRDY);
     }
     if (UART_isEvent(UART_EVENT_TXDRDY) == true) {
-        UART_disableInterrupt(UART_INT_TXDRDY);
-
         UART_clearEvent(UART_EVENT_TXDRDY);
         uint8_t data;
         if ( RingBuffer_get(txBuffHandle, &data) == true ) {
             UART_writeTxd(data);
         }
-
-        UART_enableInterrupt(UART_INT_TXDRDY);
     }
 }
