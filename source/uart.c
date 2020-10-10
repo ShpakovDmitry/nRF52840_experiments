@@ -401,23 +401,30 @@ void UART_setStopBits(UART_StopBits stopBits) {
     }
 }
 
-bool UART_sendByte(uint8_t data) {
-    bool res = true;;
-    if ( RingBuffer_isEmpty(txBuffHandle) == true ) {
-        UART_startTask(UART_TASK_STARTTX);
-        UART_writeTxd(data);
-    }
-    else if ( RingBuffer_put2(txBuffHandle, data) == false ) {
-        return false;
+uint8_t UART_sendData(uint8_t* data, uint8_t size) {
+    if (data == NULL || size == 0) {
+        return 0;
     }
 
-    return res;
-}
-
-void UART_sendString(char* str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        UART_sendByte(str[i]);
+    uint8_t bytesSent = 0;
+    UART_disableInterrupt(UART_INT_TXDRDY);
+    for(uint8_t i = 0; i < size; i++) {
+        if ( RingBuffer_put2(txBuffHandle, data[i]) == false ) {
+            break;
+        }
+        bytesSent++;
     }
+    if (UART_isEvent(UART_EVENT_TXDRDY) == false ) {
+        uint8_t tmp;
+        if ( RingBuffer_get(txBuffHandle, &tmp) == true ) {
+            LED_invert(LED_4);
+            UART_startTask(UART_TASK_STARTTX);
+            UART_writeTxd(tmp);
+        }
+    }
+    UART_enableInterrupt(UART_INT_TXDRDY);
+
+    return bytesSent;
 }
 
 void UART_initBuffers(void) {
