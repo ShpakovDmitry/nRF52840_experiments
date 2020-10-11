@@ -84,7 +84,6 @@ int blinkLed4(void) {
 }
 
 int sendMessage(void) {
-    char* data = "Hello, World!\r\n";
-    UART_sendData( (uint8_t* )data, 15);
+    UART_sendString("Hello, World!\r\n");
     return 0;
 }
