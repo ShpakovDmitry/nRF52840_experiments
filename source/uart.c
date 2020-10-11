@@ -441,6 +441,26 @@ size_t UART_sendString(char* str) {
     return UART_sendData((uint8_t* )str, sizeStr);
 }
 
+size_t UART_getData(uint8_t* data, size_t size) {
+    if (data == NULL || size == 0) {
+        return 0;
+    }
+
+    UART_disableInterrupt(UART_INT_RXDRDY);
+    size_t bytesReceived = 0;
+    for(size_t i = 0; i < size; i++) {
+        uint8_t tmp;
+        if ( RingBuffer_get(rxBuffHandle, &tmp) == false ) {
+            break;
+        }
+        data[i] = tmp;
+        bytesReceived++;
+    }
+    UART_enableInterrupt(UART_INT_RXDRDY);
+
+    return bytesReceived;
+}
+
 void UART_initBuffers(void) {
     rxBuffHandle = &g_rxBuff;
     txBuffHandle = &g_txBuff;

@@ -109,6 +109,8 @@ size_t UART_sendData(uint8_t* data, size_t size);
 bool UART_sendByte(uint8_t data);
 size_t UART_sendString(char* str);
 
+size_t UART_getData(uint8_t* data, size_t size);
+
 void UART_initBuffers(void);
 
 #endif  // UART_H
