@@ -442,6 +442,7 @@ size_t UART_sendString(char* str) {
 }
 
 size_t UART_getData(uint8_t* data, size_t size) {
+    UART_startTask(UART_TASK_STARTRX);
     if (data == NULL || size == 0) {
         return 0;
     }
