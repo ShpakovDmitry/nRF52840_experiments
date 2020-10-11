@@ -1,6 +1,7 @@
 #include <uart.h>
 #include <stdint.h>
 #include <ringbuffer.h>
+#include <string.h>
 
 static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
 static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
@@ -435,7 +436,7 @@ bool UART_sendByte(uint8_t data) {
 
 uint8_t UART_sendString(char* str) {
     size_t sizeStr;
-    sizeStr = String_getSize(str);
+    sizeStr = strlen(str);
     return UART_sendData((uint8_t* )str, sizeStr);
 }
 
