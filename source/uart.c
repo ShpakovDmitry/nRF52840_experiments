@@ -433,6 +433,12 @@ bool UART_sendByte(uint8_t data) {
     return res;
 }
 
+uint8_t UART_sendString(char* str) {
+    size_t sizeStr;
+    sizeStr = String_getSize(str);
+    return UART_sendData((uint8_t* )str, sizeStr);
+}
+
 void UART_initBuffers(void) {
     rxBuffHandle = &g_rxBuff;
     txBuffHandle = &g_txBuff;
