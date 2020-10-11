@@ -425,6 +425,14 @@ uint8_t UART_sendData(uint8_t* data, uint8_t size) {
     return bytesSent;
 }
 
+bool UART_sendByte(uint8_t data) {
+    bool res = false;
+    if ( UART_sendData(&data, 1) == 1 ) {
+        res = true;
+    }
+    return res;
+}
+
 void UART_initBuffers(void) {
     rxBuffHandle = &g_rxBuff;
     txBuffHandle = &g_txBuff;

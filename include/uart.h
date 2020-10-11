@@ -105,6 +105,7 @@ void UART_excludeParityBit(void);
 void UART_setStopBits(UART_StopBits stopBits);
 
 uint8_t UART_sendData(uint8_t* data, uint8_t size);
+bool UART_sendByte(uint8_t data);
 
 void UART_initBuffers(void);
 
