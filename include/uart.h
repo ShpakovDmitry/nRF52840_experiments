@@ -2,6 +2,7 @@
 #define UART_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <gpio.h>
 
 #define UART_RX_BUFF_SIZE   100
@@ -104,9 +105,9 @@ void UART_includeParityBit(void);
 void UART_excludeParityBit(void);
 void UART_setStopBits(UART_StopBits stopBits);
 
-uint8_t UART_sendData(uint8_t* data, uint8_t size);
+size_t UART_sendData(uint8_t* data, size_t size);
 bool UART_sendByte(uint8_t data);
-uint8_t UART_sendString(char* str);
+size_t UART_sendString(char* str);
 
 void UART_initBuffers(void);
 

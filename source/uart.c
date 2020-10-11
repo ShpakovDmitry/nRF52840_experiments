@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <ringbuffer.h>
 #include <string.h>
+#include <stddef.h>
 
 static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
 static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
@@ -401,14 +402,14 @@ void UART_setStopBits(UART_StopBits stopBits) {
     }
 }
 
-uint8_t UART_sendData(uint8_t* data, uint8_t size) {
+size_t UART_sendData(uint8_t* data, size_t size) {
     if (data == NULL || size == 0) {
         return 0;
     }
 
-    uint8_t bytesSent = 0;
+    size_t bytesSent = 0;
     UART_disableInterrupt(UART_INT_TXDRDY);
-    for(uint8_t i = 0; i < size; i++) {
+    for(size_t i = 0; i < size; i++) {
         if ( RingBuffer_put2(txBuffHandle, data[i]) == false ) {
             break;
         }
@@ -434,7 +435,7 @@ bool UART_sendByte(uint8_t data) {
     return res;
 }
 
-uint8_t UART_sendString(char* str) {
+size_t UART_sendString(char* str) {
     size_t sizeStr;
     sizeStr = strlen(str);
     return UART_sendData((uint8_t* )str, sizeStr);
