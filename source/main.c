@@ -12,12 +12,12 @@
 #define LED_2_BLINK_PERIOD  501
 #define LED_3_BLINK_PERIOD  502
 #define LED_4_BLINK_PERIOD  503
-#define SEND_MSG_PERIOD     1000
+#define ECHO_UPDATE_PERIOD  10
 int blinkLed1(void);
 int blinkLed2(void);
 int blinkLed3(void);
 int blinkLed4(void);
-int sendMessage(void);
+int echoMessage(void);
 
 void HardwareInit(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
@@ -41,6 +41,7 @@ void HardwareInit(void) {
     UART_connectPin(UART_PIN_RXD, GPIO_0, GPIO_PIN_8);
     UART_initBuffers();
     UART_enableInterrupt(UART_INT_TXDRDY);
+    UART_enableInterrupt(UART_INT_RXDRDY);
 
     NVIC_enableIrq(RTC0);
     NVIC_enableIrq(UARTE0_UART0);
@@ -59,7 +60,7 @@ int main(void) {
     Sheduler_addTask(&blinkLed2,    LED_2_BLINK_PERIOD);
     Sheduler_addTask(&blinkLed3,    LED_3_BLINK_PERIOD);
     Sheduler_addTask(&blinkLed4,    LED_4_BLINK_PERIOD);
-    Sheduler_addTask(&sendMessage,  SEND_MSG_PERIOD);
+    Sheduler_addTask(&echoMessage,  ECHO_UPDATE_PERIOD);
 
     Sheduler_run();
 
@@ -83,7 +84,12 @@ int blinkLed4(void) {
     return 0;
 }
 
-int sendMessage(void) {
-    UART_sendString("Hello, World!\r\n");
+int echoMessage(void) {
+    size_t maxNumRead = 50;
+    uint8_t data[maxNumRead];
+    size_t numRead;
+
+    numRead = UART_getData(data, maxNumRead);
+    UART_sendData(data, numRead);
     return 0;
 }
