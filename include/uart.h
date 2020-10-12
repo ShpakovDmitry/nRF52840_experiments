@@ -5,8 +5,8 @@
 #include <stddef.h>
 #include <gpio.h>
 
-#define UART_RX_BUFF_SIZE   100
-#define UART_TX_BUFF_SIZE   100
+#define UART_RX_BUFF_SIZE   1024
+#define UART_TX_BUFF_SIZE   1024
 
 typedef enum {
     UART_SHORT_CTS_STARTRX,
