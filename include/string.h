@@ -4,5 +4,6 @@
 #include <stddef.h>
 
 size_t strlen(const char* );
+char* itoa(int num, char* str, int base);
 
 #endif  // STRING_H
