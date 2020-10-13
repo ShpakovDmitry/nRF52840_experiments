@@ -14,6 +14,17 @@ size_t strlen(const char* str) {
     return len;
 }
 
+void reverse(char str[], int length) {
+    size_t start = 0;
+    size_t end = length - 1;
+    
+    while (start < end) {
+        swap( *(str + start), *(str + end) );
+        start++;
+        end--;
+    }
+}
+
 char* itoa(int num, char* str, int base) {
     int i = 0;
     bool isNegative = false;
@@ -39,7 +50,9 @@ char* itoa(int num, char* str, int base) {
         str[i++] = '-';
     }
 
-    reverse(str,i);
+    reverse(str, i);
 
-    return i;
+    return str;
 }
+
+

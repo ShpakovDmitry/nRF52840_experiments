@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 size_t strlen(const char* );
+void reverse(char str[], int length);
 char* itoa(int num, char* str, int base);
 
 #endif  // STRING_H
