@@ -5,7 +5,7 @@
 
 size_t strlen(const char* );
 void swap(char* , char* );
-void reverse(char str[], int length);
+void reverse(char* str, size_t length);
 char* itoa(int num, char* str, int base);
 
 #endif  // STRING_H
