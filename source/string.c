@@ -14,14 +14,18 @@ size_t strlen(const char* str) {
     return len;
 }
 
-void reverse(char str[], int length) {
+void swap(char* a, char* b) {
+    char tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+void reverse(char* str, size_t length) {
     size_t start = 0;
     size_t end = length - 1;
     
     while (start < end) {
-        swap( *(str + start), *(str + end) );
-        start++;
-        end--;
+        swap( str + start++, str + end-- );
     }
 }
 
