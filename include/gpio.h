@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-typedef enum { GPIO_0 = 0, GPIO_1 } GPIO_Port;
+typedef enum { GPIO_PORT_0 = 0, GPIO_PORT_1 } GPIO_Port;
 typedef enum { GPIO_INPUT = 0, GPIO_OUTPUT } GPIO_Direction;
 typedef enum { GPIO_LOW = 0, GPIO_HIGH } GPIO_Output;
 typedef enum {

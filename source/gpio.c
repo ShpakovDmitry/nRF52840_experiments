@@ -1,8 +1,8 @@
 #include <stdbool.h>
 #include <gpio.h>
 
-#define GPIO_0_BASE_ADDRESS 0x50000000u
-#define GPIO_1_BASE_ADDRESS 0x50000300u
+#define GPIO_PORT_0_BASE_ADDRESS 0x50000000u
+#define GPIO_PORT_1_BASE_ADDRESS 0x50000300u
 
 #define GPIO_SET_DIR_OUT(dir, bit) ( (dir->DIRSET) = (1 << (bit)) )
 #define GPIO_SET_DIR_IN(dir, bit)  ( (dir->DIRCLR) = (1 << (bit)) )
@@ -29,19 +29,19 @@ typedef volatile struct __attribute__((packed)) {
 } GPIO_Registers;
 
 static GPIO_Registers* gpio[2] = {
-    (GPIO_Registers* ) GPIO_0_BASE_ADDRESS,
-    (GPIO_Registers* ) GPIO_1_BASE_ADDRESS
+    (GPIO_Registers* ) GPIO_PORT_0_BASE_ADDRESS,
+    (GPIO_Registers* ) GPIO_PORT_1_BASE_ADDRESS
 };
 
 static bool GPIO_isCorrectPortAndPin(GPIO_Port port, GPIO_Pin pin) {
     bool isCorrect = false;
     switch (port) {
-        case GPIO_0:
+        case GPIO_PORT_0:
             if (pin >= GPIO_PIN_0 && pin <= GPIO_PIN_31) {
                 isCorrect = true;
             }
             break;
-        case GPIO_1:
+        case GPIO_PORT_1:
             if (pin >= GPIO_PIN_0 && pin <= GPIO_PIN_15) {
                 isCorrect = true;
             }
