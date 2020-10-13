@@ -3,9 +3,8 @@
 
 #include <stddef.h>
 
-size_t strlen(const char* );
-void swap(char* , char* );
-void reverse(char* str, size_t length);
-char* itoa(int num, char* str, int base);
+size_t strlen(char* s);
+void reverse(char s[]);
+void itoa(int n, char s[]);
 
 #endif  // STRING_H
