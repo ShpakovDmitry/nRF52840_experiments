@@ -1,4 +1,4 @@
-.PHONY := all clean
+.PHONY := all clean flash
 .DEFAULT_GOAL := all
 
 TARGET := firmware
