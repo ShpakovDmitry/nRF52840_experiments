@@ -69,3 +69,7 @@ void TEMP_enableInterrupt(void) {
 void TEMP_disableInterrupt(void) {
     SET_BIT_HI(temp->INTENCLR, INT_DATARDY_BIT);
 }
+
+int32_t TEMP_getTemperature(void) {
+    return temp->TEMP;
+}
