@@ -62,6 +62,10 @@ bool TEMP_isDataReady(void) {
     return res;
 }
 
+void TEMP_clearDataReady(void) {
+    SET_BIT_LO(temp->EVENTS_DATARDY, EVENTS_DATARDY_BIT);
+}
+
 void TEMP_enableInterrupt(void) {
     SET_BIT_HI(temp->INTENSET, INT_DATARDY_BIT);
 }
