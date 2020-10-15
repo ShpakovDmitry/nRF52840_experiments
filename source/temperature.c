@@ -37,8 +37,9 @@ typedef volatile struct __attribute__((packed)) {
 
 static TEMP_Registers* temp = (TEMP_Registers* )TEMP_BASE_ADDRESS;
 
-#define TASKS_START_BIT 0
-#define TASKS_STOP_BIT  0
+#define TASKS_START_BIT     0
+#define TASKS_STOP_BIT      0
+#define EVENTS_DATARDY_BIT  0
 
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
@@ -50,4 +51,12 @@ void TEMP_startMeasure(void) {
 
 void TEMP_stopMeasure(void) {
     SET_BIT_HI(temp->TASKS_STOP, TASKS_STOP_BIT);
+}
+
+bool TEMP_isDataReady(void) {
+    bool res = false;
+    if ( GET_BIT(temp->EVENTS_DATARDY, EVENTS_DATARDY_BIT) ) {
+        res = true;
+    }
+    return res;
 }
