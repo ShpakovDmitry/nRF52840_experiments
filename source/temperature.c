@@ -36,3 +36,13 @@ typedef volatile struct __attribute__((packed)) {
 } TEMP_Registers;
 
 static TEMP_Registers* temp = (TEMP_Registers* )TEMP_BASE_ADDRESS;
+
+#define TASKS_START_BIT 0
+
+#define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
+#define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
+#define GET_BIT(reg, bit)    ( (reg)  &  (1 << (bit)) )
+
+void TEMP_startMeasure(void) {
+    SET_BIT_HI(temp->TASKS_START, TASKS_START_BIT);
+}
