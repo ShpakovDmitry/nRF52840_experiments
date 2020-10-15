@@ -65,3 +65,7 @@ bool TEMP_isDataReady(void) {
 void TEMP_enableInterrupt(void) {
     SET_BIT_HI(temp->INTENSET, INT_DATARDY_BIT);
 }
+
+void TEMP_disableInterrupt(void) {
+    SET_BIT_HI(temp->INTENCLR, INT_DATARDY_BIT);
+}
