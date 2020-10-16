@@ -1,8 +1,10 @@
 #include <temperature.h>
 #include <stdint.h>
 #include <ringbuffer.h>
+#include <rtc.h>
 
 static RingBufferHandle tempBuffHandle;
+static uint32_t updateRateMilliSec = 10;
 
 static const uint32_t TEMP_BASE_ADDRESS = 0x4000C000UL;
 
@@ -86,6 +88,10 @@ void TEMP_initBuffer(void) {
     static RingBuffer buff;
     tempBuffHandle = &buff;
     RingBuffer_init(tempBuffHandle, buffer, TEMP_BUFF_SIZE);
+}
+
+void TEMP_setUpdateRate(uint32_t milliSec) {
+    updateRateMilliSec = milliSec;
 }
 
 __attribute__((isr)) void TempHandler(void) {
