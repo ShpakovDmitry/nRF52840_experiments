@@ -4,10 +4,6 @@
 #include <string.h>
 #include <stddef.h>
 
-static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
-static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
-static RingBuffer g_rxBuff;
-static RingBuffer g_txBuff;
 static RingBufferHandle rxBuffHandle;
 static RingBufferHandle txBuffHandle;
 
@@ -463,6 +459,10 @@ size_t UART_getData(uint8_t* data, size_t size) {
 }
 
 void UART_initBuffers(void) {
+    static uint8_t g_receiveBuffer[UART_RX_BUFF_SIZE];
+    static uint8_t g_transmittBuffer[UART_TX_BUFF_SIZE];
+    static RingBuffer g_rxBuff;
+    static RingBuffer g_txBuff;
     rxBuffHandle = &g_rxBuff;
     txBuffHandle = &g_txBuff;
     RingBuffer_init(rxBuffHandle, g_receiveBuffer, UART_RX_BUFF_SIZE);
