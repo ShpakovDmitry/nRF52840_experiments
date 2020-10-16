@@ -13,7 +13,5 @@ void TEMP_clearDataReady(void);
 void TEMP_enableInterrupt(void);
 void TEMP_disableInterrupt(void);
 int32_t TEMP_getTemperature(void);
-void TEMP_initBuffer(void);
-void TEMP_setUpdateRate(uint32_t milliSec);
 
 #endif  // TEMPERATURE_H
