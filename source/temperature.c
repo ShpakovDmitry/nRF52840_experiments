@@ -1,5 +1,8 @@
 #include <temperature.h>
 #include <stdint.h>
+#include <ringbuffer.h>
+
+static RingBufferHandle tempBuffHandle;
 
 static const uint32_t TEMP_BASE_ADDRESS = 0x4000C000UL;
 
@@ -76,6 +79,13 @@ void TEMP_disableInterrupt(void) {
 
 int32_t TEMP_getTemperature(void) {
     return temp->TEMP;
+}
+
+void TEMP_initBuffer(void) {
+    static uint8_t buffer[TEMP_BUFF_SIZE];
+    static RingBuffer buff;
+    tempBuffHandle = &buff;
+    RingBuffer_init(tempBuffHandle, buffer, TEMP_BUFF_SIZE);
 }
 
 __attribute__((isr)) void TempHandler(void) {
