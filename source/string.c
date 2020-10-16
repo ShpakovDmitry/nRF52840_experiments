@@ -40,8 +40,9 @@ void itoa(int n, char s[]) {
     reverse(s);
 }
 
-void memcpy(void* dst, const void* src, size_t n) {
+void* memcpy(void* dst, const void* src, size_t n) {
    for (size_t i = 0; i < n; i++) {
         ((uint8_t* )dst)[i] = ((uint8_t* )src)[i];
    }
+   return dst;
 }
