@@ -13,10 +13,12 @@
 #define LED_2_BLINK_PERIOD  501
 #define LED_3_BLINK_PERIOD  502
 #define LED_4_BLINK_PERIOD  503
+#define SEND_MESSAGE_PERIOD 2000
 int blinkLed1(void);
 int blinkLed2(void);
 int blinkLed3(void);
 int blinkLed4(void);
+int sendMessage(void);
 
 void HardwareInit(void) {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
@@ -59,6 +61,7 @@ int main(void) {
     Sheduler_addTask(&blinkLed2,    LED_2_BLINK_PERIOD);
     Sheduler_addTask(&blinkLed3,    LED_3_BLINK_PERIOD);
     Sheduler_addTask(&blinkLed4,    LED_4_BLINK_PERIOD);
+    Sheduler_addTask(&sendMessage,  SEND_MESSAGE_PERIOD);
 
     Sheduler_run();
 
@@ -79,5 +82,10 @@ int blinkLed3(void) {
 }
 int blinkLed4(void) {
     LED_invert(LED_4);
+    return 0;
+}
+
+int sendMessage(void) {
+    UART_sendString("Hello from nRF52840-DK\n");
     return 0;
 }
