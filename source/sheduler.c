@@ -121,3 +121,14 @@ void Sheduler_tickTime(void) {
 Sheduler_Time Sheduler_getTime(void) {
     return shedtime;
 }
+
+Sheduler_Pid Sheduler_runTaskAt(Sheduler_Task task, Sheduler_Time time) {
+    Sheduler_TaskDescriptor taskToAdd = {
+        .task = task,
+        .pid = -1,      // this will be changed in addTaskGeneric();
+        .period = 0,
+        .lastRun = 0,
+        .nextRun = time    // will start running immediatelly
+    };
+    return Sheduler_addTaskGeneric(taskToAdd);
+}
