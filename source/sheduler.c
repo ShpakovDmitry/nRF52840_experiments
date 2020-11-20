@@ -49,7 +49,8 @@ Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
         .task = task,
         .pid = pid,
         .period = period,
-        .lastRun = 0
+        .lastRun = 0,
+        .nextRun = 0    // will start running imediatelly
     };
 
     taskTable[i] = taskToAdd;
