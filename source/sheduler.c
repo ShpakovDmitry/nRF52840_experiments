@@ -35,7 +35,7 @@ static int Sheduler_findPidInTaskTable(Sheduler_Pid pid) {
     return ( i == SHEDULER_MAX_TASKS ? -1 : i);
 }
 
-Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
+Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescriptor) {
     int i;
     i = Sheduler_findFreeSpaceInTaskTable();
     if ( i == -1 ) {
@@ -45,17 +45,22 @@ Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
     Sheduler_Pid pid;
     pid = (Sheduler_Pid) i;    // pid is position in taskTable[]
 
+    taskDescriptor.pid = pid;
+
+    taskTable[i] = taskDescriptor;
+
+    return pid;
+}
+
+Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
     Sheduler_TaskDescriptor taskToAdd = {
         .task = task,
-        .pid = pid,
+        .pid = -1,      // this will be changed in addTaskGeneric();
         .period = period,
         .lastRun = 0,
         .nextRun = 0    // will start running immediatelly
     };
-
-    taskTable[i] = taskToAdd;
-
-    return pid;
+    return Sheduler_addTaskGeneric(taskToAdd);
 }
 
 int Sheduler_deleteTask(Sheduler_Pid pid) {
