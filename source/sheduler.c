@@ -50,7 +50,7 @@ Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
         .pid = pid,
         .period = period,
         .lastRun = 0,
-        .nextRun = 0    // will start running imediatelly
+        .nextRun = 0    // will start running immediatelly
     };
 
     taskTable[i] = taskToAdd;
@@ -69,6 +69,7 @@ int Sheduler_deleteTask(Sheduler_Pid pid) {
    task->pid = -1;
    task->period = 0;
    task->lastRun = 0;
+   task->nextRun = 0;
 
    return 0;
 }
@@ -96,8 +97,9 @@ void Sheduler_run(void) {
                 continue;
             }
 
-            if ( lastShedTime - task->lastRun >= task->period ) {
+            if ( lastShedTime >= task->nextRun ) {
                 task->lastRun = lastShedTime;
+                task->nextRun = lastShedTime + task->period;
                 if ( task->task() == -1 ) {
                     Sheduler_deleteTask(task->pid);
                 }
