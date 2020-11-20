@@ -7,6 +7,7 @@ typedef struct {
     Sheduler_Pid pid;
     Sheduler_Time period;
     Sheduler_Time lastRun;
+    Sheduler_Time nextRun;
 } Sheduler_TaskDescriptor;
 
 static volatile Sheduler_Time shedtime;
