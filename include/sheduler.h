@@ -13,5 +13,6 @@ int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period);
 void Sheduler_run(void);
 void Sheduler_tickTime(void);
 Sheduler_Time Sheduler_getTime(void);
+Sheduler_Pid Sheduler_runTaskAt(Sheduler_Task task, Sheduler_Time time);
 
 #endif  // SHEDULER_H
