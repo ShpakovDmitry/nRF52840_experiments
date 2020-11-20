@@ -98,11 +98,12 @@ void Sheduler_run(void) {
             }
 
             if ( lastShedTime >= task->nextRun ) {
-                task->lastRun = lastShedTime;
-                task->nextRun = lastShedTime + task->period;
                 if ( task->task() == -1 ) {
                     Sheduler_deleteTask(task->pid);
+                    continue;
                 }
+                task->lastRun = lastShedTime;
+                task->nextRun = lastShedTime + task->period;
             }
         }
     }
