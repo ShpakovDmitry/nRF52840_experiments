@@ -10,6 +10,14 @@ typedef struct {
     Sheduler_Time nextRun;
 } Sheduler_TaskDescriptor;
 
+static const Sheduler_TaskDescriptor Sheduler_emptyTask = {
+    .task = NULL,
+    .pid = -1,
+    .period = 0,
+    .lastRun = 0,
+    .nextRun = 0
+};
+
 static volatile Sheduler_Time shedtime;
 static Sheduler_TaskDescriptor taskTable[SHEDULER_MAX_TASKS] = { 0 };
 
@@ -35,7 +43,7 @@ static int Sheduler_findPidInTaskTable(Sheduler_Pid pid) {
     return ( i == SHEDULER_MAX_TASKS ? -1 : i);
 }
 
-Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescriptor) {
+static Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescriptor) {
     int i;
     i = Sheduler_findFreeSpaceInTaskTable();
     if ( i == -1 ) {
@@ -53,13 +61,10 @@ Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescriptor) {
 }
 
 Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
-    Sheduler_TaskDescriptor taskToAdd = {
-        .task = task,
-        .pid = -1,      // this will be changed in addTaskGeneric();
-        .period = period,
-        .lastRun = 0,
-        .nextRun = 0    // will start running immediatelly
-    };
+    Sheduler_TaskDescriptor taskToAdd;
+    taskToAdd = Sheduler_emptyTask;
+    taskToAdd.task = task;
+    taskToAdd.period = period;
     return Sheduler_addTaskGeneric(taskToAdd);
 }
 
@@ -70,11 +75,7 @@ int Sheduler_deleteTask(Sheduler_Pid pid) {
         return -1;
    }
    Sheduler_TaskDescriptor* task = &taskTable[i];
-   task->task = NULL;
-   task->pid = -1;
-   task->period = 0;
-   task->lastRun = 0;
-   task->nextRun = 0;
+   *task = Sheduler_emptyTask;
 
    return 0;
 }
@@ -123,12 +124,9 @@ Sheduler_Time Sheduler_getTime(void) {
 }
 
 Sheduler_Pid Sheduler_runTaskAt(Sheduler_Task task, Sheduler_Time time) {
-    Sheduler_TaskDescriptor taskToAdd = {
-        .task = task,
-        .pid = -1,      // this will be changed in addTaskGeneric();
-        .period = 0,
-        .lastRun = 0,
-        .nextRun = time    // will start running immediatelly
-    };
+    Sheduler_TaskDescriptor taskToAdd;
+    taskToAdd = Sheduler_emptyTask;
+    taskToAdd.task = task;
+    taskToAdd.nextRun = time;
     return Sheduler_addTaskGeneric(taskToAdd);
 }
