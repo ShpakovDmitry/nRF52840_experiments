@@ -94,9 +94,14 @@ int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period) {
 }
 
 void Sheduler_run(void) {
-    Sheduler_Time lastShedTime;
+    Sheduler_Time lastShedTime = 0;
+    Sheduler_Time currentShedTime = 0;
     while (1) {
-        lastShedTime = Sheduler_getTime();
+        currentShedTime = Sheduler_getTime();
+        if ( currentShedTime == lastShedTime ) {
+            continue;
+        }
+        lastShedTime = currentShedTime;
         for (uint8_t i = 0; i < SHEDULER_MAX_TASKS; i++) {
             Sheduler_TaskDescriptor* task = &taskTable[i];
             if (task->task == NULL) {
