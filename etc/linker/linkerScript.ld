@@ -35,6 +35,7 @@ SECTIONS {
 		*(.bss*)
 		. = ALIGN(4);
 		_ebss = .;
+        *(.noinit*)
 	} > RAM
 }
 
