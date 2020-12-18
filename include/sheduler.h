@@ -1,6 +1,8 @@
 #ifndef SHEDULER_H
 #define SHEDULER_H
 
+#include <stdint.h>
+
 #define SHEDULER_MAX_TASKS 10
 
 typedef int (*Sheduler_Task)(void);
