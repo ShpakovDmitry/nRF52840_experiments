@@ -17,6 +17,10 @@ static const Sheduler_Time SEND_MESSAGE_PERIOD = 2000;
 
 void Application_run(void) {
     nRF52840_init();
+    LED_init(LED_1);
+    LED_init(LED_2);
+    LED_init(LED_3);
+    LED_init(LED_4);
     
     Sheduler_addTask(&Application_blinkLed1,    LED_1_BLINK_PERIOD);
     Sheduler_addTask(&Application_blinkLed2,    LED_2_BLINK_PERIOD);
