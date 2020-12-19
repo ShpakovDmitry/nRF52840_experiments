@@ -313,7 +313,7 @@ uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC CC) {
     return rtc[module]->CC[CC];
 }
 
-__attribute__ ((isr)) void Rtc0Handler(void) {
+__attribute__ ((isr)) void RTC0_Handler(void) {
     RTC_clearEventTick(RTC_0);
     Sheduler_tickTime();
 }

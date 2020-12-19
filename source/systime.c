@@ -34,7 +34,7 @@ static void SysTick_enableInterrupt(void) {
     SET_REG_BIT_HI(SYST_CSR, SYST_TICKINT);
 }
 
-__attribute__((interrupt("FIQ"))) void SysTimeHandler(void) {
+__attribute__((interrupt("FIQ"))) void SYSTICK_Handler(void) {
     SysTick_disableInterrupt();
     systime++;
     cpuTicks += sysTickRegister->SYST_RVR + 1;

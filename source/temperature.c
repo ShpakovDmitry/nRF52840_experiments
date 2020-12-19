@@ -81,7 +81,7 @@ int32_t TEMP_getTemperature(void) {
     return temp->TEMP;
 }
 
-__attribute__((isr)) void TempHandler(void) {
+__attribute__((isr)) void TEMP_Handler(void) {
     TEMP_clearDataReady();
     // place interrupt handler here
 }
