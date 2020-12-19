@@ -1,143 +1,146 @@
+/*
+ *   file: isr.c
+ * author: ShpakovDmitry
+ *   date: 2020-18-25
+ */
+
 #include <stdint.h>
 
-extern uint32_t stackTop;
+extern uint32_t __stacktop;
 
-void DummyException(void);
-void cStartup(void)                 __attribute__ ((weak, alias("DummyException")));
-void NmiHandler(void)               __attribute__ ((weak, alias("DummyException")));
-void HardFaultHandler(void)         __attribute__ ((weak, alias("DummyException")));
-void MemManageFaultHandler(void)    __attribute__ ((weak, alias("DummyException")));
-void BusFaultHandler(void)          __attribute__ ((weak, alias("DummyException")));
-void UsageFaultHandler(void)        __attribute__ ((weak, alias("DummyException")));
-void SvCallHandler(void)            __attribute__ ((weak, alias("DummyException")));
-void PendSVHandler(void)            __attribute__ ((weak, alias("DummyException")));
-void SysTimeHandler(void)           __attribute__ ((weak, alias("DummyException")));
+__attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
 
-void PowerClockHandler(void)        __attribute__ ((weak, alias("DummyInterrupt")));
-void RadioHandler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-void Uart0Handler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-void Spi0Twi0Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Spi1Twi1Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void NfcTagHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void GpioteHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void SaadcHandler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-void Timer0Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void Timer1Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void Timer2Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void Rtc0Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void TempHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void RngHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void EcbHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void AarCcmHandler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void WdtHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void Rtc1Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void QdecHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void CompLpcompHandler(void)        __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu0Swi0Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu1Swi1Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu2Swi2Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu3Swi3Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu4Swi4Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Egu5Swi5Handler(void)          __attribute__ ((weak, alias("DummyInterrupt")));
-void Timer3Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void Timer4Handler(void)            __attribute__ ((weak, alias("DummyInterrupt")));
-void Pwm0Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void PdmHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void AclNvmcHandler(void)           __attribute__ ((weak, alias("DummyInterrupt")));
-void PpiHandle(void)                __attribute__ ((weak, alias("DummyInterrupt")));
-void MvuHandle(void)                __attribute__ ((weak, alias("DummyInterrupt")));
-void Pwm1Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void Pwm2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void Spi2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void Rtc2Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void I2cHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void FpuHandler(void)               __attribute__ ((weak, alias("DummyInterrupt")));
-void UsbdHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void Uart1Handler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-void QspiHandler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void CcHostRgfCryptoHandler(void)   __attribute__ ((weak, alias("DummyInterrupt")));
-void Pwm3Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
-void Spi3Handler(void)              __attribute__ ((weak, alias("DummyInterrupt")));
+typedef void (*funcPtr)();
 
+void __stop(void)  {
+    while (1) {
+        ;
+    }
+}
 
-__attribute__((section(".vectors")))
-const void *vectors[] = {
-    &stackTop,              /* Initial stack pointer value */
-    &cStartup,              /* Reset vector */
-    /* Exception handlers */
-    &NmiHandler,            /* NMI */
-    &HardFaultHandler,      /* Hard fault*/
-    &MemManageFaultHandler, /* Memory management fault */
-    &BusFaultHandler,       /* Bus fault */
-    &UsageFaultHandler,     /* Usage fault*/
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    &SvCallHandler,         /* SVCall */
-    0,                      /* Reserved for debug */
-    0,                      /* Reserved */
-    &PendSVHandler,         /* PendSV */
-    &SysTimeHandler,        /* SysTick */
-    /* Interrupt handlers */
-    &PowerClockHandler,     /* ID  0 Power and clock */
-    &RadioHandler,          /* ID  1 Radio */
-    &Uart0Handler,          /* ID  2 Uart0 and Uarte0 */
-    &Spi0Twi0Handler,       /* ID  3 Spi0 and Twi0 */
-    &Spi1Twi1Handler,       /* ID  4 Spi1 and Twi1 */
-    &NfcTagHandler,         /* ID  5 NFC tag */
-    &GpioteHandler,         /* ID  6 GPIO tasks and events */
-    &SaadcHandler,          /* ID  7 Analog to digital converter */
-    &Timer0Handler,         /* ID  8 Timer 0 */
-    &Timer1Handler,         /* ID  9 Timer 1 */
-    &Timer2Handler,         /* ID 10 Timer 2 */
-    &Rtc0Handler,           /* ID 11 Real timer counter 0 */
-    &TempHandler,           /* ID 12 Temperature sensor */
-    &RngHandler,            /* ID 13 Random number generator */
-    &EcbHandler,            /* ID 14 AES electronic code block */
-    &AarCcmHandler,         /* ID 15 AAR and CCM */
-    &WdtHandler,            /* ID 16 Watchdog timer */
-    &Rtc1Handler,           /* ID 17 Real timer counter 1 */
-    &QdecHandler,           /* ID 18 Quadrature decoder */
-    &CompLpcompHandler,     /* ID 19 COMP and LPCOMP */
-    &Egu0Swi0Handler,       /* ID 20 EGU0 and SWI0 */
-    &Egu1Swi1Handler,       /* ID 21 EGU1 and SWI1 */
-    &Egu2Swi2Handler,       /* ID 22 EGU2 and SWI2 */
-    &Egu3Swi3Handler,       /* ID 23 EGU3 and SWI3 */
-    &Egu4Swi4Handler,       /* ID 24 EGU4 and SWI4 */
-    &Egu5Swi5Handler,       /* ID 25 EGU5 and SWI5 */
-    &Timer3Handler,         /* ID 26 Timer 3 */
-    &Timer4Handler,         /* ID 27 Timer 4 */
-    &Pwm0Handler,           /* ID 28 Pulse Width Modulation 0 */
-    &PdmHandler,            /* ID 29 Pulse Density Modulation */
-    &AclNvmcHandler,        /* ID 30 ACL and NVMC */
-    &PpiHandle,             /* ID 31 Programmable peripheral interconnect */
-    &MvuHandle,             /* ID 32 Memory Watch Unit */
-    &Pwm1Handler,           /* ID 33 Pulse Width Modulation 1 */
-    &Pwm2Handler,           /* ID 34 Pulse Width Modulation 2 */
-    &Spi2Handler,           /* ID 35 SPI2 */
-    &Rtc2Handler,           /* ID 36 Real Timer Counter 2 */
-    &I2cHandler,            /* ID 37 I2C */
-    &FpuHandler,            /* ID 38 FPU */
-    &UsbdHandler,           /* ID 39 USB device */
-    &Uart1Handler,          /* ID 40 Uarte1 */
-    &QspiHandler,           /* ID 41 QSPI */
-    &CcHostRgfCryptoHandler,/* ID 42 CC_HOST_RGF and CryptoCell */
-    0,                      /* ID 43 Reserved */
-    0,                      /* ID 44 Reserved */
-    &Pwm3Handler,           /* ID 45 PWM3 */
-    0,                      /* ID 46 Reserved */
-    &Spi3Handler            /* ID 47 SPI3 */
+void RESET_Handler(void)        __attribute__((weak, alias("__stop")));
+void NMI_Handler(void)          __attribute__((weak, alias("__stop")));
+void HARDFAULT_Handler(void)    __attribute__((weak, alias("__stop")));
+void MEMMANAGE_Handler(void)    __attribute__((weak, alias("__stop")));
+void BUSFAULT_Handler(void)     __attribute__((weak, alias("__stop")));
+void USAGEFAULT_Handler(void)   __attribute__((weak, alias("__stop")));
+void SVCALL_Handler(void)       __attribute__((weak, alias("__stop")));
+void PENDSV_Handler(void)       __attribute__((weak, alias("__stop")));
+void SYSTICK_Handler(void)      __attribute__((weak, alias("__stop")));
+
+void DUMMY_Handler(void)        __attribute__((weak, alias("__stop")));
+
+__attribute__((section(".exception_vectors"), used)) funcPtr __exceptionVectors[] = {
+    RESET_Handler,
+    NMI_Handler,
+    HARDFAULT_Handler,
+    MEMMANAGE_Handler,
+    BUSFAULT_Handler,
+    USAGEFAULT_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    SVCALL_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    PENDSV_Handler,
+    SYSTICK_Handler
 };
 
-__attribute__((interrupt("FIQ"))) void DummyException(void) {
-    while (1) {
-        ;
-    }
-}
+void POWERCLOCK_Handler(void)        __attribute__ ((weak, alias("__stop")));
+void RADIO_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void UART0_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void SPI0TWI0_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void SPI1TWI1_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void NFCTAG_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void GPIOTE_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void SAADC_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void TIMER0_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER1_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER2_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void RTC0_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void TEMP_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void RNG_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void ECB_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void AARCCM_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void WDT_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void RTC1_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void QDEC_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void COMPLPCOMP_Handler(void)        __attribute__ ((weak, alias("__stop")));
+void EGU0SWI0_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU1SWI1_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU2SWI2_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU3SWI3_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU4SWI4_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU5SWI5_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void TIMER3_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER4_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void PWM0_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void PDM_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void ACLNVMC_Handler(void)           __attribute__ ((weak, alias("__stop")));
+void PPI_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void MVU_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void PWM1_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void PWM2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void SPI2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void RTC2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void I2C_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void FPU_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void USBD_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void UART1_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void QSPI_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void CCHOSTRGFCRYPTO_Handler(void)   __attribute__ ((weak, alias("__stop")));
+void PWM3_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void SPI3_Handler(void)              __attribute__ ((weak, alias("__stop")));
 
-__attribute__((interrupt("IRQ"))) void DummyInterrupt(void) {
-    while (1) {
-        ;
-    }
-}
+__attribute__((section(".isr_vectors"), used)) funcPtr __isrVectors[] = {
+    POWERCLOCK_Handler,
+    RADIO_Handler,
+    UART0_Handler,
+    SPI0TWI0_Handler,
+    SPI1TWI1_Handler,
+    NFCTAG_Handler,
+    GPIOTE_Handler,
+    SAADC_Handler,
+    TIMER0_Handler,
+    TIMER1_Handler,
+    TIMER2_Handler,
+    RTC0_Handler,
+    TEMP_Handler,
+    RNG_Handler,
+    ECB_Handler,
+    AARCCM_Handler,
+    WDT_Handler,
+    RTC1_Handler,
+    QDEC_Handler,
+    COMPLPCOMP_Handler,
+    EGU0SWI0_Handler,
+    EGU1SWI1_Handler,
+    EGU2SWI2_Handler,
+    EGU3SWI3_Handler,
+    EGU4SWI4_Handler,
+    EGU5SWI5_Handler,
+    TIMER3_Handler,
+    TIMER4_Handler,
+    PWM0_Handler,
+    PDM_Handler,
+    ACLNVMC_Handler,
+    PPI_Handler,
+    MVU_Handler,
+    PWM1_Handler,
+    PWM2_Handler,
+    SPI2_Handler,
+    RTC2_Handler,
+    I2C_Handler,
+    FPU_Handler,
+    USBD_Handler,
+    UART1_Handler,
+    QSPI_Handler,
+    CCHOSTRGFCRYPTO_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    PWM3_Handler,
+    DUMMY_Handler,
+    SPI3_Handler
+};
