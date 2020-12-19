@@ -13,7 +13,7 @@ __attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
 typedef void (*funcPtr)();
 
 void __stop(void)  {
-    while (true) {
+    while (1) {
         ;
     }
 }

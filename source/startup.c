@@ -4,7 +4,7 @@
  *   date: 2020-08-20
  */
 
-#include <stdint>
+#include <stdint.h>
 
 typedef void (*funcPtr)();
 
@@ -51,7 +51,7 @@ void fillHeap(uint32_t fillVal) {
 }
 
 void callInitArray(void) {
-    auto array = __preinit_array_start;
+    funcPtr* array = __preinit_array_start;
     while (array < __preinit_array_end) {
         (*array)();
         array++;
@@ -64,7 +64,7 @@ void callInitArray(void) {
 }
 
 void callFiniArray(void) {
-    auto array = __fini_array_start;
+    funcPtr* array = __fini_array_start;
     while (array < __fini_array_end) {
         (*array)();
         array++;
@@ -78,7 +78,7 @@ void RESET_Handler() {
     callInitArray();
     main();
     callFiniArray();
-    while (true) {
+    while (1) {
         ;
     }
 }
