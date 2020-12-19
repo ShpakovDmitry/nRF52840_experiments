@@ -469,7 +469,7 @@ void UART_initBuffers(void) {
     RingBuffer_init(txBuffHandle, g_transmittBuffer, UART_TX_BUFF_SIZE);
 }
 
-__attribute__((isr)) void Uart0Handler(void) {
+__attribute__((isr)) void UART0_Handler(void) {
     if (UART_isEvent(UART_EVENT_RXDRDY) == true) {
         UART_clearEvent(UART_EVENT_RXDRDY);
         uint8_t data;
