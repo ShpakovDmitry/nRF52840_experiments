@@ -9,10 +9,6 @@
 
 void Application_run(void);
 
-int Application_blinkLed1(void);
-int Application_blinkLed2(void);
-int Application_blinkLed3(void);
-int Application_blinkLed4(void);
 int Application_sendMessage(void);
 
 #endif  // APPLICATION_H
