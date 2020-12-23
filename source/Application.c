@@ -15,8 +15,11 @@ static const Sheduler_Time LED_3_BLINK_PERIOD = 502;
 static const Sheduler_Time LED_4_BLINK_PERIOD = 503;
 static const Sheduler_Time SEND_MESSAGE_PERIOD = 2000;
 
+THardware_nRF52840_Handle _target;
+
 void Application_run(void) {
-    nRF52840_init();
+    nRF52840_ctor(&_target);
+    _target->init();
     LED_init(LED_1);
     LED_init(LED_2);
     LED_init(LED_3);
@@ -49,6 +52,7 @@ int Application_blinkLed4(void) {
 }
 
 int Application_sendMessage(void) {
-    nRF52840_puts("Hello from nRF52840-DK\n");
+    //nRF52840_puts("Hello from nRF52840-DK\n");
+    _target->puts("Hello from nRF52840-DK\n");
     return 0;
 }

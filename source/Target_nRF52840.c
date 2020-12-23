@@ -12,7 +12,18 @@
 #include <nvic.h>
 #include <uart.h>
 
-void nRF52840_init() {
+static void init();
+static void puts(char* );
+
+void nRF52840_ctor(THardware_nRF52840_Handle * me) {
+    static struct THardware_nRF52840 vtable = {
+        &init,
+        &puts
+    };
+
+    *me = &vtable;
+}
+static void init() {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
     Clock_startHighFreqXo();
     SysTick_init(RELOAD_1MS_64MHZ);
@@ -41,6 +52,6 @@ void nRF52840_init() {
     NVIC_enableGlobalIrq();
 }
 
-void nRF52840_puts(char * str) {
+static void puts(char * str) {
     UART_sendString(str);
 }
