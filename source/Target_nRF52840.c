@@ -44,3 +44,45 @@ void nRF52840_init() {
 void nRF52840_puts(char * str) {
     UART_sendString(str);
 }
+
+
+GPIO_Port LED_ports[LED_NUM] = {
+    GPIO_PORT_0, /*LED1 port*/
+    GPIO_PORT_0, /*LED2 port*/
+    GPIO_PORT_0, /*LED3 port*/
+    GPIO_PORT_0  /*LED4 port*/
+};
+
+GPIO_Pin LED_pins[LED_NUM] = {
+    GPIO_PIN_13, /*LED1 pin*/
+    GPIO_PIN_14, /*LED2 pin*/
+    GPIO_PIN_15, /*LED3 pin*/
+    GPIO_PIN_16  /*LED4 pin*/
+};
+
+void nRF52840_initLeds() {
+    GPIO_setDirection(LED_ports[LED1], LED_pins[LED1], GPIO_OUTPUT);
+    GPIO_setDirection(LED_ports[LED2], LED_pins[LED2], GPIO_OUTPUT);
+    GPIO_setDirection(LED_ports[LED3], LED_pins[LED3], GPIO_OUTPUT);
+    GPIO_setDirection(LED_ports[LED4], LED_pins[LED4], GPIO_OUTPUT);
+    nRF52840_setLowLed(LED1);
+    nRF52840_setLowLed(LED2);
+    nRF52840_setLowLed(LED3);
+    nRF52840_setLowLed(LED4);
+}
+
+void nRF52840_setHighLed(Leds led) {
+    GPIO_setOutput(LED_ports[led], LED_pins[led], GPIO_LOW);
+}
+
+void nRF52840_setLowLed(Leds led) {
+    GPIO_setOutput(LED_ports[led], LED_pins[led], GPIO_HIGH);
+}
+
+void nRF52840_invertLed(Leds led) {
+    if ( GPIO_getDriver(LED_ports[led], LED_pins[led]) == GPIO_HIGH ) {
+        nRF52840_setHighLed(led);
+    } else {
+        nRF52840_setLowLed(led);
+    }
+}

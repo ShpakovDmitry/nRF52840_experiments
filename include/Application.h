@@ -9,6 +9,4 @@
 
 void Application_run(void);
 
-int Application_sendMessage(void);
-
 #endif  // APPLICATION_H
