@@ -13,24 +13,25 @@ OBJDUMP := $(ARCH)-objdump
 OBJCOPY := $(ARCH)-objcopy
 OBJSIZE := $(ARCH)-size
 
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+
 SOURCE_DIR := source
 BUILD_DIR := build
 OBJECT_DIR := $(BUILD_DIR)/object
 LINKER_SCRIPT_DIR := etc/linker
 DIRS := $(BUILD_DIR) $(OBJECT_DIR)
 
-LINKER_SCRIPT_FILE := $(LINKER_SCRIPT_DIR)/linkerScript.ld
-CC_SRC_FILES := $(wildcard $(SOURCE_DIR)/*.c)
-CC_OBJ_FILES := $(CC_SRC_FILES:$(SOURCE_DIR)/%.c=$(OBJECT_DIR)/%.o)
-
 CC_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -Os -std=c99
 CC_FLAGS += -idirafter ./include -fdata-sections -ffunction-sections
-CC_FLAGS += -ffreestanding -nostdinc -idirafter ./include/stdlib
+CC_FLAGS += -ffreestanding -nostdinc -idirafter ./source
 LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
 OBJDUMP_FLAGS := --disassemble-all
 OBJCOPY_FLAGS := -O ihex 
 OBJSIZE_FLAGS := 
+
+LINKER_SCRIPT_FILE := $(LINKER_SCRIPT_DIR)/linkerScript.ld
+CC_SRC_FILES := $(call rwildcard,$(SOURCE_DIR),*.c))
 
 $(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
 	$(CC) $(CC_FLAGS) $^ -o $@
