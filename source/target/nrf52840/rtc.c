@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include <application/scheduler/scheduler.h>
+#include <util/scheduler/scheduler.h>
 #include "nvic.h"
 #include "rtc.h"
 

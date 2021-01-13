@@ -43,20 +43,20 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(DIRS)
 	make -C ./source/application clean ROOTDIR=$(CURRDIR)
-	make -C ./source/application/scheduler clean ROOTDIR=$(CURRDIR)
-	make -C ./source/ringbuffer clean ROOTDIR=$(CURRDIR)
-	make -C ./source/runtime clean ROOTDIR=$(CURRDIR)
-	make -C ./source/stdlib clean ROOTDIR=$(CURRDIR)
+	make -C ./source/util/scheduler clean ROOTDIR=$(CURRDIR)
+	make -C ./source/util/ringbuffer clean ROOTDIR=$(CURRDIR)
+	make -C ./source/util/runtime clean ROOTDIR=$(CURRDIR)
+	make -C ./source/util/stdlib clean ROOTDIR=$(CURRDIR)
 	make -C ./source/target/nrf52840 clean ROOTDIR=$(CURRDIR)
 
 all: submake $(BUILD_DIR) link
 
 submake: 
 	make -C ./source/application ROOTDIR=$(CURRDIR)
-	make -C ./source/application/scheduler ROOTDIR=$(CURRDIR)
-	make -C ./source/ringbuffer ROOTDIR=$(CURRDIR)
-	make -C ./source/runtime ROOTDIR=$(CURRDIR)
-	make -C ./source/stdlib ROOTDIR=$(CURRDIR)
+	make -C ./source/util/scheduler ROOTDIR=$(CURRDIR)
+	make -C ./source/util/ringbuffer ROOTDIR=$(CURRDIR)
+	make -C ./source/util/runtime ROOTDIR=$(CURRDIR)
+	make -C ./source/util/stdlib ROOTDIR=$(CURRDIR)
 	make -C ./source/target/nrf52840 ROOTDIR=$(CURRDIR)
 
 flash: all

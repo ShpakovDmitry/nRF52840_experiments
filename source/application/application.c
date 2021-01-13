@@ -4,7 +4,7 @@
  *   date: 2020-12-18
  */
 
-#include <application/scheduler/scheduler.h>
+#include <util/scheduler/scheduler.h>
 #include <target/nrf52840/nRF52840.h>
 #include "application.h"
 
