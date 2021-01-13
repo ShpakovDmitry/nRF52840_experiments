@@ -1,8 +1,7 @@
-.PHONY := all clean flash
+.PHONY := all clean flash submake link
 .DEFAULT_GOAL := all
 
 TARGET := firmware
-
 ARCH := arm-none-eabi
 MCU := cortex-m4
 
@@ -13,45 +12,42 @@ OBJDUMP := $(ARCH)-objdump
 OBJCOPY := $(ARCH)-objcopy
 OBJSIZE := $(ARCH)-size
 
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
-
 SOURCE_DIR := source
 BUILD_DIR := build
-OBJECT_DIR := $(BUILD_DIR)/object
-LINKER_SCRIPT_DIR := etc/linker
-DIRS := $(BUILD_DIR) $(OBJECT_DIR)
+LD_SCRIPT_DIR := etc/linker
+DIRS := $(BUILD_DIR)
 
-CC_FLAGS := -c -Wall -Werror -mcpu=$(MCU) -mthumb -Os -std=c99
-CC_FLAGS += -idirafter ./include -fdata-sections -ffunction-sections
-CC_FLAGS += -ffreestanding -nostdinc -idirafter ./source
-LD_FLAGS := -T $(LINKER_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
+rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+
+LD_SCRIPT_FILE := $(LD_SCRIPT_DIR)/nrf52840.ld
+LD_FLAGS := -T $(LD_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
-OBJDUMP_FLAGS := --disassemble-all
+OBJDUMP_FLAGS := --disassemble-all -z
 OBJCOPY_FLAGS := -O ihex 
 OBJSIZE_FLAGS := 
 
-LINKER_SCRIPT_FILE := $(LINKER_SCRIPT_DIR)/linkerScript.ld
-CC_SRC_FILES := $(call rwildcard,$(SOURCE_DIR),*.c))
 
-$(OBJECT_DIR)/%.o: $(SOURCE_DIR)/%.c
-	$(CC) $(CC_FLAGS) $^ -o $@
-	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $(@:%.o=%.s)
-	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $(@:%.o=%.s)
+link:
+	$(eval  CC_OBJ_FILES := $(call rwildcard,$(SOURCE_DIR),*.o))
+	$(LD) $(LD_FLAGS) $(CC_OBJ_FILES) -o $(BUILD_DIR)/$(TARGET).elf
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $(BUILD_DIR)/$(TARGET).elf >> $(BUILD_DIR)/$(TARGET).s
+	$(OBJCOPY) $(OBJCOPY_FLAGS) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf
 
-$(BUILD_DIR)/$(TARGET).elf: $(AS_OBJ_FILES) $(CC_OBJ_FILES)
-	$(LD) $(LD_FLAGS) $^ -o $@
-	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $(BUILD_DIR)/$(TARGET).s
-	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $(BUILD_DIR)/$(TARGET).s
-	$(OBJCOPY) $(OBJCOPY_FLAGS) $@ $(BUILD_DIR)/$(TARGET).hex
-	$(OBJSIZE) $(OBJSIZE_FLAGS) $@
+CURRDIR := $(PWD)
 
 $(BUILD_DIR):
 	mkdir --parents $(DIRS)
 
 clean:
 	rm -rf $(DIRS)
+	make -C ./source/application clean ROOTDIR=$(CURRDIR)
 
-all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET).elf
+all: submake $(BUILD_DIR) link
+
+submake: 
+	make -C ./source/application ROOTDIR=$(CURRDIR)
 
 flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
