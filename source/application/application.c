@@ -5,7 +5,7 @@
  */
 
 #include <application/scheduler/scheduler.h>
-#include <target/nRF52840.h>
+#include <target/nrf52840/nRF52840.h>
 #include "application.h"
 
 static void Application_initHardware();

@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <application/scheduler/scheduler.h>
-#include <target/nvic/nvic.h>
+#include "nvic.h"
 #include "rtc.h"
 
 #define RTC_0_BASE_ADDRESS 0x4000B000u
