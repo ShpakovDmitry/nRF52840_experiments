@@ -1,16 +1,16 @@
 #include <stdint.h>
 #include <stddef.h>
-#include <sheduler.h>
+#include "scheduler.h"
 
 typedef struct {
-    Sheduler_Task task;
-    Sheduler_Pid pid;
-    Sheduler_Time period;
-    Sheduler_Time lastRun;
-    Sheduler_Time nextRun;
-} Sheduler_TaskDescriptor;
+    Scheduler_Task task;
+    Scheduler_Pid pid;
+    Scheduler_Time period;
+    Scheduler_Time lastRun;
+    Scheduler_Time nextRun;
+} Scheduler_TaskDescriptor;
 
-static const Sheduler_TaskDescriptor Sheduler_emptyTask = {
+static const Scheduler_TaskDescriptor Scheduler_emptyTask = {
     .task = NULL,
     .pid = -1,
     .period = 0,
@@ -18,40 +18,40 @@ static const Sheduler_TaskDescriptor Sheduler_emptyTask = {
     .nextRun = 0
 };
 
-static volatile Sheduler_Time shedtime;
-static Sheduler_TaskDescriptor taskTable[SHEDULER_MAX_TASKS] = { 0 };
+static volatile Scheduler_Time schedtime;
+static Scheduler_TaskDescriptor taskTable[SCHEDULER_MAX_TASKS] = { 0 };
 
-static int Sheduler_findFreeSpaceInTaskTable(void) {
+static int Scheduler_findFreeSpaceInTaskTable(void) {
     int i;
-    for (i = 0; i < SHEDULER_MAX_TASKS; i++) {
+    for (i = 0; i < SCHEDULER_MAX_TASKS; i++) {
         if ( taskTable[i].task == NULL ) {
             break;
         }
     }
 
-    return ( i == SHEDULER_MAX_TASKS ? -1 : i);
+    return ( i == SCHEDULER_MAX_TASKS ? -1 : i);
 }
 
-static int Sheduler_findPidInTaskTable(Sheduler_Pid pid) {
+static int Scheduler_findPidInTaskTable(Scheduler_Pid pid) {
     int i;
-    for (i = 0; i < SHEDULER_MAX_TASKS; i++) {
+    for (i = 0; i < SCHEDULER_MAX_TASKS; i++) {
         if ( taskTable[i].pid == pid ) {
             break;
         }
     }
 
-    return ( i == SHEDULER_MAX_TASKS ? -1 : i);
+    return ( i == SCHEDULER_MAX_TASKS ? -1 : i);
 }
 
-static Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescriptor) {
+static Scheduler_Pid Scheduler_addTaskGeneric(Scheduler_TaskDescriptor taskDescriptor) {
     int i;
-    i = Sheduler_findFreeSpaceInTaskTable();
+    i = Scheduler_findFreeSpaceInTaskTable();
     if ( i == -1 ) {
         return -1;
     }
 
-    Sheduler_Pid pid;
-    pid = (Sheduler_Pid) i;    // pid is position in taskTable[]
+    Scheduler_Pid pid;
+    pid = (Scheduler_Pid) i;    // pid is position in taskTable[]
 
     taskDescriptor.pid = pid;
 
@@ -60,78 +60,78 @@ static Sheduler_Pid Sheduler_addTaskGeneric(Sheduler_TaskDescriptor taskDescript
     return pid;
 }
 
-Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period) {
-    Sheduler_TaskDescriptor taskToAdd;
-    taskToAdd = Sheduler_emptyTask;
+Scheduler_Pid Scheduler_addTask(Scheduler_Task task, Scheduler_Time period) {
+    Scheduler_TaskDescriptor taskToAdd;
+    taskToAdd = Scheduler_emptyTask;
     taskToAdd.task = task;
     taskToAdd.period = period;
-    return Sheduler_addTaskGeneric(taskToAdd);
+    return Scheduler_addTaskGeneric(taskToAdd);
 }
 
-int Sheduler_deleteTask(Sheduler_Pid pid) {
+int Scheduler_deleteTask(Scheduler_Pid pid) {
    int i;
-   i = Sheduler_findPidInTaskTable(pid);
+   i = Scheduler_findPidInTaskTable(pid);
    if ( i == -1 ) {
         return -1;
    }
-   Sheduler_TaskDescriptor* task = &taskTable[i];
-   *task = Sheduler_emptyTask;
+   Scheduler_TaskDescriptor* task = &taskTable[i];
+   *task = Scheduler_emptyTask;
 
    return 0;
 }
 
-int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period) {
+int Scheduler_changeTaskPeriod(Scheduler_Pid pid, Scheduler_Time period) {
     int i;
-    i = Sheduler_findPidInTaskTable(pid);
+    i = Scheduler_findPidInTaskTable(pid);
     if ( i == -1 ) {
         return -1;
     }
 
-    Sheduler_TaskDescriptor* task = &taskTable[i];
+    Scheduler_TaskDescriptor* task = &taskTable[i];
     task->period = period;
     
     return 0;
 }
 
-void Sheduler_run(void) {
-    Sheduler_Time lastShedTime = 0;
-    Sheduler_Time currentShedTime = 0;
+void Scheduler_run(void) {
+    Scheduler_Time lastSchedTime = 0;
+    Scheduler_Time currentSchedTime = 0;
     while (1) {
-        currentShedTime = Sheduler_getTime();
-        if ( currentShedTime == lastShedTime ) {
+        currentSchedTime = Scheduler_getTime();
+        if ( currentSchedTime == lastSchedTime ) {
             continue;
         }
-        lastShedTime = currentShedTime;
-        for (uint8_t i = 0; i < SHEDULER_MAX_TASKS; i++) {
-            Sheduler_TaskDescriptor* task = &taskTable[i];
+        lastSchedTime = currentSchedTime;
+        for (uint8_t i = 0; i < SCHEDULER_MAX_TASKS; i++) {
+            Scheduler_TaskDescriptor* task = &taskTable[i];
             if (task->task == NULL) {
                 continue;
             }
 
-            if ( lastShedTime >= task->nextRun ) {
+            if ( lastSchedTime >= task->nextRun ) {
                 if ( task->task() == -1 ) {
-                    Sheduler_deleteTask(task->pid);
+                    Scheduler_deleteTask(task->pid);
                     continue;
                 }
-                task->lastRun = lastShedTime;
-                task->nextRun = lastShedTime + task->period;
+                task->lastRun = lastSchedTime;
+                task->nextRun = lastSchedTime + task->period;
             }
         }
     }
 }
 
-void Sheduler_tickTime(void) {
-    shedtime++;
+void Scheduler_tickTime(void) {
+    schedtime++;
 }
 
-Sheduler_Time Sheduler_getTime(void) {
-    return shedtime;
+Scheduler_Time Scheduler_getTime(void) {
+    return schedtime;
 }
 
-Sheduler_Pid Sheduler_runTaskAt(Sheduler_Task task, Sheduler_Time time) {
-    Sheduler_TaskDescriptor taskToAdd;
-    taskToAdd = Sheduler_emptyTask;
+Scheduler_Pid Scheduler_runTaskAt(Scheduler_Task task, Scheduler_Time time) {
+    Scheduler_TaskDescriptor taskToAdd;
+    taskToAdd = Scheduler_emptyTask;
     taskToAdd.task = task;
     taskToAdd.nextRun = time;
-    return Sheduler_addTaskGeneric(taskToAdd);
+    return Scheduler_addTaskGeneric(taskToAdd);
 }

@@ -1,20 +1,20 @@
-#ifndef SHEDULER_H
-#define SHEDULER_H
+#ifndef SCHEDULER_H
+#define SCHEDULER_H
 
 #include <stdint.h>
 
-#define SHEDULER_MAX_TASKS 10
+#define SCHEDULER_MAX_TASKS 10
 
-typedef int (*Sheduler_Task)(void);
-typedef uint32_t Sheduler_Time;
-typedef int Sheduler_Pid;
+typedef int (*Scheduler_Task)(void);
+typedef uint32_t Scheduler_Time;
+typedef int Scheduler_Pid;
 
-Sheduler_Pid Sheduler_addTask(Sheduler_Task task, Sheduler_Time period);
-int Sheduler_deleteTask(Sheduler_Pid pid);
-int Sheduler_changeTaskPeriod(Sheduler_Pid pid, Sheduler_Time period);
-void Sheduler_run(void);
-void Sheduler_tickTime(void);
-Sheduler_Time Sheduler_getTime(void);
-Sheduler_Pid Sheduler_runTaskAt(Sheduler_Task task, Sheduler_Time time);
+Scheduler_Pid Scheduler_addTask(Scheduler_Task task, Scheduler_Time period);
+int Scheduler_deleteTask(Scheduler_Pid pid);
+int Scheduler_changeTaskPeriod(Scheduler_Pid pid, Scheduler_Time period);
+void Scheduler_run(void);
+void Scheduler_tickTime(void);
+Scheduler_Time Scheduler_getTime(void);
+Scheduler_Pid Scheduler_runTaskAt(Scheduler_Task task, Scheduler_Time time);
 
-#endif  // SHEDULER_H
+#endif  // SCHEDULER_H
