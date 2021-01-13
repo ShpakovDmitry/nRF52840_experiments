@@ -1,5 +1,5 @@
 #include <stdbool.h>
-#include <gpio.h>
+#include "gpio.h"
 
 #define GPIO_PORT_0_BASE_ADDRESS 0x50000000u
 #define GPIO_PORT_1_BASE_ADDRESS 0x50000300u

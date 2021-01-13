@@ -1,8 +1,5 @@
-#include <temperature.h>
 #include <stdint.h>
-#include <ringbuffer.h>
-#include <rtc.h>
-#include <systime.h>
+#include "temperature.h"
 
 static const uint32_t TEMP_BASE_ADDRESS = 0x4000C000UL;
 

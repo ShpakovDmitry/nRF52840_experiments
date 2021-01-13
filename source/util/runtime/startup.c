@@ -13,9 +13,9 @@ extern uint32_t __data_end;
 extern uint32_t __data_load;
 extern uint32_t __bss_start;
 extern uint32_t __bss_end;
-extern uint32_t __heap_start;
 
 extern void main(void);
+extern void fillHeap(uint32_t fillVal);
 
 extern funcPtr __preinit_array_start[];
 extern funcPtr __preinit_array_end[];
@@ -38,15 +38,6 @@ void copyBssSection(void) {
     src = &__bss_start;
     while (src < &__bss_end) {
         *(src++) = 0;
-    }
-}
-
-void fillHeap(uint32_t fillVal) {
-    uint32_t *dst, *mspReg;
-    dst = &__heap_start;
-    __asm__("mrs %0, msp\n" : "=r" (mspReg));
-    while (dst < mspReg) {
-        *(dst++) = fillVal;
     }
 }
 

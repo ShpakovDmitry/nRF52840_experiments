@@ -1,6 +1,6 @@
-#include <nvic.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include "nvic.h"
 
 #define NVIC_BASE_ADDR 0xE000E000u
 

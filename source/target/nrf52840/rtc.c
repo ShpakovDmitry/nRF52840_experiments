@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include <rtc.h>
-#include <sheduler.h>
-#include <nvic.h>
+#include <util/scheduler/scheduler.h>
+#include "nvic.h"
+#include "rtc.h"
 
 #define RTC_0_BASE_ADDRESS 0x4000B000u
 #define RTC_1_BASE_ADDRESS 0x40011000u
@@ -315,5 +315,5 @@ uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC CC) {
 
 __attribute__ ((isr)) void RTC0_Handler(void) {
     RTC_clearEventTick(RTC_0);
-    Sheduler_tickTime();
+    Scheduler_tickTime();
 }
