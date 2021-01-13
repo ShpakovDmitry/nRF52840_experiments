@@ -43,11 +43,35 @@ $(BUILD_DIR):
 clean:
 	rm -rf $(DIRS)
 	make -C ./source/application clean ROOTDIR=$(CURRDIR)
+	make -C ./source/application/scheduler clean ROOTDIR=$(CURRDIR)
+	make -C ./source/ringbuffer clean ROOTDIR=$(CURRDIR)
+	make -C ./source/runtime clean ROOTDIR=$(CURRDIR)
+	make -C ./source/stdlib clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/clock clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/gpio clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/nvic clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/rtc clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/systime clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/temperature clean ROOTDIR=$(CURRDIR)
+	make -C ./source/target/uart clean ROOTDIR=$(CURRDIR)
 
 all: submake $(BUILD_DIR) link
 
 submake: 
 	make -C ./source/application ROOTDIR=$(CURRDIR)
+	make -C ./source/application/scheduler ROOTDIR=$(CURRDIR)
+	make -C ./source/ringbuffer ROOTDIR=$(CURRDIR)
+	make -C ./source/runtime ROOTDIR=$(CURRDIR)
+	make -C ./source/stdlib ROOTDIR=$(CURRDIR)
+	make -C ./source/target ROOTDIR=$(CURRDIR)
+	make -C ./source/target/clock ROOTDIR=$(CURRDIR)
+	make -C ./source/target/gpio ROOTDIR=$(CURRDIR)
+	make -C ./source/target/nvic ROOTDIR=$(CURRDIR)
+	make -C ./source/target/rtc ROOTDIR=$(CURRDIR)
+	make -C ./source/target/systime ROOTDIR=$(CURRDIR)
+	make -C ./source/target/temperature ROOTDIR=$(CURRDIR)
+	make -C ./source/target/uart ROOTDIR=$(CURRDIR)
 
 flash: all
 	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
