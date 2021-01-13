@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include <clock.h>
+#include "clock.h"
 
 #define CLOCK_BASE_ADDRESS 0x40000000u
 

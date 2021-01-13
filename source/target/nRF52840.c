@@ -4,13 +4,13 @@
  *   date: 2020-12-18
  */
 
-#include <Target_nRF52840.h>
-#include <gpio.h>
-#include <systime.h>
-#include <clock.h>
-#include <rtc.h>
-#include <nvic.h>
-#include <uart.h>
+#include <target/nRF52840.h>
+#include <target/gpio/gpio.h>
+#include <target/systime/systime.h>
+#include <target/clock/clock.h>
+#include <target/rtc/rtc.h>
+#include <target/nvic/nvic.h>
+#include <target/uart/uart.h>
 
 void nRF52840_init() {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);

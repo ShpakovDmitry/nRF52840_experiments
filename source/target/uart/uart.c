@@ -1,8 +1,8 @@
-#include <uart.h>
 #include <stdint.h>
-#include <ringbuffer.h>
 #include <string.h>
 #include <stddef.h>
+#include <ringbuffer/ringbuffer.h>
+#include "uart.h"
 
 static RingBufferHandle rxBuffHandle;
 static RingBufferHandle txBuffHandle;
