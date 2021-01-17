@@ -32,7 +32,7 @@ Let it be:
 ENTRY(RESET_Handler)
 ```
 
-1. Set up memory type, origin, length and access type:
+2. Set up memory type, origin, length and access type:
 ```
 MEMORY {
     FLASH   (rx) : ORIGIN = 0x00000000, LENGTH = 1M
@@ -40,7 +40,7 @@ MEMORY {
 }
 ```
 
-1. Set up section locations in memory:
+3. Set up section locations in memory:
 ```
 SECTIONS {
     . = ORIGIN(FLASH);
@@ -54,7 +54,7 @@ SECTIONS {
     } > FLASH
 ```
 
-1. Place constructors and destructors sections:
+4. Place constructors and destructors sections:
 ```
     .preinit_array ALIGN(4) : {
         __preinit_array_start = .;
@@ -77,14 +77,14 @@ SECTIONS {
         __fini_array_end = .;
     } > FLASH
 ```
-At this point data stored in `FLASH` end. 
+At this point data stored in `FLASH` ends.
 
-1. Define `__etext` symbol with address of code end:
+5. Define `__etext` symbol with address of code end:
 ```
     __etext = .;
 ```
 
-1. Define stack top address, and data load address:
+6. Define stack top address, and data load address:
 ```
     /* according to ARM should be aligned to 8-byte border */
     __stacktop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
@@ -92,7 +92,7 @@ At this point data stored in `FLASH` end.
     . = ORIGIN(RAM);
 ```
 
-1. Place `.data` section in `FLASH` but addresses are kept from `RAM` start(LMA,
+7. Place `.data` section in `FLASH` but addresses are kept from `RAM` start(LMA,
 VMA):
 ```
     .data ALIGN(4) : {
@@ -104,7 +104,7 @@ VMA):
     } > RAM AT > FLASH
 ```
 
-1. Similar place `.bss` section in `RAM`. Note this section does not consumes
+8. Similar place `.bss` section in `RAM`. Note this section does not consumes
 space in `FLASH`, so we do not need to place it in `FLASH`. All we need are
 `__bss_start` and `__bss_end` addresses:
 ```
@@ -118,7 +118,7 @@ space in `FLASH`, so we do not need to place it in `FLASH`. All we need are
     } > RAM
 ```
 
-1. Define heap start address:
+9. Define heap start address:
 ```
     . = ALIGN(4);
     __heap_start = .;
