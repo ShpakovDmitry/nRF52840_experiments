@@ -168,6 +168,85 @@ void __stop(void);
 ```
 Which puts microcontroller into infinite loop;
 
+4. After sections are defined we need to copy `.data` section in `RAM`:
+```c
+void copyDataSection(void) {
+    uint32_t *src, *dst;
+    src = &__data_load;
+    dst = &__data_start;
+    while (dst < &__data_end) {
+        *(dst++) = *(src++);
+    }
+}
+```
+
+5. Initialize `.bss` section in `RAM` with zeros:
+```c
+void copyBssSection(void) {
+    uint32_t *src;
+    src = &__bss_start;
+    while (src < &__bss_end) {
+        *(src++) = 0;
+    }
+}
+```
+
+6. Fill heap with some value(not mandatory):
+```c
+void fillHeap(uint32_t fillVal) {
+    uint32_t *dst, *mspReg;
+    dst = &__heap_start;
+    __asm__("mrs %0, msp\n" : "=r" (mspReg));
+    while (dst < mspReg) {
+        *(dst++) = fillVal;
+    }
+}
+```
+
+7. Call constructors:
+```c
+void callInitArray(void) {
+    funcPtr* array = __preinit_array_start;
+    while (array < __preinit_array_end) {
+        (*array)();
+        array++;
+    }
+    array = __init_array_start;
+    while (array < __init_array_end) {
+        (*array)();
+        array++;
+    }
+}
+```
+
+8. Call `main()`.
+
+9. If `main()` returns then call destructors:
+```c
+void callFiniArray(void) {
+    funcPtr* array = __fini_array_start;
+    while (array < __fini_array_end) {
+        (*array)();
+        array++;
+    }
+}
+```
+
+10. All this is done inside `RESET` exception handler:
+```c
+void RESET_Handler() {
+    copyDataSection();
+    copyBssSection();
+    fillHeap(0xDEADC0DE);
+    callInitArray();
+    main();
+    callFiniArray();
+    while (1) {
+        ;
+    }
+}
+```
+
 ---
 
 > All images are taken from [ARM](https://www.arm.com/) site.
