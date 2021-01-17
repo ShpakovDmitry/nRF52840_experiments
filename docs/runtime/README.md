@@ -1,164 +1,173 @@
 ### Startup
-Startup starts by loading four bytes from address 0x00000000 to stack pointer (SP) register and
-then loading next four bytes from address 0x00000004 to program counter (PC) register which
-means that first instruction that is executed after RESET is the one at this address.
-So here, call to runtime routine should be called. At runtime setup we need at least copy
+Startup starts by loading four bytes from address 0x00000000 to stack pointer
+(SP) register and then loading next four bytes from address 0x00000004 to
+program counter (PC) register which means that first instruction that is
+executed after RESET is the one at this address. So here, call to runtime
+routine should be called. At runtime setup we need at least copy
 **.data** and **.bss** sections to RAM memory region.
 
 ### Vector table
 ![vector table](images/cortexM4_vector_table.png)
 
 ### C runtime
-Firstly we need to define vector table. This is done by placing function
-address table at **.vectors** section. 
+1. Firstly, we need to place stack pointer value to `.stack` section:
 ```c
-__attribute__((section(".vectors")))
-const void *vectors[] = {
-    &stackTop,              /* Initial stack pointer value */
-    &cStartup,              /* Reset vector */
-    /* Exception handlers */
-    &NmiHandler,            /* NMI */
-    &HardFaultHandler,      /* Hard fault*/
-    &MemManageFaultHandler, /* Memory management fault */
-    &BusFaultHandler,       /* Bus fault */
-    &UsageFaultHandler,     /* Usage fault*/
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    0,                      /* Reserved */
-    &SvCallHandler,         /* SVCall */
-    0,                      /* Reserved for debug */
-    0,                      /* Reserved */
-    &PendSVHandler,         /* PendSV */
-    &SysTimeHandler,        /* SysTick */
-    /* Interrupt handlers */
-    &PowerClockHandler,     /* ID  0 Power and clock */
-    &RadioHandler,          /* ID  1 Radio */
-    &Uart0Handler,          /* ID  2 Uart0 and Uarte0 */
-    &Spi0Twi0Handler,       /* ID  3 Spi0 and Twi0 */
-    &Spi1Twi1Handler,       /* ID  4 Spi1 and Twi1 */
-    &NfcTagHandler,         /* ID  5 NFC tag */
-    &GpioteHandler,         /* ID  6 GPIO tasks and events */
-    &SaadcHandler,          /* ID  7 Analog to digital converter */
-    &Timer0Handler,         /* ID  8 Timer 0 */
-    &Timer1Handler,         /* ID  9 Timer 1 */
-    &Timer2Handler,         /* ID 10 Timer 2 */
-    &Rtc0Handler,           /* ID 11 Real timer counter 0 */
-    &TempHandler,           /* ID 12 Temperature sensor */
-    &RngHandler,            /* ID 13 Random number generator */
-    &EcbHandler,            /* ID 14 AES electronic code block */
-    &AarCcmHandler,         /* ID 15 AAR and CCM */
-    &WdtHandler,            /* ID 16 Watchdog timer */
-    &Rtc1Handler,           /* ID 17 Real timer counter 1 */
-    &QdecHandler,           /* ID 18 Quadrature decoder */
-    &CompLpcompHandler,     /* ID 19 COMP and LPCOMP */
-    &Egu0Swi0Handler,       /* ID 20 EGU0 and SWI0 */
-    &Egu1Swi1Handler,       /* ID 21 EGU1 and SWI1 */
-    &Egu2Swi2Handler,       /* ID 22 EGU2 and SWI2 */
-    &Egu3Swi3Handler,       /* ID 23 EGU3 and SWI3 */
-    &Egu4Swi4Handler,       /* ID 24 EGU4 and SWI4 */
-    &Egu5Swi5Handler,       /* ID 25 EGU5 and SWI5 */
-    &Timer3Handler,         /* ID 26 Timer 3 */
-    &Timer4Handler,         /* ID 27 Timer 4 */
-    &Pwm0Handler,           /* ID 28 Pulse Width Modulation 0 */
-    &PdmHandler,            /* ID 29 Pulse Density Modulation */
-    &AclNvmcHandler,        /* ID 30 ACL and NVMC */
-    &PpiHandle,             /* ID 31 Programmable peripheral interconnect */
-    &MvuHandle,             /* ID 32 Memory Watch Unit */
-    &Pwm1Handler,           /* ID 33 Pulse Width Modulation 1 */
-    &Pwm2Handler,           /* ID 34 Pulse Width Modulation 2 */
-    &Spi2Handler,           /* ID 35 SPI2 */
-    &Rtc2Handler,           /* ID 36 Real Timer Counter 2 */
-    &I2cHandler,            /* ID 37 I2C */
-    &FpuHandler,            /* ID 38 FPU */
-    &UsbdHandler,           /* ID 39 USB device */
-    &Uart1Handler,          /* ID 40 Uarte1 */
-    &QspiHandler,           /* ID 41 QSPI */
-    &CcHostRgfCryptoHandler,/* ID 42 CC_HOST_RGF and CryptoCell */
-    0,                      /* ID 43 Reserved */
-    0,                      /* ID 44 Reserved */
-    &Pwm3Handler,           /* ID 45 PWM3 */
-    0,                      /* ID 46 Reserved */
-    &Spi3Handler            /* ID 47 SPI3 */
+extern uint32_t __stacktop;
+
+__attribute__((section(".stack"), used)) uint32_t *__stack_init = &__stacktop;
+```
+
+2. Then we need to define exception vector table. This is done by placing
+function address table at `.exception_vectors` section:
+```c
+typedef void (*funcPtr)();
+
+void __stop(void) {
+    while (1) {
+        ;
+    }
+}
+
+void RESET_Handler(void)        __attribute__((weak, alias("__stop")));
+void NMI_Handler(void)          __attribute__((weak, alias("__stop")));
+void HARDFAULT_Handler(void)    __attribute__((weak, alias("__stop")));
+void MEMMANAGE_Handler(void)    __attribute__((weak, alias("__stop")));
+void BUSFAULT_Handler(void)     __attribute__((weak, alias("__stop")));
+void USAGEFAULT_Handler(void)   __attribute__((weak, alias("__stop")));
+void SVCALL_Handler(void)       __attribute__((weak, alias("__stop")));
+void PENDSV_Handler(void)       __attribute__((weak, alias("__stop")));
+void SYSTICK_Handler(void)      __attribute__((weak, alias("__stop")));
+
+void DUMMY_Handler(void)        __attribute__((weak, alias("__stop")));
+
+__attribute__((section(".exception_vectors"), used)) funcPtr __exceptionVectors[] = {
+    RESET_Handler,
+    NMI_Handler,
+    HARDFAULT_Handler,
+    MEMMANAGE_Handler,
+    BUSFAULT_Handler,
+    USAGEFAULT_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    SVCALL_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    PENDSV_Handler,
+    SYSTICK_Handler
 };
 ```
 
-Every routine here is weakly alised with default exception:
+3. Next, we define ISR vector table and place it to `.isr_vectors` section:
 ```c
-void DummyException(void);
-void cStartup(void)                 __attribute__ ((weak, alias("DummyException")));
-void NmiHandler(void)               __attribute__ ((weak, alias("DummyException")));
-void HardFaultHandler(void)         __attribute__ ((weak, alias("DummyException")));
-void MemManageFaultHandler(void)    __attribute__ ((weak, alias("DummyException")));
-void BusFaultHandler(void)          __attribute__ ((weak, alias("DummyException")));
-void UsageFaultHandler(void)        __attribute__ ((weak, alias("DummyException")));
-void SvCallHandler(void)            __attribute__ ((weak, alias("DummyException")));
-void PendSVHandler(void)            __attribute__ ((weak, alias("DummyException")));
-void SysTimeHandler(void)           __attribute__ ((weak, alias("DummyException")));
+void POWERCLOCK_Handler(void)        __attribute__ ((weak, alias("__stop")));
+void RADIO_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void UART0_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void SPI0TWI0_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void SPI1TWI1_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void NFCTAG_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void GPIOTE_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void SAADC_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void TIMER0_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER1_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER2_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void RTC0_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void TEMP_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void RNG_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void ECB_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void AARCCM_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void WDT_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void RTC1_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void QDEC_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void COMPLPCOMP_Handler(void)        __attribute__ ((weak, alias("__stop")));
+void EGU0SWI0_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU1SWI1_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU2SWI2_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU3SWI3_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU4SWI4_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void EGU5SWI5_Handler(void)          __attribute__ ((weak, alias("__stop")));
+void TIMER3_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void TIMER4_Handler(void)            __attribute__ ((weak, alias("__stop")));
+void PWM0_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void PDM_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void ACLNVMC_Handler(void)           __attribute__ ((weak, alias("__stop")));
+void PPI_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void MVU_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void PWM1_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void PWM2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void SPI2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void RTC2_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void I2C_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void FPU_Handler(void)               __attribute__ ((weak, alias("__stop")));
+void USBD_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void UART1_Handler(void)             __attribute__ ((weak, alias("__stop")));
+void QSPI_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void CCHOSTRGFCRYPTO_Handler(void)   __attribute__ ((weak, alias("__stop")));
+void PWM3_Handler(void)              __attribute__ ((weak, alias("__stop")));
+void SPI3_Handler(void)              __attribute__ ((weak, alias("__stop")));
 
-void PowerClockHandler(void)        __attribute__ ((weak, alias("DummyInterrupt")));
-void RadioHandler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-void Uart0Handler(void)             __attribute__ ((weak, alias("DummyInterrupt")));
-// and so on
+__attribute__((section(".isr_vectors"), used)) funcPtr __isrVectors[] = {
+    POWERCLOCK_Handler,
+    RADIO_Handler,
+    UART0_Handler,
+    SPI0TWI0_Handler,
+    SPI1TWI1_Handler,
+    NFCTAG_Handler,
+    GPIOTE_Handler,
+    SAADC_Handler,
+    TIMER0_Handler,
+    TIMER1_Handler,
+    TIMER2_Handler,
+    RTC0_Handler,
+    TEMP_Handler,
+    RNG_Handler,
+    ECB_Handler,
+    AARCCM_Handler,
+    WDT_Handler,
+    RTC1_Handler,
+    QDEC_Handler,
+    COMPLPCOMP_Handler,
+    EGU0SWI0_Handler,
+    EGU1SWI1_Handler,
+    EGU2SWI2_Handler,
+    EGU3SWI3_Handler,
+    EGU4SWI4_Handler,
+    EGU5SWI5_Handler,
+    TIMER3_Handler,
+    TIMER4_Handler,
+    PWM0_Handler,
+    PDM_Handler,
+    ACLNVMC_Handler,
+    PPI_Handler,
+    MVU_Handler,
+    PWM1_Handler,
+    PWM2_Handler,
+    SPI2_Handler,
+    RTC2_Handler,
+    I2C_Handler,
+    FPU_Handler,
+    USBD_Handler,
+    UART1_Handler,
+    QSPI_Handler,
+    CCHOSTRGFCRYPTO_Handler,
+    DUMMY_Handler,
+    DUMMY_Handler,
+    PWM3_Handler,
+    DUMMY_Handler,
+    SPI3_Handler
+};
 ```
 
-To use interrupt or exception handler, you simply define routine in your file
-with strong attribute(this is default for every decleration) with corresponding
-name. For example:
+Thats it. If need to define custom exception or isr vector handler, simply
+define it in any translation unit as global(do not use `static` keyword).
+
+If not defined exception or isr is called than default handler is called:
 ```c
-static volatile systime_t systime;
-
-void SysTimeHandler(void) {
-	disableSysTickInt();
-	systime++;
-	enableSysTickInt();
-}
+void __stop(void);
 ```
-
-Default interrupt and exception alias is defined as following:
-```c
-__attribute__((interrupt("FIQ"))) void DummyException(void) {
-    while (1) {
-        ;
-    }
-}
-
-__attribute__((interrupt("IRQ"))) void DummyInterrupt(void) {
-    while (1) {
-        ;
-    }
-}
-```
-For explanation of `FIQ` and `IRQ` attributes, please read GNU.GCC documentation:
-[ARM function attributes](https://gcc.gnu.org/onlinedocs/gcc/ARM-Function-Attributes.html)
-
-
-In `cStartup` we need to copy data from FLASH to RAM:
-```c
-void cStartup(void) {
-	uint32_t *src, *dst;
-
-	src = &_etext;
-	dst = &_sdata;
-	while (dst < &_edata) {
-		*(dst++) = *(src++);
-	}
-
-	src = &_sbss;
-	while (src < &_ebss) {
-		*(src++) = 0;
-	}
-	
-	main();
-	
-	// if main() return then loop forever
-	while (1) {
-		;
-	}
-}
-```
+Which puts microcontroller into infinite loop;
 
 ---
 
-> All images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
-> Any copyright belongs to NordicSemiconductors©
+> All images are taken from [ARM](https://www.arm.com/) site.
