@@ -9,51 +9,53 @@ executable. So this will end up with the following memory region description in
 linker script:
 
 ### Linker script
-
-```
-MEMORY {
-    FLASH  (rx) : ORIGIN = 0x00000000,  LENGTH = 1M
-    RAM   (rwx) : ORIGIN = 0x20000000,  LENGTH = 256K
-}
-```
-
+Firstly, we need to define microcontroller memory addresses, ex. `FLASH`, `RAM`.
+This is done by using `MEMORY` directive.
 Next we need to declare where code sections will be placed. This is done
-by using SECTIONS directive. Most common section names are the following:
-* **.text** - program code
-* **.rodata** - read-only data
-* **.data** - initialized global/static variables
-* **.bss** - uninitialized global/static variables, which are zero
-* **.preinit\_array** and **.init\_array** - contains arrays of pointers to
+by using `SECTIONS` directive. Most common section names are the following:
+* `.text` - program code
+* `.rodata` - read-only data
+* `.data` - initialized global/static variables
+* `.bss` - uninitialized global/static variables, which are zero
+* `.preinit_array` and `.init_array` - contains arrays of pointers to
 functions that will be called on initialization
-* **.fini\_array** - contains array of pointers to functions that will be
+* `.fini_array` - contains array of pointers to functions that will be
 called on destruction
 
 Also we need section to hold ISR vector table and stack pointer value.
 Let it be:
-* **.stack** - stack pointer value
-* **.isr\_vectors** - interrupt service routine vector table
+* `.stack` - stack pointer value
+* `.isr_vectors` - interrupt service routine vector table
 
+1. Define the program entry point:
 ```
-/* Set program entry point */
 ENTRY(RESET_Handler)
+```
 
-/* Set up memory type, origin, length and access type */
+1. Set up memory type, origin, length and access type:
+```
 MEMORY {
     FLASH   (rx) : ORIGIN = 0x00000000, LENGTH = 1M
     RAM    (rwx) : ORIGIN = 0x20000000, LENGTH = 256K
 }
+```
 
+1. Set up section locations in memory:
+```
 SECTIONS {
-    . = ORIGIN(FLASH);              /* set FW origin to 0x00000000 address   */
-    .text ALIGN(4) : {              /* align to 32bit border due to ARM spec.*/
-        KEEP(*(.stack))             /* stack section first                   */
-        KEEP(*(.exception_vectors)) /* followed by exception                 */
-        KEEP(*(.isr_vectors))       /* table and ISR.                        */
-        *(.text)                    /* Then add text section                 */
-        *(.text*)                   /* and finnaly,                          */
-        KEEP(*(.rodata*))           /* put rodata at the end                 */
-    } > FLASH                       /* Place this in flash                   */
+    . = ORIGIN(FLASH);
+    .text ALIGN(4) : {
+        KEEP(*(.stack))
+        KEEP(*(.exception_vectors))
+        KEEP(*(.isr_vectors))
+        *(.text)
+        *(.text*)
+        KEEP(*(.rodata*))
+    } > FLASH
+```
 
+1. Place constructors and destructors sections:
+```
     .preinit_array ALIGN(4) : {
         __preinit_array_start = .;
         KEEP(*(.preinit_array))
@@ -74,14 +76,25 @@ SECTIONS {
         KEEP(*(.fini_array*))
         __fini_array_end = .;
     } > FLASH
+```
+At this point data stored in `FLASH` end. 
 
+1. Define `__etext` symbol with address of code end:
+```
     __etext = .;
+```
 
+1. Define stack top address, and data load address:
+```
     /* according to ARM should be aligned to 8-byte border */
     __stacktop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
     __data_load = LOADADDR(.data);
     . = ORIGIN(RAM);
+```
 
+1. Place `.data` section in `FLASH` but addresses are kept from `RAM` start(LMA,
+VMA):
+```
     .data ALIGN(4) : {
         __data_start = .;
         *(.data)
@@ -89,7 +102,12 @@ SECTIONS {
         . = ALIGN(4);
         __data_end = .;
     } > RAM AT > FLASH
+```
 
+1. Similar place `.bss` section in `RAM`. Note this section does not consumes
+space in `FLASH`, so we do not need to place it in `FLASH`. All we need are
+`__bss_start` and `__bss_end` addresses:
+```
     .bss ALIGN(4) (NOLOAD) : {
         __bss_start = .;
         *(.bss)
@@ -98,73 +116,15 @@ SECTIONS {
         __bss_end = .;
         *(.noinit*)
     } > RAM
+```
 
+1. Define heap start address:
+```
     . = ALIGN(4);
     __heap_start = .;
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-For **.vectors** `KEEP` kyeword is used to indicate the linker that this section
-should not be throwed away in link process.
-Section **.text**, **.rodata**, **.vectors** goes to FLASH memory and according to
-ARMv7-M architecture, vector table is palced at the very beggining of FLASH memory
-at address 0x00000000. And so sections **.data** and **.bss** goes to RAM memory.
-But important note, due to harvard architecture and that RAM is volatile memory,
-firstly we put these sections at FLASH and then copy to RAM at startup.\
-We end up with:
-```
-ENTRY(main)
-
-SECTIONS {
-	.vectors : AT (0x00000000) {
-		. = ALIGN(4);		/* align on 32-bit border */
-		KEEP(*(.vectors))
-		. = ALIGN(4);
-	} > FLASH
-
-	.text : {
-		. = ALIGN(4);
-		*(.text*)
-		*(.rodata*)
-		. = ALIGN(4);
-		_etext = .;
-	} > FLASH
-	
-	.data : AT (_etext) {		/* AT specifies LMA */
-		. = ALIGN(4);
-		_sdata = .;		/* Here we get VMA */
-		*(.data*)
-		. = ALIGN(4);
-		_edata = .;
-	} > RAM
-
-	.bss : {
-		. = ALIGN(4);
-		_sbss = .;
-		*(.bss*)
-		. = ALIGN(4);
-		_ebss = .;
-	} > RAM
-}
-```
-
-Stack top is defined as follows:
-```
-stackTop = ALIGN (ORIGIN(RAM) + LENGTH(RAM), 8);
-```
-
 ---
 
 > All images are taken from [NordicSemiconductors](https://infocenter.nordicsemi.com) site.
-> Any copyright belongs to NordicSemiconductors©
