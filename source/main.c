@@ -4,7 +4,7 @@
  *   date: 2020-08-20
  */
 
-#include <application/application.h>
+#include <application.h>
 
 int main(void) {
     Application_run();
