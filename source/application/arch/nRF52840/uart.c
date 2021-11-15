@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stddef.h>
-#include <util/ringbuffer/ringbuffer.h>
+#include <ringbuffer.h>
 #include "uart.h"
 
 static RingBufferHandle rxBuffHandle;

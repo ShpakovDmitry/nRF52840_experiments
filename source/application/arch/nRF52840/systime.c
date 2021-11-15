@@ -1,4 +1,4 @@
-#include <util/scheduler/scheduler.h>
+#include <scheduler.h>
 #include "systime.h"
 
 #define SYS_TICK_BASE_ADDRESS 0xE000E000u
