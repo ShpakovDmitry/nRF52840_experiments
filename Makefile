@@ -2,24 +2,39 @@
 .DEFAULT_GOAL := all
 
 TARGET := firmware
-ARCH := arm-none-eabi
-MCU := cortex-m4
+MCU := nRF52840
+ARCH := cortex-m4
+TOOLCHAIN_ARCH := arm-none-eabi
 
-CC := $(ARCH)-gcc
-AS := $(ARCH)-as
-LD := $(ARCH)-ld
-OBJDUMP := $(ARCH)-objdump
-OBJCOPY := $(ARCH)-objcopy
-OBJSIZE := $(ARCH)-size
+CC := $(TOOLCHAIN_ARCH)-gcc
+AS := $(TOOLCHAIN_ARCH)-as
+LD := $(TOOLCHAIN_ARCH)-ld
+OBJDUMP := $(TOOLCHAIN_ARCH)-objdump
+OBJCOPY := $(TOOLCHAIN_ARCH)-objcopy
+OBJSIZE := $(TOOLCHAIN_ARCH)-size
 
-SOURCE_DIR := source
-BUILD_DIR := build
-LD_SCRIPT_DIR := etc/linker
-DIRS := $(BUILD_DIR)
+SOURCE_DIR := ./source
+BUILD_DIR := ./build
+LIBS_DIR := $(SOURCE_DIR)/libs
+INC_DIRS := $(shell find $(SOURCE_DIR) -type d)
 
-rwildcard=$(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(subst *,%,$2),$d))
+SRC_FILES := $(shell find $(SOURCE_DIR) -name '*.cpp' -or -name '*.c' -or -name '*.S')
+OBJ_FILES := $(SRC_FILES:%=$(BUILD_DIR)/%.o)
+DEPS := $(OBJ_FILES:.o=.d)
+LD_SCRIPT_FILE := $(SOURCE_DIR)/application/arch/$(MCU)/linker/nRF52840.ld
 
-LD_SCRIPT_FILE := $(LD_SCRIPT_DIR)/nrf52840.ld
+INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+CPPFLAGS := $(INC_FLAGS) -MMD -MP
+AS_FLAGS :=
+CC_FLAGS := -Wall -Werror -mcpu=$(ARCH) -mthumb -Os -std=c18
+CC_FLAGS += -fdata-sections -ffunction-sections -ffreestanding -nostdinc
+CXX_FLAGS := -Wall -Werror -mcpu=$(ARCH) -mthumb -Os -std=c++17
+CXX_FLAGS += -fdata-sections -ffunction-sections 
+CXX_FLAGS += -fms-extensions -fno-exceptions -fno-rtti -fno-use-cxa-atexit
+CXX_FLAGS += -fno-threadsafe-statics -fstrict-volatile-bitfields
+CXX_FLAGS += -Wextra -Wcast-align -Wconversion -Wsign-conversion -Wold-style-cast
+CXX_FLAGS += -Wshadow -Wlogical-op -Wsuggest-override -Wsuggest-final-types
+CXX_FLAGS += -Wsuggest-final-methods -pedantic
 LD_FLAGS := -T $(LD_SCRIPT_FILE) -Map $(BUILD_DIR)/$(TARGET).map --gc-sections
 LD_FLAGS += -nostartfiles -nolibc -nostdlib -nodefaultfiles
 OBJDUMP_FLAGS := --disassemble-all -z
@@ -27,38 +42,40 @@ OBJCOPY_FLAGS := -O ihex
 OBJSIZE_FLAGS := 
 
 
-link:
-	$(eval  CC_OBJ_FILES := $(call rwildcard,$(SOURCE_DIR),*.o))
-	$(LD) $(LD_FLAGS) $(CC_OBJ_FILES) -o $(BUILD_DIR)/$(TARGET).elf
-	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf > $(BUILD_DIR)/$(TARGET).s
-	$(OBJDUMP) $(OBJDUMP_FLAGS) $(BUILD_DIR)/$(TARGET).elf >> $(BUILD_DIR)/$(TARGET).s
-	$(OBJCOPY) $(OBJCOPY_FLAGS) $(BUILD_DIR)/$(TARGET).elf $(BUILD_DIR)/$(TARGET).hex
-	$(OBJSIZE) $(OBJSIZE_FLAGS) $(BUILD_DIR)/$(TARGET).elf
 
-CURRDIR := $(PWD)
+all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET).hex
+
+$(BUILD_DIR)/$(TARGET).hex: $(OBJ_FILES)
+	$(LD) $(LD_FLAGS) $(OBJ_FILES) -o $(@:.hex=.elf)
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $(@:.hex=.elf) > $(@:.hex=.S)
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $(@:.hex=.elf) >> $(@:.hex=.S)
+	$(OBJCOPY) $(OBJCOPY_FLAGS) $(@:.hex=.elf) $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $(@:.hex=.elf)
 
 $(BUILD_DIR):
-	mkdir --parents $(DIRS)
+	mkdir --parents $@
+
+$(BUILD_DIR)/%.S.o: %.S
+	mkdir --parents $(dir $@)
+	$(AS) $(AS_FLAGS) $< -o $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $@.S
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $@.S
+
+$(BUILD_DIR)/%.c.o: %.c
+	mkdir --parents $(dir $@)
+	$(CC) $(CPPFLAGS) $(CC_FLAGS) -c $< -o $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $@.S
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $@.S
+
+$(BUILD_DIR)/%.cpp.o: %.cpp
+	mkdir --parents $(dir $@)
+	$(CXX) $(CPPFLAGS) $(CXX_FLAGS) -c $< -o $@
+	$(OBJSIZE) $(OBJSIZE_FLAGS) $@ > $@.S
+	$(OBJDUMP) $(OBJDUMP_FLAGS) $@ >> $@.S
 
 clean:
-	rm -rf $(DIRS)
-	make -C ./source/application clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/scheduler clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/ringbuffer clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/runtime clean ROOTDIR=$(CURRDIR)
-	make -C ./source/util/stdlib clean ROOTDIR=$(CURRDIR)
-	make -C ./source/target/nrf52840 clean ROOTDIR=$(CURRDIR)
+	rm -rf $(BUILD_DIR)
 
-all: submake $(BUILD_DIR) link
-
-submake: 
-	make -C ./source/application ROOTDIR=$(CURRDIR)
-	make -C ./source/util/scheduler ROOTDIR=$(CURRDIR)
-	make -C ./source/util/ringbuffer ROOTDIR=$(CURRDIR)
-	make -C ./source/util/runtime ROOTDIR=$(CURRDIR)
-	make -C ./source/util/stdlib ROOTDIR=$(CURRDIR)
-	make -C ./source/target/nrf52840 ROOTDIR=$(CURRDIR)
-
-flash: all
-	nrfjprog -f nrf52 --program build/firmware.hex --sectorerase
+flash:
+	nrfjprog -f nrf52 --program $(BUILD_DIR)/$(TARGET).hex --sectorerase
 	nrfjprog -f nrf52 --pinreset
