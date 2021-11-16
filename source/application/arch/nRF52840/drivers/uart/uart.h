@@ -1,3 +1,9 @@
+/*
+ *   file: uart.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef UART_H
 #define UART_H
 

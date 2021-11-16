@@ -1,3 +1,9 @@
+/*
+ *   file: uart.c
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #include <stdint.h>
 #include <string.h>
 #include <stddef.h>
