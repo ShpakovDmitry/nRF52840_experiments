@@ -1,5 +1,5 @@
 /*
- *   file: startup.c
+ *   file: crt0.c
  * author: ShpakovDmitry
  *   date: 2020-08-20
  */
