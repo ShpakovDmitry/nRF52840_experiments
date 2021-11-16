@@ -1,3 +1,9 @@
+/*
+ *   file: systime.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef SYS_TIME_H
 #define SYS_TIME_H
 

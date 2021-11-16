@@ -1,3 +1,9 @@
+/*
+ *   file: systime.c
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #include <scheduler.h>
 #include "systime.h"
 
