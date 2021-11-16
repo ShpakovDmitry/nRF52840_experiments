@@ -7,8 +7,8 @@
 #include <stddef.h>
 #include "string.h"
 
-size_t strlen(char* s) {
-    char *p = s;
+size_t strlen(const char* s) {
+    const char* p = s;
     while (*p != '\0') {
         p++;
     }

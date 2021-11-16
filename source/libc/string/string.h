@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-size_t strlen(char* s);
+size_t strlen(const char* s);
 void reverse(char s[]);
 void itoa(int n, char s[]);
 void* memcpy(void* dst, const void* src, size_t n);
