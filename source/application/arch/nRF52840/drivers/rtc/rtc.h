@@ -1,3 +1,9 @@
+/*
+ *   file: rtc.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef RTC_H
 #define RTC_H
 
