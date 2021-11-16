@@ -9,6 +9,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SCHEDULER_MAX_TASKS 10
 
 typedef int (*Scheduler_Task)(void);
@@ -22,5 +26,9 @@ void Scheduler_run(void);
 void Scheduler_tickTime(void);
 Scheduler_Time Scheduler_getTime(void);
 Scheduler_Pid Scheduler_runTaskAt(Scheduler_Task task, Scheduler_Time time);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // SCHEDULER_H

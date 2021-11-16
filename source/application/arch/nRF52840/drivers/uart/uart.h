@@ -11,6 +11,10 @@
 #include <stddef.h>
 #include "gpio.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define UART_RX_BUFF_SIZE   1024
 #define UART_TX_BUFF_SIZE   1024
 
@@ -118,5 +122,9 @@ size_t UART_sendString(char* str);
 size_t UART_getData(uint8_t* data, size_t size);
 
 void UART_initBuffers(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // UART_H

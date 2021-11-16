@@ -9,6 +9,10 @@
 
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define MAX_PRESCALER_RTC 4095u
 #define MAX_COMPARE_VAL 16777215u
 
@@ -42,5 +46,9 @@ void RTC_disableEventRouting(RTC_Module module, RTC_Interrupt interrupt);
 
 void RTC_setCompareReg(RTC_Module module, RTC_CC cc, uint32_t value);
 uint32_t RTC_getCompareReg(RTC_Module module, RTC_CC cc);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // RTC_H

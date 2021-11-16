@@ -7,6 +7,10 @@
 #ifndef NRF52840_H
 #define NRF52840_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     LED1 = 0, LED2, LED3, LED4,
     LED_NUM
@@ -18,5 +22,9 @@ void nRF52840_initLeds();
 void nRF52840_setHighLed(Leds led);
 void nRF52840_setLowLed(Leds led);
 void nRF52840_invertLed(Leds led);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // NRF52840_H

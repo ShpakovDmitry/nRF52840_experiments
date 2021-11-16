@@ -10,6 +10,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     POWER_CLOCK                         = 0,
     RADIO                               = 1,
@@ -75,5 +79,9 @@ void NVIC_setPendingIrq(IrqNvic irqNvic);
 void NVIC_clearPendingIrq(IrqNvic irqNvic);
 bool NVIC_isPendingIrq(IrqNvic irqNvic);
 void NVIC_setPriorityIrq(IrqNvic irqNvic, uint8_t priority);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // NVIC_H

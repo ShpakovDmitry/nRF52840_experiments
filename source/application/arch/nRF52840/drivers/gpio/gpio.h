@@ -9,6 +9,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum { GPIO_PORT_0 = 0, GPIO_PORT_1 } GPIO_Port;
 typedef enum { GPIO_INPUT = 0, GPIO_OUTPUT } GPIO_Direction;
 typedef enum { GPIO_LOW = 0, GPIO_HIGH } GPIO_Output;
@@ -27,5 +31,9 @@ void GPIO_setDirection(GPIO_Port port, GPIO_Pin pin, GPIO_Direction direction);
 void GPIO_setOutput(GPIO_Port port, GPIO_Pin pin, GPIO_Output output);
 GPIO_Output GPIO_getInput(GPIO_Port port, GPIO_Pin pin);
 GPIO_Output GPIO_getDriver(GPIO_Port port, GPIO_Pin pin);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	// GPIO_H

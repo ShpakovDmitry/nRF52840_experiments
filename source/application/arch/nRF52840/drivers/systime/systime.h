@@ -9,6 +9,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint32_t SysTick_time;
 typedef uint64_t SysTick_CpuTicks;
 
@@ -21,5 +25,9 @@ uint64_t SysTick_getCpuTicks(void);
 #define RELOAD_100US_64MHZ	0x0018FF    // 100 us @ 64 MHZ CPU clock
 #define RELOAD_10US_64MHZ	0x00027F    //  10 us @ 64 MHZ CPU clock
 #define RELOAD_1US_64MHZ	0x00003F    //   1 us @ 64 MHZ CPU clock
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif	// SYS_TIME_H

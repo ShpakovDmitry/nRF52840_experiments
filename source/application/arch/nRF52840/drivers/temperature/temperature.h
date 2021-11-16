@@ -10,6 +10,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define TEMP_BUFF_SIZE  100
 
 void TEMP_startMeasure(void);
@@ -19,5 +23,9 @@ void TEMP_clearDataReady(void);
 void TEMP_enableInterrupt(void);
 void TEMP_disableInterrupt(void);
 int32_t TEMP_getTemperature(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // TEMPERATURE_H

@@ -7,6 +7,10 @@
 #ifndef APPLICATION_H
 #define APPLICATION_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void Application_run(void);
 
 void Application_initHardware();
@@ -18,5 +22,9 @@ int Application_blinkLed1(void);
 int Application_blinkLed2(void);
 int Application_blinkLed3(void);
 int Application_blinkLed4(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // APPLICATION_H

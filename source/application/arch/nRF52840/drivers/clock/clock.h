@@ -7,6 +7,10 @@
 #ifndef CLOCK_H
 #define CLOCK_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
     HFXO_DEBOUNCE_16US = 0,
     HFXO_DEBOUNCE_32US,
@@ -30,5 +34,9 @@ void Clock_setHighFreqXoDebounce(Clock_HighFreqDebounceTime debounceTime);
 void Clock_setLowFreqSource(Clock_LowFreqSource source);
 void Clock_startLowFreqXo(void);
 void Clock_stopLowFreqXo(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // CLOCK_H
