@@ -1,3 +1,9 @@
+/*
+ *   file: scheduler.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
