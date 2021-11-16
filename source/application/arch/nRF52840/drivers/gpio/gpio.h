@@ -1,3 +1,9 @@
+/*
+ *   file: gpio.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef GPIO_H
 #define GPIO_H
 
