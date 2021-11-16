@@ -5,12 +5,12 @@
  */
 
 #include "nRF52840.h"
-#include "gpio.h"
-#include "systime.h"
-#include "clock.h"
-#include "rtc.h"
-#include "nvic.h"
-#include "uart.h"
+#include <gpio.h>
+#include <systime.h>
+#include <clock.h>
+#include <rtc.h>
+#include <nvic.h>
+#include <uart.h>
 
 void nRF52840_init() {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
