@@ -1,5 +1,5 @@
 /*
- *   file: Application.c
+ *   file: application.c
  * author: ShpakovDmitry
  *   date: 2020-12-18
  */
