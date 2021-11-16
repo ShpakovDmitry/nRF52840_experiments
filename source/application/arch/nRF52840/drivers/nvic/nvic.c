@@ -1,3 +1,9 @@
+/*
+ *   file: nvic.c
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "nvic.h"

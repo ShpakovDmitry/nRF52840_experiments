@@ -1,3 +1,9 @@
+/*
+ *   file: nvic.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef NVIC_H
 #define NVIC_H
 
