@@ -1,3 +1,9 @@
+/*
+ *   file: clock.h
+ * author: ShpakovDmitry
+ *   date: 2021-11-16
+ */
+
 #ifndef CLOCK_H
 #define CLOCK_H
 
