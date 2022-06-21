@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <scheduler.h>
 #include <nRF52840.h>
+#include <spim0.h>
 #include "application.h"
 
 
@@ -18,8 +19,29 @@ void Application_run(void) {
     Application_halt();
 }
 
+#define SIZE 64
+
+uint8_t rxBuff[SIZE] = {0x55};
+uint8_t txBuff[SIZE] = {0xAA};
+
 void Application_initHardware(void) {
     nRF52840_init();
+    SPIM0_Config config;
+    config.speed = K125;
+    config.mode = SPI_MODE0;
+    config.bitOrder = LSB_FIRST;
+    config.sckPort = PORT_0;
+    config.sckPin = PIN_19;
+    config.mosiPort = PORT_0;
+    config.mosiPin = PIN_21;
+    config.misoPort = PORT_0;
+    config.misoPin = PIN_23;
+    config.csnPort = PORT_0;
+    config.csnPin = PIN_25;
+    SPIM0_configure(&config);
+    SPIM0_setTransmitBuffer(txBuff, SIZE);
+    SPIM0_setReceiveBuffer(rxBuff,  SIZE);
+    SPIM0_enable();
     nRF52840_initLeds();
 }
 
@@ -52,6 +74,7 @@ int Application_sendMessage(void) {
 
 int Application_blinkLed1(void) {
     nRF52840_invertLed(LED1);
+    SPIM0_transfer();
     return 0;
 }
 
