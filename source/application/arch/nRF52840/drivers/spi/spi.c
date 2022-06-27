@@ -63,3 +63,12 @@ uint8_t SPI_transfer(uint8_t data) {
     SET_BIT_LO(spi[0]->EVENTS_READY, EVENTS_READY_BIT);
     return spi[0]->RXD;
 }
+
+void SPI_configure(SPI_Config *config) {
+    setSpeed(config->speed);
+    setMode(config->mode);
+    setBitOrder(config->bitOrder);
+    setSckPinPort(config->sckPin);
+    setMosiPinPort(config->mosiPin);
+    setMisoPinPort(config->misoPin);
+}
