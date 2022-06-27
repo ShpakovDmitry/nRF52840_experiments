@@ -65,9 +65,8 @@ typedef struct {
     SPI_Mode mode;
     SPI_BitOrder bitOrder;
     nRF_PinPort sckPin
-    nRF_PinPort misoPin;
     nRF_PinPort mosiPin;
-    nRF_PinPort csnPin;
+    nRF_PinPort misoPin;
 } SPI_Config;
 
 void SPI_configure(SPI_Config *config);
