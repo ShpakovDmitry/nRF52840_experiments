@@ -11,6 +11,7 @@
 #include <rtc.h>
 #include <nvic.h>
 #include <uart.h>
+#include <spi.h>
 
 void nRF52840_init() {
     Clock_setHighFreqXoDebounce(HFXO_DEBOUNCE_1024US);
@@ -35,6 +36,22 @@ void nRF52840_init() {
     UART_initBuffers();
     UART_enableInterrupt(UART_INT_TXDRDY);
     UART_enableInterrupt(UART_INT_RXDRDY);
+
+    // SPI config
+    nRF_PinPort sckPinPort = { .port = PORT_1, .pin = PIN_15 };
+    nRF_PinPort mosiPinPort = { .port = PORT_1, .pin = PIN_14 };
+    nRF_PinPort misoPinPort = { .port = PORT_1, .pin = PIN_13 };
+
+    SPI_Config spiConfig = {
+        .speed = M4,
+        .mode = SPI_MODE0,
+        .bitOrder = MSB_FIRST,
+        .sckPin = sckPinPort,
+        .mosiPin = mosiPinPort,
+        .misoPin = misoPinPort
+    };
+    SPI_configure(&spiConfig);
+    SPI_enable();
 
     NVIC_enableIrq(RTC0);
     NVIC_enableIrq(UARTE0_UART0);

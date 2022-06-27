@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <scheduler.h>
 #include <nRF52840.h>
+#include <spi.h>
 #include "application.h"
 
 
@@ -29,12 +30,14 @@ void Application_initScheduler(void) {
     const Scheduler_Time LED2_BLINK_PERIOD = 501;
     const Scheduler_Time LED3_BLINK_PERIOD = 502;
     const Scheduler_Time LED4_BLINK_PERIOD = 503;
+    const Scheduler_Time SPI_SEND_PERIOD = 1500;
 
     Scheduler_addTask(&Application_sendMessage,  SEND_MESSAGE_PERIOD);
     Scheduler_addTask(&Application_blinkLed1,  LED1_BLINK_PERIOD);
     Scheduler_addTask(&Application_blinkLed2,  LED2_BLINK_PERIOD);
     Scheduler_addTask(&Application_blinkLed3,  LED3_BLINK_PERIOD);
     Scheduler_addTask(&Application_blinkLed4,  LED4_BLINK_PERIOD);
+    Scheduler_addTask(&Application_sendSpi,  SPI_SEND_PERIOD);
 }
 
 void Application_runScheduler(void) {
@@ -67,6 +70,11 @@ int Application_blinkLed3(void) {
 
 int Application_blinkLed4(void) {
     nRF52840_invertLed(LED4);
+    return 0;
+}
+
+int Application_sendSpi(void) {
+    SPI_transfer(0x55);
     return 0;
 }
 
