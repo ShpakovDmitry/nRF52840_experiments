@@ -41,14 +41,14 @@ static SPI_Registers *spi[3] = {
 #define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
 #define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
 
-#define ENABLE_BIT (0)
+#define SPI_ENABLE_BIT (0)
 
 void SPI_enable() {
-    SET_BIT_HI(spi[0]->ENABLE, ENABLE_BIT);
+    SET_BIT_HI(spi[0]->ENABLE, SPI_ENABLE_BIT);
 }
 
 void SPI_disable() {
-    SET_BIT_LO(spi[0]->ENABLE, ENABLE_BIT);
+    SET_BIT_LO(spi[0]->ENABLE, SPI_ENABLE_BIT);
 }
 
 #define EVENTS_READY_BIT (0)
@@ -118,7 +118,7 @@ static void setBitOrder(SPI_BitOrder bitOrder) {
 }
 
 #define PORT_BIT (5)
-#define ENABLE_BIT (31)
+#define PIN_PORT_ENABLE_BIT (31)
 
 static void setSckPinPort(nRF_PinPort sckPinPort) {
     spi[0]->PSEL_SCK = sckPinPort.pin;
@@ -127,7 +127,7 @@ static void setSckPinPort(nRF_PinPort sckPinPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_SCK, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_SCK, ENABLE_BIT);
+    SET_BIT_HI(spi[0]->PSEL_SCK, PIN_PORT_ENABLE_BIT);
 }
 
 static void setMosiPinPort(nRF_PinPort sckMosiPort) {
@@ -137,7 +137,7 @@ static void setMosiPinPort(nRF_PinPort sckMosiPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_MOSI, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_MOSI, ENABLE_BIT);
+    SET_BIT_HI(spi[0]->PSEL_MOSI, PIN_PORT_ENABLE_BIT);
 }
 
 static void setMisoPinPort(nRF_PinPort misoPinPort) {
@@ -147,7 +147,7 @@ static void setMisoPinPort(nRF_PinPort misoPinPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_MISO, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_MISO, ENABLE_BIT);
+    SET_BIT_HI(spi[0]->PSEL_MISO, PIN_PORT_ENABLE_BIT);
 }
 
 void SPI_configure(SPI_Config *config) {
