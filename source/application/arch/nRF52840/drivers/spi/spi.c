@@ -84,6 +84,28 @@ static void setSpeed(SPI_Speed speed) {
     }
 }
 
+#define CPHA (1)
+#define CPOL (2)
+
+static void setMode(SPI_Mode mode) {
+    if ( mode == SPI_MODE0 ) {
+        SET_BIT_LO(spi[0]->CONFIG, CPHA);
+        SET_BIT_LO(spi[0]->CONFIG, CPOL);
+    } else if ( mode == SPI_MODE1 ) {
+        SET_BIT_HI(spi[0]->CONFIG, CPHA);
+        SET_BIT_LO(spi[0]->CONFIG, CPOL);
+    } else if ( mode == SPI_MODE2 ) {
+        SET_BIT_LO(spi[0]->CONFIG, CPHA);
+        SET_BIT_HI(spi[0]->CONFIG, CPOL);
+    } else if ( mode == SPI_MODE3 ) {
+        SET_BIT_HI(spi[0]->CONFIG, CPHA);
+        SET_BIT_HI(spi[0]->CONFIG, CPOL);
+    } else {
+        setMode(SPI_MODE0); // should not get here
+    }
+}
+
+
 void SPI_configure(SPI_Config *config) {
     setSpeed(config->speed);
     setMode(config->mode);
