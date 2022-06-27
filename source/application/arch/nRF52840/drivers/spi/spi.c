@@ -46,3 +46,7 @@ static SPI_Registers *spi[3] = {
 void SPI_enable() {
     SET_BIT_HI(spi[0]->ENABLE, ENABLE_BIT);
 }
+
+void SPI_disable() {
+    SET_BIT_LO(spi[0]->ENABLE, ENABLE_BIT);
+}
