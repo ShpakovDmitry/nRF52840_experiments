@@ -50,3 +50,16 @@ void SPI_enable() {
 void SPI_disable() {
     SET_BIT_LO(spi[0]->ENABLE, ENABLE_BIT);
 }
+
+#define EVENTS_READY_BIT (0)
+
+uint8_t SPI_transfer(uint8_t data) {
+    spi[0]->TXD = data;
+
+    while (!spi[0]->EVENTS_READY) {
+        ;
+    }
+
+    SET_BIT_LO(spi[0]->EVENTS_READY, EVENTS_READY_BIT);
+    return spi[0]->RXD;
+}
