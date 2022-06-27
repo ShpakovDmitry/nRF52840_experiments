@@ -32,13 +32,6 @@ typedef enum {
 } SPI_Speed;
 
 typedef enum {
-    SPI_MODE0,  // CPOL == 0 CPHA == 0
-    SPI_MODE1,  // CPOL == 0 CPHA == 1
-    SPI_MODE2,  // CPOL == 1 CPHA == 0
-    SPI_MODE3   // CPOL == 1 CPHA == 1
-} SPI_Mode;
-
-typedef enum {
     MSB_FIRST,  // Most significant bit shifted out first
     LSB_FIRST   // Least significant bit shifted out first
 } SPI_BitOrder;
