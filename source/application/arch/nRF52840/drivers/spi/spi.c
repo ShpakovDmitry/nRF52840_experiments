@@ -117,6 +117,19 @@ static void setBitOrder(SPI_BitOrder bitOrder) {
     }
 }
 
+#define PORT_BIT (5)
+#define ENABLE_BIT (31)
+
+static void setSckPinPort(nRF_PinPort sckPinPort) {
+    spi[0]->PSEL_SCK = sckPinPort.pin;
+    if ( sckPinPort.port == PORT_0 ) {
+        SET_BIT_LO(spi[0]->PSEL_SCK, PORT_BIT);
+    } else {
+        SET_BIT_HI(spi[0]->PSEL_SCK, PORT_BIT);
+    }
+    SET_BIT_HI(spi[0]->PSEL_SCK, ENABLE_BIT);
+}
+
 
 void SPI_configure(SPI_Config *config) {
     setSpeed(config->speed);
