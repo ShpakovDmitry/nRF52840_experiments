@@ -130,7 +130,7 @@ static void setSckPinPort(nRF_PinPort sckPinPort) {
     SET_BIT_HI(spi[0]->PSEL_SCK, PIN_PORT_ENABLE_BIT);
 }
 
-static void setMosiPinPort(nRF_PinPort sckMosiPort) {
+static void setMosiPinPort(nRF_PinPort mosiPinPort) {
     spi[0]->PSEL_MOSI = mosiPinPort.pin;
     if ( mosiPinPort.port == PORT_0 ) {
         SET_BIT_LO(spi[0]->PSEL_MOSI, PORT_BIT);
