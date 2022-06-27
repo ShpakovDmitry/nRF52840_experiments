@@ -105,6 +105,18 @@ static void setMode(SPI_Mode mode) {
     }
 }
 
+#define ORDER (0)
+
+static void setBitOrder(SPI_BitOrder bitOrder) {
+    if ( bitOrder == MSB_FIRST ) {
+        SET_BIT_LO(spi[0]->CONFIG, ORDER);
+    } else if ( bitOrder == LSB_FIRST ) {
+        SET_BIT_HI(spi[0]->CONFIG, ORDER);
+    } else {
+        setBitOrder(MSB_FIRST);    // sould not get here
+    }
+}
+
 
 void SPI_configure(SPI_Config *config) {
     setSpeed(config->speed);
