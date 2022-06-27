@@ -38,3 +38,11 @@ static SPI_Registers *spi[3] = {
     (SPI_Registers *) SPI_2_BASE_ADDRESS
 };
 
+#define SET_BIT_HI(reg, bit) ( (reg) |=  (1 << (bit)) )
+#define SET_BIT_LO(reg, bit) ( (reg) &= ~(1 << (bit)) )
+
+#define ENABLE_BIT (0)
+
+void SPI_enable() {
+    SET_BIT_HI(spi[0]->ENABLE, ENABLE_BIT);
+}
