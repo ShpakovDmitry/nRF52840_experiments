@@ -57,7 +57,7 @@ typedef struct {
     SPI_Speed speed;
     SPI_Mode mode;
     SPI_BitOrder bitOrder;
-    nRF_PinPort sckPin
+    nRF_PinPort sckPin;
     nRF_PinPort mosiPin;
     nRF_PinPort misoPin;
 } SPI_Config;
