@@ -64,6 +64,26 @@ uint8_t SPI_transfer(uint8_t data) {
     return spi[0]->RXD;
 }
 
+static void setSpeed(SPI_Speed speed) {
+    if ( speed == K125 ) {
+        spi[0]->FREQUENCY = 0x02000000;
+    } else if ( speed == K250) {
+        spi[0]->FREQUENCY = 0x04000000;
+    } else if ( speed == K500) {
+        spi[0]->FREQUENCY = 0x08000000;
+    } else if ( speed == M1) {
+        spi[0]->FREQUENCY = 0x10000000;
+    } else if ( speed == M2) {
+        spi[0]->FREQUENCY = 0x20000000;
+    } else if ( speed == M4) {
+        spi[0]->FREQUENCY = 0x40000000;
+    } else if ( speed == M8) {
+        spi[0]->FREQUENCY = 0x80000000;
+    } else {
+        setSpeed(M4); // should not get here
+    }
+}
+
 void SPI_configure(SPI_Config *config) {
     setSpeed(config->speed);
     setMode(config->mode);
