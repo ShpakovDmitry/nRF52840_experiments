@@ -140,6 +140,16 @@ static void setMosiPinPort(nRF_PinPort sckPinPort) {
     SET_BIT_HI(spi[0]->PSEL_MOSI, ENABLE_BIT);
 }
 
+static void setMisoPinPort(nRF_PinPort misoPinPort) {
+    spi[0]->PSEL_MISO = misoPinPort.pin;
+    if ( misoPinPort.port == PORT_0 ) {
+        SET_BIT_LO(spi[0]->PSEL_MISO, PORT_BIT);
+    } else {
+        SET_BIT_HI(spi[0]->PSEL_MISO, PORT_BIT);
+    }
+    SET_BIT_HI(spi[0]->PSEL_MISO, ENABLE_BIT);
+}
+
 void SPI_configure(SPI_Config *config) {
     setSpeed(config->speed);
     setMode(config->mode);
