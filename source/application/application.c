@@ -30,7 +30,7 @@ void Application_initScheduler(void) {
     const Scheduler_Time LED2_BLINK_PERIOD = 501;
     const Scheduler_Time LED3_BLINK_PERIOD = 502;
     const Scheduler_Time LED4_BLINK_PERIOD = 503;
-    const Scheduler_Time SPI_SEND_PERIOD = 1500;
+    const Scheduler_Time SPI_SEND_PERIOD = 100;
 
     Scheduler_addTask(&Application_sendMessage,  SEND_MESSAGE_PERIOD);
     Scheduler_addTask(&Application_blinkLed1,  LED1_BLINK_PERIOD);
