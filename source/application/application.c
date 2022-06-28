@@ -74,7 +74,9 @@ int Application_blinkLed4(void) {
 }
 
 int Application_sendSpi(void) {
-    SPI_transfer(0x55);
+    uint8_t txBuff[4] = {0xaa, 0x55, 0xaa, 0x55};
+    uint8_t rxBuff[4];
+    SPI_transferBlock(rxBuff, 4, txBuff, 4);
     return 0;
 }
 

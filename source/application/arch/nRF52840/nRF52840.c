@@ -43,7 +43,7 @@ void nRF52840_init() {
     nRF_PinPort misoPinPort = { .port = PORT_1, .pin = PIN_13 };
 
     SPI_Config spiConfig = {
-        .speed = M4,
+        .speed = M8,
         .mode = SPI_MODE0,
         .bitOrder = MSB_FIRST,
         .sckPin = sckPinPort,
