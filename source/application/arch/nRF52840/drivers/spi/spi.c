@@ -158,3 +158,13 @@ void SPI_configure(SPI_Config *config) {
     setMosiPinPort(config->mosiPin);
     setMisoPinPort(config->misoPin);
 }
+
+#define MIN(a,b) (a > b ? b : a)
+
+void SPI_transferBlock(uint8_t *rxBuff, size_t rxSize, uint8_t *txBuff, size_t txSize) {
+    size_t count = MIN(rxSize, txSize);
+    for (size_t i = 0; i < count; ++i) {
+        uint8_t rxData = SPI_transfer(txBuff[i]);
+        rxBuff[i] = rxData;
+    }
+}

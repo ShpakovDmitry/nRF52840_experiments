@@ -8,6 +8,7 @@
 #define SPI_H
 
 #include <stdint.h>
+#include <stddef.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,6 +67,7 @@ void SPI_configure(SPI_Config *config);
 void SPI_enable();
 void SPI_disable();
 uint8_t SPI_transfer(uint8_t data);
+void SPI_transferBlock(uint8_t *rxBuff, size_t rxSize, uint8_t *txBuff, size_t txSize);
 
 
 #ifdef __cplusplus
