@@ -127,7 +127,7 @@ static void setSckPinPort(nRF_PinPort sckPinPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_SCK, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_SCK, PIN_PORT_ENABLE_BIT);
+    SET_BIT_LO(spi[0]->PSEL_SCK, PIN_PORT_ENABLE_BIT);
 }
 
 static void setMosiPinPort(nRF_PinPort mosiPinPort) {
@@ -137,7 +137,7 @@ static void setMosiPinPort(nRF_PinPort mosiPinPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_MOSI, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_MOSI, PIN_PORT_ENABLE_BIT);
+    SET_BIT_LO(spi[0]->PSEL_MOSI, PIN_PORT_ENABLE_BIT);
 }
 
 static void setMisoPinPort(nRF_PinPort misoPinPort) {
@@ -147,7 +147,7 @@ static void setMisoPinPort(nRF_PinPort misoPinPort) {
     } else {
         SET_BIT_HI(spi[0]->PSEL_MISO, PORT_BIT);
     }
-    SET_BIT_HI(spi[0]->PSEL_MISO, PIN_PORT_ENABLE_BIT);
+    SET_BIT_LO(spi[0]->PSEL_MISO, PIN_PORT_ENABLE_BIT);
 }
 
 void SPI_configure(SPI_Config *config) {
